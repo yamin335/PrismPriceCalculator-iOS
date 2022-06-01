@@ -22,10 +22,10 @@ var prismerps: [PrismERP] = [
     
     ModuleGroup(code: "FA", name: "Financial Accounting", modules: [
         Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
-        Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
-        Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
+        Module(code: "FMS-FA-FR",name: "Financial Reports", features: []),
+        Module(code: "FMS-FA-AP",name: "Accounts Payable", features: []),
     ]),
-                
+    
     ModuleGroup(code: "CA", name: "Cost Accounting", modules: [
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),

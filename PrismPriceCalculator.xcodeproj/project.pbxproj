@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E603EAB0284638090066BD07 /* PrismPriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAAF284638090066BD07 /* PrismPriceCalculatorApp.swift */; };
 		E603EAB42846380B0066BD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB32846380B0066BD07 /* Assets.xcassets */; };
 		E603EAB72846380B0066BD07 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB62846380B0066BD07 /* Preview Assets.xcassets */; };
 		E603EAC8284638A30066BD07 /* PrismERP.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EABE284638A30066BD07 /* PrismERP.swift */; };
@@ -17,11 +16,11 @@
 		E603EACE284638A30066BD07 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAC7284638A30066BD07 /* AppState.swift */; };
 		E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */; };
 		E603EAD428463AB90066BD07 /* PriceCalculatorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */; };
+		E603EAD728477CBA0066BD07 /* PrismPriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E603EAAC284638090066BD07 /* PrismPriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrismPriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E603EAAF284638090066BD07 /* PrismPriceCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismPriceCalculatorApp.swift; sourceTree = "<group>"; };
 		E603EAB32846380B0066BD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E603EAB62846380B0066BD07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E603EABE284638A30066BD07 /* PrismERP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismERP.swift; sourceTree = "<group>"; };
@@ -31,6 +30,7 @@
 		E603EAC7284638A30066BD07 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorView.swift; sourceTree = "<group>"; };
 		E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorVM.swift; sourceTree = "<group>"; };
+		E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismPriceCalculatorApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 		E603EAAE284638090066BD07 /* PrismPriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
-				E603EAAF284638090066BD07 /* PrismPriceCalculatorApp.swift */,
+				E603EAD528477CBA0066BD07 /* App */,
 				E603EAC2284638A30066BD07 /* Component Styles */,
 				E603EAC6284638A30066BD07 /* Global State */,
 				E603EABD284638A30066BD07 /* Models */,
@@ -131,6 +131,14 @@
 				E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */,
 			);
 			path = PriceCalculator;
+			sourceTree = "<group>";
+		};
+		E603EAD528477CBA0066BD07 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,7 +218,7 @@
 				E603EACE284638A30066BD07 /* AppState.swift in Sources */,
 				E603EACA284638A30066BD07 /* Networking.swift in Sources */,
 				E603EACB284638A30066BD07 /* ButtonStyle.swift in Sources */,
-				E603EAB0284638090066BD07 /* PrismPriceCalculatorApp.swift in Sources */,
+				E603EAD728477CBA0066BD07 /* PrismPriceCalculatorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

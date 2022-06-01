@@ -23,6 +23,43 @@ struct ModuleRowView: View {
         }
     }
 }
+struct ModuleHeaderView: View {
+    var moduleGroup: ModuleGroup
+
+    var body: some View {
+        VStack {
+            HStack( spacing: 3) {
+                Text(moduleGroup.name)
+                    .foregroundColor(.primary)
+                    .font(.headline)
+                Spacer()
+                HStack(spacing: 3) {
+                    Label(moduleGroup.code, systemImage: "phone")
+                }
+                .foregroundColor(.secondary)
+                .font(.subheadline)
+            }
+            HStack( spacing: 3) {
+                Text("11 modules")
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 10))
+                Spacer()
+                HStack(spacing: 3) {
+                    Text("Click to hide Modules")
+                }
+                .foregroundColor(.secondary)
+                .font(.system(size: 10))
+                Spacer()
+                Text("No module selected")
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 10))
+            }
+            
+            
+        }
+       
+    }
+}
 
 
 struct ModuleDetailView: View {
@@ -49,14 +86,20 @@ struct PriceCalculatorView: View {
            NavigationView {
                List {
                    ForEach(fms.moduleGroups) { moduleGroups in
-                       Section(header: Text(moduleGroups.name)) {
+                       
+                       Section {
                            ForEach(moduleGroups.modules, id: \.id) { module in
                                    ModuleRowView(module: module)
                            }
+                       } header: {
+                           ModuleHeaderView(moduleGroup: moduleGroups)
                        }
                    }
+                   
+                   
                }
-               .navigationTitle(fms.name)
+               
+               .navigationTitle(fms.code)
 
                // Placeholder
                Text("No Selection")
