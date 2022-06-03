@@ -23,81 +23,127 @@ struct ModuleRowView: View {
         }
     }
 }
+
 struct ModuleHeaderView: View {
     var moduleGroup: ModuleGroup
-
+    @Binding var isExpanded: Bool
     var body: some View {
-        VStack {
-            HStack( spacing: 3) {
+        HStack(spacing: 5) {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(moduleGroup.name)
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color("textColor2"))
                     .font(.headline)
-                Spacer()
-                HStack(spacing: 3) {
-                    Label(moduleGroup.code, systemImage: "phone")
-                }
-                .foregroundColor(.secondary)
-                .font(.subheadline)
-            }
-            HStack( spacing: 3) {
                 Text("11 modules")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white)
+                    .font(.system(size: 10, weight: .medium))
+                    .frame(height: 20)
+                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                    .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue1")))
+                Text(isExpanded ? "Click to hide Modules" : "Click to show Modules")
+                    .foregroundColor(Color("blue1"))
                     .font(.system(size: 10))
                 Spacer()
-                HStack(spacing: 3) {
-                    Text("Click to hide Modules")
-                }
-                .foregroundColor(.secondary)
-                .font(.system(size: 10))
-                Spacer()
-                Text("No module selected")
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 10))
             }
-            
-            
+            Spacer()
+            VStack(spacing: 6) {
+                HStack(spacing: 5) {
+                    Image("ic_select_all")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .scaledToFit()
+                    Image("ic_add_circle")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .scaledToFit()
+                    Image("is_toggle_selection")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .scaledToFit()
+                    Image("ic_clear_circle")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .scaledToFit()
+                }
+                Text("No module selected")
+                    .foregroundColor(.black)
+                    .font(.system(size: 11, weight: .medium))
+                    .frame(height: 24)
+                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                    .background(RoundedRectangle(cornerRadius: 12, style: .circular).fill(Color("yellow1")))
+                Spacer()
+            }
         }
-       
     }
 }
-
 
 struct ModuleDetailView: View {
-    var module: Module
+    var moduleGroup: ModuleGroup
+    @Binding var isExpanded: Bool
 
     var body: some View {
-        VStack {
-            Text(module.name)
-                .foregroundColor(.primary)
-                .font(.title)
-                .padding()
-            HStack {
-                Label(module.code, systemImage: "phone")
+        if isExpanded {
+            VStack(alignment: .leading, spacing: 5) {
+                ForEach(moduleGroup.modules, id: \.id) { module in
+                        ModuleRowView(module: module)
+                }
             }
-            .foregroundColor(.secondary)
         }
     }
 }
+
+struct ModuleItemView: View {
+    @State var isExpanded: Bool = false
+    var moduleGroup: ModuleGroup
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded)
+                .onTapGesture {
+                    withAnimation {
+                        isExpanded = !isExpanded
+                    }
+                }
+            ModuleDetailView(moduleGroup: moduleGroup, isExpanded: self.$isExpanded)
+        }
+    }
+}
+
 struct PriceCalculatorView: View {
     
      let fms = prismerps.last!
     
        var body: some View {
            NavigationView {
-               List {
-                   ForEach(fms.moduleGroups) { moduleGroups in
-                       
-                       Section {
-                           ForEach(moduleGroups.modules, id: \.id) { module in
-                                   ModuleRowView(module: module)
-                           }
-                       } header: {
-                           ModuleHeaderView(moduleGroup: moduleGroups)
-                       }
+//               List {
+//                   ForEach(fms.moduleGroups) { moduleGroups in
+//
+//                       Section {
+//                           ForEach(moduleGroups.modules, id: \.id) { module in
+//                                   ModuleRowView(module: module)
+//                           }
+//                       } header: {
+//                           ModuleHeaderView(moduleGroup: moduleGroups)
+//                       }
+//                   }
+//
+//
+//               }.listStyle(PlainListStyle())
+//
+//               .navigationTitle(fms.code)
+               ScrollView {
+                   ForEach(fms.moduleGroups) { moduleGroup in
+                       ModuleItemView(moduleGroup: moduleGroup)
+                           .padding(.leading, 10)
+                           .padding(.trailing, 10)
+                           .padding(.top, 10)
+                           .padding(.bottom, 10)
+                           .overlay (
+                        RoundedRectangle(cornerRadius: 5, style: .circular)
+                            .stroke(Color("gray4"), lineWidth: 0.8)
+                    )
                    }
-                   
-                   
                }
+               .padding(.leading, 10)
+               .padding(.trailing, 10)
                
                .navigationTitle(fms.code)
 
