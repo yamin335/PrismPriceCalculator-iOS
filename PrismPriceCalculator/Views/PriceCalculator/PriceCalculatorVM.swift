@@ -36,15 +36,15 @@ var prismerps: [PrismERP] = [
     // ...
 ]),
 
-    PrismERP(code: "SDM", name: "Financial Management System", moduleGroups: [
+    PrismERP(code: "SDM", name: "Sales & Distribution Management", moduleGroups: [
     
-    ModuleGroup(code: "FA", name: "Financial Accounting", modules: [
+    ModuleGroup(code: "SM", name: "Sales Management", modules: [
         Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
         Module(code: "FMS-FA-FR",name: "Financial Reports", features: []),
         Module(code: "FMS-FA-AP",name: "Accounts Payable", features: []),
     ]),
     
-    ModuleGroup(code: "CA", name: "Cost Accounting", modules: [
+    ModuleGroup(code: "SDM", name: "Sale Delivery Management", modules: [
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
@@ -54,15 +54,15 @@ var prismerps: [PrismERP] = [
     // ...
 ]),
     
-    PrismERP(code: "CRM", name: "Financial Management System", moduleGroups: [
+    PrismERP(code: "CRM", name: "Customer Relationship Management", moduleGroups: [
     
-    ModuleGroup(code: "FA", name: "Financial Accounting", modules: [
+    ModuleGroup(code: "SB", name: "Service Billing", modules: [
         Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
         Module(code: "FMS-FA-FR",name: "Financial Reports", features: []),
         Module(code: "FMS-FA-AP",name: "Accounts Payable", features: []),
     ]),
     
-    ModuleGroup(code: "CA", name: "Cost Accounting", modules: [
+    ModuleGroup(code: "SC", name: "Sales CRM", modules: [
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
@@ -71,15 +71,15 @@ var prismerps: [PrismERP] = [
     ])
     // ...
 ]),
-    PrismERP(code: "SCM", name: "Financial Management System", moduleGroups: [
+    PrismERP(code: "SCM", name: "Supply Chain Management", moduleGroups: [
     
-    ModuleGroup(code: "FA", name: "Financial Accounting", modules: [
+    ModuleGroup(code: "PBD", name: "Purchase Billing & Delivery", modules: [
         Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
         Module(code: "FMS-FA-FR",name: "Financial Reports", features: []),
         Module(code: "FMS-FA-AP",name: "Accounts Payable", features: []),
     ]),
     
-    ModuleGroup(code: "CA", name: "Cost Accounting", modules: [
+    ModuleGroup(code: "IWM", name: "Inventory and Warehouse Management", modules: [
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
@@ -88,15 +88,15 @@ var prismerps: [PrismERP] = [
     ])
     // ...
 ]),
-    PrismERP(code: "SCM", name: "Financial Management System", moduleGroups: [
+    PrismERP(code: "HCM", name: "Human Capital Management", moduleGroups: [
     
-    ModuleGroup(code: "FA", name: "Financial Accounting", modules: [
+    ModuleGroup(code: "EM", name: "Employee Management", modules: [
         Module(code: "FMS-FA-GL",name: "General Ledger", features: []),
         Module(code: "FMS-FA-FR",name: "Financial Reports", features: []),
         Module(code: "FMS-FA-AP",name: "Accounts Payable", features: []),
     ]),
     
-    ModuleGroup(code: "CA", name: "Cost Accounting", modules: [
+    ModuleGroup(code: "MCM", name: "Manpower & Cost Management", modules: [
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),
         Module(code: "FMS-CA-CC",name: "Cost Centers", features: []),

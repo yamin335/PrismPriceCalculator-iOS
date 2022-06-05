@@ -109,7 +109,7 @@ struct ModuleItemView: View {
 
 struct PriceCalculatorView: View {
     
-     let fms = prismerps.last!
+    @State var prismERP: PrismERP = prismerps.last!
     @State private var bottomSheetShown = false
     @State private var showSideMenu = false
        var body: some View {
@@ -132,7 +132,7 @@ struct PriceCalculatorView: View {
 //
 //               .navigationTitle(fms.code)
                ScrollView {
-                   ForEach(fms.moduleGroups) { moduleGroup in
+                   ForEach(prismERP.moduleGroups) { moduleGroup in
                        ModuleItemView(moduleGroup: moduleGroup)
                            .padding(.leading, 10)
                            .padding(.trailing, 10)
@@ -147,7 +147,7 @@ struct PriceCalculatorView: View {
                .padding(.leading, 10)
                .padding(.trailing, 10)
                
-               .navigationTitle(fms.code)
+               .navigationTitle(prismERP.code)
 
                .navigationBarItems(trailing: (
                    Button(action: {
@@ -178,13 +178,14 @@ struct PriceCalculatorView: View {
                    Divider()
                        .frame(height: 20)
                    List {
-                       ForEach(prismerps) { moduleGroup in
+                       ForEach(prismerps) { prismerp in
                            Button(action: {
                              withAnimation {
                                self.showSideMenu = false
+                                 self.setModule(newPrismERP: prismerp)
                              }
                            }) {
-                           Text(moduleGroup.code)
+                           Text(prismerp.code)
                            }
                        }
                    }
@@ -198,7 +199,7 @@ struct PriceCalculatorView: View {
                               maxHeight: geometry.size.height * 0.85
                           ) {
                               ScrollView {
-                                  ForEach(fms.moduleGroups) { moduleGroup in
+                                  ForEach(prismERP.moduleGroups) { moduleGroup in
                                       ModuleItemView(moduleGroup: moduleGroup)
                                           .padding(.leading, 10)
                                           .padding(.trailing, 10)
@@ -215,6 +216,9 @@ struct PriceCalculatorView: View {
                           }
        }
        }
+    func setModule(newPrismERP: PrismERP) {
+        self.prismERP = newPrismERP
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
