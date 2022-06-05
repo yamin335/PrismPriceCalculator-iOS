@@ -110,8 +110,10 @@ struct ModuleItemView: View {
 struct PriceCalculatorView: View {
     
      let fms = prismerps.last!
-    
+    @State private var bottomSheetShown = false
+    @State private var showSideMenu = false
        var body: some View {
+           GeometryReader { geometry in
            NavigationView {
 //               List {
 //                   ForEach(fms.moduleGroups) { moduleGroups in
@@ -147,10 +149,71 @@ struct PriceCalculatorView: View {
                
                .navigationTitle(fms.code)
 
-               // Placeholder
-               Text("No Selection")
-                   .font(.headline)
+               .navigationBarItems(trailing: (
+                   Button(action: {
+                       withAnimation {
+                           self.showSideMenu.toggle()
+                       }
+                   }) {
+                       Image(systemName: "line.horizontal.3")
+                           .imageScale(.large)
+                   }
+               ))
+           }.sideMenu(isShowing: $showSideMenu) {
+               VStack(alignment: .leading) {
+                 Button(action: {
+                   withAnimation {
+                     self.showSideMenu = false
+                   }
+                 }) {
+                   HStack {
+                     Image(systemName: "xmark")
+                       .foregroundColor(.white)
+                     Text("close menu")
+                   
+                       .font(.system(size: 14))
+                       .padding(.leading, 15.0)
+                   }
+                 }.padding(.top, 20)
+                   Divider()
+                       .frame(height: 20)
+                   List {
+                       ForEach(prismerps) { moduleGroup in
+                           Button(action: {
+                             withAnimation {
+                               self.showSideMenu = false
+                             }
+                           }) {
+                           Text(moduleGroup.code)
+                           }
+                       }
+                   }
+                  Spacer()
+                }.padding()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+               
            }
+               BottomSheetView(
+                              isOpen: self.$bottomSheetShown,
+                              maxHeight: geometry.size.height * 0.85
+                          ) {
+                              ScrollView {
+                                  ForEach(fms.moduleGroups) { moduleGroup in
+                                      ModuleItemView(moduleGroup: moduleGroup)
+                                          .padding(.leading, 10)
+                                          .padding(.trailing, 10)
+                                          .padding(.top, 10)
+                                          .padding(.bottom, 10)
+                                          .overlay (
+                                       RoundedRectangle(cornerRadius: 5, style: .circular)
+                                           .stroke(Color("gray4"), lineWidth: 0.8)
+                                   )
+                                  }
+                              }
+                              .padding(.leading, 10)
+                              .padding(.trailing, 10)
+                          }
+       }
        }
 }
 
