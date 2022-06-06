@@ -17,9 +17,19 @@
 		E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */; };
 		E603EAD428463AB90066BD07 /* PriceCalculatorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */; };
 		E603EAD728477CBA0066BD07 /* PrismPriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */; };
-		E64FA89B284CC67C009EA9E2 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA89A284CC67C009EA9E2 /* BottomSheetView.swift */; };
-		E64FA89D284CC917009EA9E2 /* SwiftUISideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA89C284CC916009EA9E2 /* SwiftUISideMenu.swift */; };
-		E64FA89F284CDB9D009EA9E2 /* AppleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA89E284CDB9C009EA9E2 /* AppleDemo.swift */; };
+		E64FA8D1284DD886009EA9E2 /* AppleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8C1284DD886009EA9E2 /* AppleDemo.swift */; };
+		E64FA8DD284DD886009EA9E2 /* SwiftUISideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8D0284DD886009EA9E2 /* SwiftUISideMenu.swift */; };
+		E64FA8EC284DD96D009EA9E2 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8DF284DD96D009EA9E2 /* BottomSheet.swift */; };
+		E64FA8ED284DD96D009EA9E2 /* BottomSheetArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E0284DD96D009EA9E2 /* BottomSheetArray.swift */; };
+		E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E1284DD96D009EA9E2 /* BottomSheetPosition.swift */; };
+		E64FA8EF284DD96D009EA9E2 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E2284DD96D009EA9E2 /* BottomSheetView.swift */; };
+		E64FA8F0284DD96D009EA9E2 /* DragGestureExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E4284DD96D009EA9E2 /* DragGestureExtension.swift */; };
+		E64FA8F1284DD96D009EA9E2 /* TimerAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E5284DD96D009EA9E2 /* TimerAnimation.swift */; };
+		E64FA8F2284DD96D009EA9E2 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E6284DD96D009EA9E2 /* UIApplicationExtension.swift */; };
+		E64FA8F3284DD96D009EA9E2 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E7284DD96D009EA9E2 /* ViewExtension.swift */; };
+		E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E9284DD96D009EA9E2 /* EffectView.swift */; };
+		E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8EA284DD96D009EA9E2 /* RoundedCorner.swift */; };
+		E64FA8F6284DD96D009EA9E2 /* UIScrollViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8EB284DD96D009EA9E2 /* UIScrollViewWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,9 +44,19 @@
 		E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorView.swift; sourceTree = "<group>"; };
 		E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorVM.swift; sourceTree = "<group>"; };
 		E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismPriceCalculatorApp.swift; sourceTree = "<group>"; };
-		E64FA89A284CC67C009EA9E2 /* BottomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
-		E64FA89C284CC916009EA9E2 /* SwiftUISideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUISideMenu.swift; sourceTree = "<group>"; };
-		E64FA89E284CDB9C009EA9E2 /* AppleDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleDemo.swift; sourceTree = "<group>"; };
+		E64FA8C1284DD886009EA9E2 /* AppleDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleDemo.swift; sourceTree = "<group>"; };
+		E64FA8D0284DD886009EA9E2 /* SwiftUISideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUISideMenu.swift; sourceTree = "<group>"; };
+		E64FA8DF284DD96D009EA9E2 /* BottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
+		E64FA8E0284DD96D009EA9E2 /* BottomSheetArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetArray.swift; sourceTree = "<group>"; };
+		E64FA8E1284DD96D009EA9E2 /* BottomSheetPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetPosition.swift; sourceTree = "<group>"; };
+		E64FA8E2284DD96D009EA9E2 /* BottomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
+		E64FA8E4284DD96D009EA9E2 /* DragGestureExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragGestureExtension.swift; sourceTree = "<group>"; };
+		E64FA8E5284DD96D009EA9E2 /* TimerAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerAnimation.swift; sourceTree = "<group>"; };
+		E64FA8E6284DD96D009EA9E2 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		E64FA8E7284DD96D009EA9E2 /* ViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
+		E64FA8E9284DD96D009EA9E2 /* EffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
+		E64FA8EA284DD96D009EA9E2 /* RoundedCorner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
+		E64FA8EB284DD96D009EA9E2 /* UIScrollViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +89,7 @@
 		E603EAAE284638090066BD07 /* PrismPriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				E64FA8C0284DD886009EA9E2 /* Libraries */,
 				E603EAD528477CBA0066BD07 /* App */,
 				E603EAC2284638A30066BD07 /* Component Styles */,
 				E603EAC6284638A30066BD07 /* Global State */,
@@ -135,7 +156,6 @@
 			children = (
 				E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */,
 				E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */,
-				E64FA89E284CDB9C009EA9E2 /* AppleDemo.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -143,11 +163,53 @@
 		E603EAD528477CBA0066BD07 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				E64FA89C284CC916009EA9E2 /* SwiftUISideMenu.swift */,
-				E64FA89A284CC67C009EA9E2 /* BottomSheetView.swift */,
 				E603EAD628477CBA0066BD07 /* PrismPriceCalculatorApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		E64FA8C0284DD886009EA9E2 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				E64FA8DE284DD96D009EA9E2 /* BottomSheet */,
+				E64FA8C1284DD886009EA9E2 /* AppleDemo.swift */,
+				E64FA8D0284DD886009EA9E2 /* SwiftUISideMenu.swift */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		E64FA8DE284DD96D009EA9E2 /* BottomSheet */ = {
+			isa = PBXGroup;
+			children = (
+				E64FA8DF284DD96D009EA9E2 /* BottomSheet.swift */,
+				E64FA8E0284DD96D009EA9E2 /* BottomSheetArray.swift */,
+				E64FA8E1284DD96D009EA9E2 /* BottomSheetPosition.swift */,
+				E64FA8E2284DD96D009EA9E2 /* BottomSheetView.swift */,
+				E64FA8E3284DD96D009EA9E2 /* Helper */,
+				E64FA8E8284DD96D009EA9E2 /* HelperViews */,
+			);
+			path = BottomSheet;
+			sourceTree = "<group>";
+		};
+		E64FA8E3284DD96D009EA9E2 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				E64FA8E4284DD96D009EA9E2 /* DragGestureExtension.swift */,
+				E64FA8E5284DD96D009EA9E2 /* TimerAnimation.swift */,
+				E64FA8E6284DD96D009EA9E2 /* UIApplicationExtension.swift */,
+				E64FA8E7284DD96D009EA9E2 /* ViewExtension.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		E64FA8E8284DD96D009EA9E2 /* HelperViews */ = {
+			isa = PBXGroup;
+			children = (
+				E64FA8E9284DD96D009EA9E2 /* EffectView.swift */,
+				E64FA8EA284DD96D009EA9E2 /* RoundedCorner.swift */,
+				E64FA8EB284DD96D009EA9E2 /* UIScrollViewWrapper.swift */,
+			);
+			path = HelperViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,16 +282,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E64FA8F3284DD96D009EA9E2 /* ViewExtension.swift in Sources */,
+				E64FA8F1284DD96D009EA9E2 /* TimerAnimation.swift in Sources */,
 				E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */,
 				E603EACD284638A30066BD07 /* TextStyle.swift in Sources */,
-				E64FA89B284CC67C009EA9E2 /* BottomSheetView.swift in Sources */,
+				E64FA8EC284DD96D009EA9E2 /* BottomSheet.swift in Sources */,
 				E603EAD428463AB90066BD07 /* PriceCalculatorVM.swift in Sources */,
 				E603EAC8284638A30066BD07 /* PrismERP.swift in Sources */,
 				E603EACE284638A30066BD07 /* AppState.swift in Sources */,
-				E64FA89F284CDB9D009EA9E2 /* AppleDemo.swift in Sources */,
+				E64FA8F6284DD96D009EA9E2 /* UIScrollViewWrapper.swift in Sources */,
 				E603EACA284638A30066BD07 /* Networking.swift in Sources */,
-				E64FA89D284CC917009EA9E2 /* SwiftUISideMenu.swift in Sources */,
+				E64FA8D1284DD886009EA9E2 /* AppleDemo.swift in Sources */,
+				E64FA8F0284DD96D009EA9E2 /* DragGestureExtension.swift in Sources */,
 				E603EACB284638A30066BD07 /* ButtonStyle.swift in Sources */,
+				E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */,
+				E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */,
+				E64FA8F2284DD96D009EA9E2 /* UIApplicationExtension.swift in Sources */,
+				E64FA8DD284DD886009EA9E2 /* SwiftUISideMenu.swift in Sources */,
+				E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */,
+				E64FA8EF284DD96D009EA9E2 /* BottomSheetView.swift in Sources */,
+				E64FA8ED284DD96D009EA9E2 /* BottomSheetArray.swift in Sources */,
 				E603EAD728477CBA0066BD07 /* PrismPriceCalculatorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
