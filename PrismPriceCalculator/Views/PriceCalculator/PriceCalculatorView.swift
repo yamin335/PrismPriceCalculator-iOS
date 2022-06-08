@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModuleRowView: View {
-    var module: Module
+    var module: ServiceModule
 
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -108,53 +108,37 @@ struct ModuleItemView: View {
 }
 
 struct PriceCalculatorView: View {
-    
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
     let bookmarkColors: [Color] = [Color(red: 0.28, green: 0.28, blue: 0.53), Color(red: 0.44, green: 0.44, blue: 0.83)]
     
-    @State var bottomSheetPosition: BookBottomSheetPosition = .bottom
+    @State var bottomSheetPosition: BottomSheetPosition = .bottom
+    
     @State private var showSideMenu = false
     
-    @State var prismERP: PrismERP = prismerps.last!
+    @State var baseModuleList: [BaseServiceModule] = []
+    @State var moduleGroupList: [ModuleGroup] = []
     
-       var body: some View {
-           GeometryReader { geometry in
+    @ObservedObject var viewModel = PriceCalculatorVM()
+    
+    var body: some View {
+        GeometryReader { geometry in
            NavigationView {
-//               List {
-//                   ForEach(fms.moduleGroups) { moduleGroups in
-//
-//                       Section {
-//                           ForEach(moduleGroups.modules, id: \.id) { module in
-//                                   ModuleRowView(module: module)
-//                           }
-//                       } header: {
-//                           ModuleHeaderView(moduleGroup: moduleGroups)
-//                       }
-//                   }
-//
-//
-//               }.listStyle(PlainListStyle())
-//
-//               .navigationTitle(fms.code)
                ScrollView {
-                   ForEach(prismERP.moduleGroups) { moduleGroup in
+                   ForEach(moduleGroupList) { moduleGroup in
                        ModuleItemView(moduleGroup: moduleGroup)
                            .padding(.leading, 10)
                            .padding(.trailing, 10)
                            .padding(.top, 10)
                            .padding(.bottom, 10)
                            .overlay (
-                        RoundedRectangle(cornerRadius: 5, style: .circular)
-                            .stroke(Color("gray4"), lineWidth: 0.8)
-                    )
+                                RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
+                           )
                    }
                }
                .padding(.leading, 10)
                .padding(.trailing, 10)
-               
-               .navigationTitle(prismERP.code)
-
+               .navigationTitle("Prism Price Calculator")
                .navigationBarItems(trailing: (
                    Button(action: {
                        withAnimation {
@@ -164,7 +148,14 @@ struct PriceCalculatorView: View {
                        Image(systemName: "line.horizontal.3")
                            .imageScale(.large)
                    }
-               ))
+               )).onReceive(self.viewModel.baseModuleList.receive(on: RunLoop.main)) { baseModuleList in
+                   self.baseModuleList = baseModuleList
+                   if self.baseModuleList.count > 0 {
+                       self.moduleGroupList = self.baseModuleList[0].moduleGroups
+                   }
+               }.onAppear {
+                   viewModel.loadAllModuleData()
+               }
            }.sideMenu(isShowing: $showSideMenu) {
                VStack(alignment: .leading) {
                  Button(action: {
@@ -184,64 +175,213 @@ struct PriceCalculatorView: View {
                    Divider()
                        .frame(height: 20)
                    List {
-                       ForEach(prismerps) { prismerp in
+                       ForEach(baseModuleList) { baseModule in
                            Button(action: {
                              withAnimation {
                                self.showSideMenu = false
-                                 self.setModule(newPrismERP: prismerp)
+                                 self.setModule(baseModule: baseModule)
                              }
                            }) {
-                           Text(prismerp.code)
+                               Text(baseModule.code)
                            }
                        }
                    }
                   Spacer()
                 }.padding()
                 .frame(maxWidth: .infinity, alignment: .trailing)
-               
-           }
-           .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [ .allowContentDrag, .absolutePositionValue], headerContent: {
+           }.bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [ .allowContentDrag, .relativePositionValue], headerContent: {
                //The name of the book as the heading and the author as the subtitle with a divider.
                VStack(alignment: .leading) {
-                   Text("Wuthering Heights")
-                       .font(.title).bold()
+                   Text("Summary")
+                       .font(.system(size: 20)).bold()
+                       .foregroundColor(Color("textColor1"))
                    
-                   Text("by Emily Brontë")
-                       .font(.subheadline).foregroundColor(.secondary)
+                   HStack(spacing: 5) {
+                       Text("Total")
+                           .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                       Spacer()
+                       Text("৳1,50,000")
+                           .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                   }.padding(.top, 2)
                    
                    Divider()
-                       .padding(.trailing, -30)
+                   
                }
            }) {
                //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               VStack(spacing: 0) {
-                   Text("This tumultuous tale of life in a bleak farmhouse on the Yorkshire moors is a popular set text for GCSE and A-level English study, but away from the demands of the classroom it’s easier to enjoy its drama and intensity. Populated largely by characters whose inability to control their own emotions...")
-                       .fixedSize(horizontal: false, vertical: true)
-                   
-                   HStack {
-                       Button(action: {}, label: {
-                           Text("Read More")
-                               .padding(.horizontal)
-                       })
-                       .buttonStyle(BookButton(colors: self.readMoreColors)).clipShape(Capsule())
+               VStack(spacing: 5) {
+                   Group {
+                       HStack(spacing: 5) {
+                           Text("Software License")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳1,90,000")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                       }.padding(.top)
                        
-                       Spacer()
+                       Divider()
                        
-                       Button(action: {}, label: {
-                           Image(systemName: "bookmark")
-                       })
-                       .buttonStyle(BookButton(colors: self.bookmarkColors)).clipShape(Circle())
+                       HStack(spacing: 5) {
+                           Text("0 Users Included")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("[INCLUDED]")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }
+                       
+                       HStack(spacing: 5) {
+                           Text("5 Additional User")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳1,50,000")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
                    }
-                   .padding(.top)
                    
-                   Spacer(minLength: 0)
-               }
-               .padding([.horizontal, .top])
+                   Group {
+                       HStack(spacing: 5) {
+                           Text("Implementation")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳10,000")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                       }.padding(.top, 8)
+                       
+                       Divider()
+                       
+                       HStack(spacing: 5) {
+                           Text("Requirement Analysis")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }
+                       
+                       HStack(spacing: 5) {
+                           Text("Deployment")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳10,000")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                       
+                       HStack(spacing: 5) {
+                           Text("Configuration")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                       
+                       HStack(spacing: 5) {
+                           Text("Onsite Adoption Support")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                       
+                       HStack(spacing: 5) {
+                           Text("Training")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                       
+                       HStack(spacing: 5) {
+                           Text("Project Management")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                   }
+                   
+                   Group {
+                       HStack(spacing: 5) {
+                           Text("Software Customization")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                       }.padding(.top, 8)
+                       
+                       Divider()
+                       
+                       HStack(spacing: 5) {
+                           Text("Software Customization")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }
+                       
+                       HStack(spacing: 5) {
+                           Text("Customized Report")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }.padding(.top, 2)
+                   }
+                   
+                   Group {
+                       HStack(spacing: 5) {
+                           Text("Consultancy Services")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                       }.padding(.top, 8)
+                       
+                       Divider()
+                       
+                       HStack(spacing: 5) {
+                           Text("Consultancy")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("-")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }
+                       
+                       HStack(spacing: 5) {
+                           Text("Annual Maintenance Cost")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳30,000")
+                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                       }.padding(.top, 8)
+                       
+                       Divider()
+                       
+                       HStack(spacing: 5) {
+                           Text("Annual Maintenance Cost")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                           Spacer()
+                           Text("৳30,000")
+                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                       }
+                   }
+                   
+                   Button(action: {
+                     
+                   }) {
+                       HStack {
+                           Spacer()
+                           Text("Add To Cart").foregroundColor(.white).padding(.vertical, 5)
+                           Spacer()
+                       }
+                       .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue2"))).padding(.top, 10)
+                   }
+                   Spacer()
+               }.padding([.horizontal])
            }
        }
-       }
-    func setModule(newPrismERP: PrismERP) {
-        self.prismERP = newPrismERP
+    }
+    
+    func setModule(baseModule: BaseServiceModule) {
+        self.moduleGroupList = baseModule.moduleGroups
     }
 }
 

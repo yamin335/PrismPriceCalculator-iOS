@@ -14,6 +14,8 @@ public struct BottomSheet {
             return lhs.rawValue == rhs.rawValue
         }
         
+        ///Allows relative values in relation to the screen size to be used as BottomSheetPosition values.
+        case relativePositionValue
         ///Allows absolute values in pixels to be used as BottomSheetPosition values.
         case absolutePositionValue
         ///Allows the BottomSheet to move when dragging the mainContent. Do not use if the mainContent is packed into a ScrollView.
@@ -64,6 +66,8 @@ public struct BottomSheet {
          */
         var rawValue: String {
             switch self {
+            case .relativePositionValue:
+                return "relativePositionValue"
             case .absolutePositionValue:
                 return "absolutePositionValue"
             case .allowContentDrag:

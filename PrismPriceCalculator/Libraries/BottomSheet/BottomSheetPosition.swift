@@ -22,9 +22,9 @@ import SwiftUI
  */
 public enum BottomSheetPosition: CGFloat, CaseIterable, Equatable {
     ///The state where the height of the BottomSheet is 97.5%
-    case top = 0.975
+    case top = 1
     ///The state where the height of the BottomSheet is 40%
-    case middle = 0.4
+    //case middle = 0.4
     ///The state where the height of the BottomSheet is 12.5% and the `mainContent` is hidden
     case bottom = 0.125
     ///The state where the BottomSheet is hidden

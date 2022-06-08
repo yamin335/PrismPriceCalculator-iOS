@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EAE9DEB284F7BCF0002DBEE /* divine.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EAE9DEA284F7BCF0002DBEE /* divine.json */; };
 		E603EAB42846380B0066BD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB32846380B0066BD07 /* Assets.xcassets */; };
 		E603EAB72846380B0066BD07 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB62846380B0066BD07 /* Preview Assets.xcassets */; };
 		E603EAC8284638A30066BD07 /* PrismERP.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EABE284638A30066BD07 /* PrismERP.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6EAE9DEA284F7BCF0002DBEE /* divine.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = divine.json; sourceTree = "<group>"; };
 		E603EAAC284638090066BD07 /* PrismPriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrismPriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E603EAB32846380B0066BD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E603EAB62846380B0066BD07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -70,6 +72,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6EAE9DE9284F7AEF0002DBEE /* Raw Data */ = {
+			isa = PBXGroup;
+			children = (
+				6EAE9DEA284F7BCF0002DBEE /* divine.json */,
+			);
+			path = "Raw Data";
+			sourceTree = "<group>";
+		};
 		E603EAA3284638090066BD07 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +99,7 @@
 		E603EAAE284638090066BD07 /* PrismPriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				6EAE9DE9284F7AEF0002DBEE /* Raw Data */,
 				E64FA8C0284DD886009EA9E2 /* Libraries */,
 				E603EAD528477CBA0066BD07 /* App */,
 				E603EAC2284638A30066BD07 /* Component Styles */,
@@ -271,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E603EAB72846380B0066BD07 /* Preview Assets.xcassets in Resources */,
+				6EAE9DEB284F7BCF0002DBEE /* divine.json in Resources */,
 				E603EAB42846380B0066BD07 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,10 @@
 import SwiftUI
 
 internal extension Array where Element == BottomSheet.Options {
+    var relativePositionValue: Bool {
+        return self.contains(BottomSheet.Options.relativePositionValue)
+    }
+    
     var absolutePositionValue: Bool {
         return self.contains(BottomSheet.Options.absolutePositionValue)
     }
