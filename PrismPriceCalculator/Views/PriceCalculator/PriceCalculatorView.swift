@@ -79,24 +79,26 @@ struct ModuleHeaderView: View {
 struct ModuleDetailView: View {
     var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
-
+    
     var body: some View {
         if isExpanded {
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 0) {
                 ForEach(moduleGroup.modules, id: \.id) { module in
-                        ModuleRowView(module: module)
+                    ModuleListItemView(module: module)
                 }
             }
         }
     }
 }
 
-struct ModuleItemView: View {
+struct ModuleGroupListItemView: View {
     @State var isExpanded: Bool = false
     var moduleGroup: ModuleGroup
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
                 .onTapGesture {
                     withAnimation {
                         isExpanded = !isExpanded
@@ -126,11 +128,7 @@ struct PriceCalculatorView: View {
            NavigationView {
                ScrollView {
                    ForEach(moduleGroupList) { moduleGroup in
-                       ModuleItemView(moduleGroup: moduleGroup)
-                           .padding(.leading, 10)
-                           .padding(.trailing, 10)
-                           .padding(.top, 10)
-                           .padding(.bottom, 10)
+                       ModuleGroupListItemView(moduleGroup: moduleGroup)
                            .overlay (
                                 RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                            )
