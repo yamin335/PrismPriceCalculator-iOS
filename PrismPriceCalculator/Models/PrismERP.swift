@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BaseServiceModule: Codable, Identifiable {
+struct ServiceModule: Codable, Identifiable {
     let id = UUID()
     let code: String
     let name: String
@@ -22,7 +22,7 @@ struct ModuleGroup: Codable, Identifiable {
     let id = UUID()
     let name: String
     let code: String
-    let modules: [ServiceModule]
+    let modules: [Module]
     let multipliers: [MultiplierClass]
     let showMultiplier: String?
     let description: String?
@@ -32,7 +32,7 @@ struct ModuleGroup: Codable, Identifiable {
     }
 }
 
-struct ServiceModule: Codable, Identifiable {
+struct Module: Codable, Identifiable {
     let id = UUID()
     let code: String
     let selfCode: String

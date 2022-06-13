@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModuleListItemView: View {
-    @State var module: ServiceModule
+    @State var module: Module
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

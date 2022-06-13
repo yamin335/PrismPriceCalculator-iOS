@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModuleRowView: View {
-    var module: ServiceModule
+    var module: Module
 
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -33,7 +33,7 @@ struct ModuleHeaderView: View {
                 Text(moduleGroup.name)
                     .foregroundColor(Color("textColor2"))
                     .font(.headline)
-                Text("11 modules")
+                Text("\(moduleGroup.modules.count) modules")
                     .foregroundColor(.white)
                     .font(.system(size: 10, weight: .medium))
                     .frame(height: 20)
@@ -118,8 +118,8 @@ struct PriceCalculatorView: View {
     
     @State private var showSideMenu = false
     
-    @State var baseModuleList: [BaseServiceModule] = []
-    @State var moduleGroupList: [ModuleGroup] = []
+    @State var baseModuleList: [ServiceModule] = []
+    @State var selectedServiceModule: ServiceModule?
     
     @ObservedObject var viewModel = PriceCalculatorVM()
     
@@ -127,11 +127,13 @@ struct PriceCalculatorView: View {
         GeometryReader { geometry in
            NavigationView {
                ScrollView {
-                   ForEach(moduleGroupList) { moduleGroup in
+                   if let selectedServiceModule = selectedServiceModule {
+                   ForEach(selectedServiceModule.moduleGroups) { moduleGroup in
                        ModuleGroupListItemView(moduleGroup: moduleGroup)
                            .overlay (
                                 RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                            )
+                   }
                    }
                }
                .padding(.leading, 10)
@@ -148,12 +150,13 @@ struct PriceCalculatorView: View {
                    }
                )).onReceive(self.viewModel.baseModuleList.receive(on: RunLoop.main)) { baseModuleList in
                    self.baseModuleList = baseModuleList
-                   if self.baseModuleList.count > 0 {
-                       self.moduleGroupList = self.baseModuleList[0].moduleGroups
-                   }
+                  // if self.baseModuleList.count > 0 {
+                       self.selectedServiceModule = self.baseModuleList.first
+                  // }
                }.onAppear {
                    viewModel.loadAllModuleData()
                }
+               .navigationTitle(selectedServiceModule?.code ?? "dsfdsf")
            }.sideMenu(isShowing: $showSideMenu) {
                VStack(alignment: .leading) {
                  Button(action: {
@@ -200,186 +203,20 @@ struct PriceCalculatorView: View {
                        Spacer()
                        Text("৳1,50,000")
                            .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                   }.padding(.top, 2)
-                   
+                   }.padding(.top, 1)
                    Divider()
+               
                    
                }
            }) {
                //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               VStack(spacing: 5) {
-                   Group {
-                       HStack(spacing: 5) {
-                           Text("Software License")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳1,90,000")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                       }.padding(.top)
-                       
-                       Divider()
-                       
-                       HStack(spacing: 5) {
-                           Text("0 Users Included")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("[INCLUDED]")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }
-                       
-                       HStack(spacing: 5) {
-                           Text("5 Additional User")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳1,50,000")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                   }
-                   
-                   Group {
-                       HStack(spacing: 5) {
-                           Text("Implementation")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳10,000")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                       }.padding(.top, 8)
-                       
-                       Divider()
-                       
-                       HStack(spacing: 5) {
-                           Text("Requirement Analysis")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }
-                       
-                       HStack(spacing: 5) {
-                           Text("Deployment")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳10,000")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                       
-                       HStack(spacing: 5) {
-                           Text("Configuration")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                       
-                       HStack(spacing: 5) {
-                           Text("Onsite Adoption Support")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                       
-                       HStack(spacing: 5) {
-                           Text("Training")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                       
-                       HStack(spacing: 5) {
-                           Text("Project Management")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                   }
-                   
-                   Group {
-                       HStack(spacing: 5) {
-                           Text("Software Customization")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                       }.padding(.top, 8)
-                       
-                       Divider()
-                       
-                       HStack(spacing: 5) {
-                           Text("Software Customization")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }
-                       
-                       HStack(spacing: 5) {
-                           Text("Customized Report")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }.padding(.top, 2)
-                   }
-                   
-                   Group {
-                       HStack(spacing: 5) {
-                           Text("Consultancy Services")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                       }.padding(.top, 8)
-                       
-                       Divider()
-                       
-                       HStack(spacing: 5) {
-                           Text("Consultancy")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("-")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }
-                       
-                       HStack(spacing: 5) {
-                           Text("Annual Maintenance Cost")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳30,000")
-                               .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                       }.padding(.top, 8)
-                       
-                       Divider()
-                       
-                       HStack(spacing: 5) {
-                           Text("Annual Maintenance Cost")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                           Spacer()
-                           Text("৳30,000")
-                               .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                       }
-                   }
-                   
-                   Button(action: {
-                     
-                   }) {
-                       HStack {
-                           Spacer()
-                           Text("Add To Cart").foregroundColor(.white).padding(.vertical, 5)
-                           Spacer()
-                       }
-                       .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue2"))).padding(.top, 10)
-                   }
-                   Spacer()
-               }.padding([.horizontal])
+               SummaryView()
            }
        }
     }
     
-    func setModule(baseModule: BaseServiceModule) {
-        self.moduleGroupList = baseModule.moduleGroups
+    func setModule(baseModule: ServiceModule) {
+        self.selectedServiceModule = baseModule
     }
 }
 

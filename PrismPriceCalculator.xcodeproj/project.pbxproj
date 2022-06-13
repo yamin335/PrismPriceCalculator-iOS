@@ -37,6 +37,7 @@
 		E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8E9284DD96D009EA9E2 /* EffectView.swift */; };
 		E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8EA284DD96D009EA9E2 /* RoundedCorner.swift */; };
 		E64FA8F6284DD96D009EA9E2 /* UIScrollViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64FA8EB284DD96D009EA9E2 /* UIScrollViewWrapper.swift */; };
+		E65057EE2854A1E100FF9CB9 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65057ED2854A1E100FF9CB9 /* SummaryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		E64FA8E9284DD96D009EA9E2 /* EffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
 		E64FA8EA284DD96D009EA9E2 /* RoundedCorner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		E64FA8EB284DD96D009EA9E2 /* UIScrollViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewWrapper.swift; sourceTree = "<group>"; };
+		E65057ED2854A1E100FF9CB9 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				6EAA05732852FF1500902DE2 /* FeatureListItem.swift */,
 				6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */,
 				6EAAB8602853ED3300332087 /* FeatureListItemView.swift */,
+				E65057ED2854A1E100FF9CB9 /* SummaryView.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E64FA8F3284DD96D009EA9E2 /* ViewExtension.swift in Sources */,
+				E65057EE2854A1E100FF9CB9 /* SummaryView.swift in Sources */,
 				E64FA8F1284DD96D009EA9E2 /* TimerAnimation.swift in Sources */,
 				E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */,
 				E603EACD284638A30066BD07 /* TextStyle.swift in Sources */,

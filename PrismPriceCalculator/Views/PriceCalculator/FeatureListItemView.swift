@@ -12,17 +12,17 @@ struct FeatureListItemView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
-            ZStack {
+            ZStack (alignment: .top) {
                 Circle()
                     .fill(Color("green1"))
                     .frame(width: 15, height: 15)
-                    
+                  Spacer()
                 Rectangle()
                     .fill(Color("green1"))
                     .frame(width: 1)
-                    .alignmentGuide(VerticalAlignment.center) {   // << here !!
-                        $0[VerticalAlignment.top]
-                    }
+                    //.alignmentGuide(VerticalAlignment.center) {   // << here !!
+                      //  $0[VerticalAlignment.top]
+                   // }
             }.padding(.leading, 37.5)
             
             VStack(alignment: .leading, spacing: 5) {
