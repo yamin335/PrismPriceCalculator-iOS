@@ -77,14 +77,15 @@ struct ModuleHeaderView: View {
 }
 
 struct ModuleDetailView: View {
-    var moduleGroup: ModuleGroup
+    @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
     
     var body: some View {
         if isExpanded {
             VStack(alignment: .leading, spacing: 0) {
-                ForEach(moduleGroup.modules, id: \.id) { module in
-                    ModuleListItemView(module: module)
+                ForEach($moduleGroup.modules, id: \.id) { $module in
+                    ModuleListItemView(viewModel: viewModel, module: $module)
                 }
             }
         }
@@ -92,8 +93,9 @@ struct ModuleDetailView: View {
 }
 
 struct ModuleGroupListItemView: View {
+    @ObservedObject var viewModel: PriceCalculatorVM
     @State var isExpanded: Bool = false
-    var moduleGroup: ModuleGroup
+    @Binding var moduleGroup: ModuleGroup
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded)
@@ -104,7 +106,7 @@ struct ModuleGroupListItemView: View {
                         isExpanded = !isExpanded
                     }
                 }
-            ModuleDetailView(moduleGroup: moduleGroup, isExpanded: self.$isExpanded)
+            ModuleDetailView(viewModel: viewModel, moduleGroup: $moduleGroup, isExpanded: self.$isExpanded)
         }
     }
 }
@@ -119,7 +121,12 @@ struct PriceCalculatorView: View {
     @State private var showSideMenu = false
     
     @State var baseModuleList: [ServiceModule] = []
-    @State var selectedServiceModule: ServiceModule?
+    @State var selectedBaseModuleIndex: Int = -1
+    
+    @State var summaryList: [SummaryItem] = []
+    @State var summaryMap: [String : SummaryItem] = [:]
+    @State var totalPrice = 0
+    let baseTotal = 190000
     
     @ObservedObject var viewModel = PriceCalculatorVM()
     
@@ -127,13 +134,13 @@ struct PriceCalculatorView: View {
         GeometryReader { geometry in
            NavigationView {
                ScrollView {
-                   if let selectedServiceModule = selectedServiceModule {
-                   ForEach(selectedServiceModule.moduleGroups) { moduleGroup in
-                       ModuleGroupListItemView(moduleGroup: moduleGroup)
-                           .overlay (
-                                RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
-                           )
-                   }
+                   if selectedBaseModuleIndex >= 0 {
+                       ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
+                           ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup)
+                               .overlay (
+                                    RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
+                               )
+                       }
                    }
                }
                .padding(.leading, 10)
@@ -148,15 +155,20 @@ struct PriceCalculatorView: View {
                        Image(systemName: "line.horizontal.3")
                            .imageScale(.large)
                    }
-               )).onReceive(self.viewModel.baseModuleList.receive(on: RunLoop.main)) { baseModuleList in
+               )).onReceive(self.viewModel.shouldCalculateData.receive(on: RunLoop.main)) { shouldCalculateData in
+                   if shouldCalculateData {
+                       summaryList = getSummary(baseModuleList: baseModuleList)
+                   }
+               }.onReceive(self.viewModel.baseModuleList.receive(on: RunLoop.main)) { baseModuleList in
                    self.baseModuleList = baseModuleList
-                  // if self.baseModuleList.count > 0 {
-                       self.selectedServiceModule = self.baseModuleList.first
-                  // }
+                   if self.baseModuleList.count > 0 {
+                       self.selectedBaseModuleIndex = 0
+                   }
                }.onAppear {
                    viewModel.loadAllModuleData()
+                   self.totalPrice = baseTotal
+                   summaryList = getSummary(baseModuleList: baseModuleList)
                }
-               .navigationTitle(selectedServiceModule?.code ?? "dsfdsf")
            }.sideMenu(isShowing: $showSideMenu) {
                VStack(alignment: .leading) {
                  Button(action: {
@@ -173,17 +185,42 @@ struct PriceCalculatorView: View {
                        .padding(.leading, 15.0)
                    }
                  }.padding(.top, 20)
-                   Divider()
-                       .frame(height: 20)
-                   List {
-                       ForEach(baseModuleList) { baseModule in
-                           Button(action: {
-                             withAnimation {
-                               self.showSideMenu = false
-                                 self.setModule(baseModule: baseModule)
-                             }
-                           }) {
-                               Text(baseModule.code)
+                   Divider().frame(height: 20)
+                   ForEach(Array(baseModuleList.enumerated()), id: \.offset) { index, baseModule in
+                       Button(action: {
+                         withAnimation {
+                           self.showSideMenu = false
+                             self.selectedBaseModuleIndex = index
+                         }
+                       }) {
+                           if selectedBaseModuleIndex == index {
+                               HStack(alignment: .center) {
+                                   Text(baseModule.code)
+                                       .foregroundColor(.black)
+                                       .padding(.horizontal, 20)
+                                       .padding(.vertical, 10)
+                               }
+                               .frame(maxWidth: .infinity)
+                               .background(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .strokeBorder(Color("blue4"), lineWidth: 3)
+                                    .foregroundColor(Color("gray5"))
+                                    .background(Color("gray6"))
+                               )
+                           } else {
+                               HStack(alignment: .center) {
+                                   Text(baseModule.code)
+                                       .foregroundColor(Color("blue3"))
+                                       .padding(.horizontal, 20)
+                                       .padding(.vertical, 10)
+                               }
+                               .frame(maxWidth: .infinity)
+                               .background(
+                                RoundedRectangle(cornerRadius: 0)
+                                    .strokeBorder(style: StrokeStyle(lineWidth: 3, dash: [10, 5]))
+                                    .foregroundColor(Color("gray5"))
+                                    .background(Color("grayBlue1"))
+                               )
                            }
                        }
                    }
@@ -201,22 +238,91 @@ struct PriceCalculatorView: View {
                        Text("Total")
                            .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                        Spacer()
-                       Text("৳1,50,000")
+                       Text("৳\(totalPrice)")
                            .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                    }.padding(.top, 1)
-                   Divider()
-               
-                   
                }
+               .padding([.top, .bottom, .leading, .trailing], 8)
+               .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
            }) {
                //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               SummaryView()
+               SummaryView(summaryList: summaryList).padding([.top, .bottom, .leading, .trailing], 8)
            }
        }
     }
     
-    func setModule(baseModule: ServiceModule) {
-        self.selectedServiceModule = baseModule
+    private func getSummary(baseModuleList: [ServiceModule]) -> [SummaryItem] {
+        guard selectedBaseModuleIndex >= 0 else {
+            return []
+        }
+        let baseModule = baseModuleList[selectedBaseModuleIndex]
+        var isAdded = false
+        var price = 0
+        for moduleGroup in baseModule.moduleGroups {
+            for module in moduleGroup.modules {
+                if module.isAdded == true {
+                    if let slab1 = module.price?.slab1 {
+                        switch slab1 {
+                        case .integer(let i):
+                            price += i
+                        case .string(let j):
+                            print(j)
+                        }
+                    }
+                    isAdded = true
+                }
+                
+                for feature in module.features {
+                    if feature.isAdded == true {
+                        if let slab1 = feature.price?.slab1 {
+                            switch slab1 {
+                            case .integer(let i):
+                                price += i
+                            case .string(let j):
+                                print(j)
+                            }
+                        }
+                        isAdded = true
+                    }
+                }
+                
+                for submodule in module.submodules {
+                    for feature in submodule.features {
+                        if feature.isAdded == true {
+                            if let slab1 = feature.price?.slab1 {
+                                switch slab1 {
+                                case .integer(let i):
+                                    price += i
+                                case .string(let j):
+                                    print(j)
+                                }
+                            }
+                            isAdded = true
+                        }
+                    }
+                }
+            }
+        }
+        
+        if isAdded {
+            summaryMap[baseModule.code] = SummaryItem(title: baseModule.name, price: price)
+        } else {
+            summaryMap.removeValue(forKey: baseModule.code)
+        }
+        
+        var total = 0
+        var list: [SummaryItem] = []
+        
+        for key in summaryMap.keys {
+            if let item = summaryMap[key] {
+                list.append(item)
+                total += item.price
+            }
+        }
+        total += baseTotal
+        self.totalPrice = total
+        
+        return list
     }
 }
 

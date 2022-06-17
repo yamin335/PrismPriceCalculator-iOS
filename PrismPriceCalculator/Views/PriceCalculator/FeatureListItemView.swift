@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct FeatureListItemView: View {
-    @State var feature: Feature
+    @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var feature: Feature
+    @State var price: Int = 0
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
@@ -38,28 +40,53 @@ struct FeatureListItemView: View {
                 
             }.frame(maxWidth: .infinity)
             
-            VStack(alignment: .center, spacing: 5) {
-                Text("৳20,000")
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(Color("green1"))
-                Text("LEARN MORE")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundColor(Color("textColor1"))
+            if self.price > 0 {
+                VStack(alignment: .center, spacing: 5) {
+                    Text("৳\(price)")
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundColor(Color("green1"))
+                    Text("LEARN MORE")
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundColor(Color("textColor1"))
+                }
+                
+                Button(action: {
+                    feature.isAdded = !(feature.isAdded ?? false)
+                    self.viewModel.shouldCalculateData.send(true)
+                }) {
+                    if feature.isAdded == true {
+                        Text("Remove")
+                            .font(.system(size: 13, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("green1")))
+                    } else {
+                        Text("Add")
+                            .font(.system(size: 13, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+                    }
+                }
+                .padding(.trailing, 8)
+                .padding(.top, 8)
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 50)
+        .onAppear {
+            guard let slab1 = feature.price?.slab1 else {
+                return
             }
             
-            Button(action: {
-                
-            }) {
-                Text("Add")
-                    .font(.system(size: 13, weight: .regular))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+            switch slab1 {
+            case .integer(let i):
+                price = i
+            case .string(let j):
+                print(j)
             }
-            .padding(.trailing, 8)
-            .padding(.top, 8)
-        }.frame(maxWidth: .infinity, minHeight: 50)
+        }
     }
 }
 

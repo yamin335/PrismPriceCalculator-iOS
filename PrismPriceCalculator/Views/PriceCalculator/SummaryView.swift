@@ -10,6 +10,7 @@ import SwiftUI
 struct SummaryView: View {
 //    var moduleGroup: ModuleGroup
 //    @Binding var isExpanded: Bool
+    @State var summaryList: [SummaryItem] = []
     
     var body: some View {
         VStack(spacing: 5) {
@@ -23,6 +24,16 @@ struct SummaryView: View {
                 }.padding(.top)
                 
                 Divider()
+                
+                ForEach(summaryList, id: \.id) { summary in
+                    HStack(spacing: 5) {
+                        Text(summary.title)
+                            .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                        Spacer()
+                        Text("৳\(summary.price)")
+                            .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                    }
+                }
                 
                 HStack(spacing: 5) {
                     Text("0 Users Included")
@@ -172,7 +183,7 @@ struct SummaryView: View {
             }) {
                 HStack {
                     Spacer()
-                    Text("Add To Cart").foregroundColor(.white).padding(.vertical, 5)
+                    Text("Submit").foregroundColor(.white).padding(.vertical, 5)
                     Spacer()
                 }
                 .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue2"))).padding(.top, 10)

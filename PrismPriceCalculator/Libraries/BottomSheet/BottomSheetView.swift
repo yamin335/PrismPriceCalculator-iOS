@@ -85,7 +85,9 @@ internal struct BottomSheetView<hContent: View, mContent: View, bottomSheetPosit
                     HStack(alignment: .top, spacing: 0) {
                         // Header content
                         if let headerContent = self.headerContent {
-                            headerContent
+                            headerContent.onTapGesture(count: 2) {
+                                self.switchPositionIndicator()
+                            }
                         }
                         
                         Spacer(minLength: 0)
@@ -229,7 +231,7 @@ internal struct BottomSheetView<hContent: View, mContent: View, bottomSheetPosit
     
     fileprivate func headerContentPadding(geometry: GeometryProxy) -> CGFloat {
         if self.isBottomPosition {
-            return geometry.safeAreaInsets.bottom + 25
+            return geometry.safeAreaInsets.bottom + 20
         } else if self.headerContent == nil && !self.options.showCloseButton {
             return 20
         } else {

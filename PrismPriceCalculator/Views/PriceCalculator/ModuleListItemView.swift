@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ModuleListItemView: View {
-    @State var module: Module
+    @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var module: Module
+    @State var price: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -38,37 +40,60 @@ struct ModuleListItemView: View {
                     
                 }.frame(maxWidth: .infinity)
                 
-                VStack(alignment: .center, spacing: 5) {
-                    Text("৳20,000")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundColor(Color("green1"))
-                    Text("LEARN MORE")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(Color("textColor1"))
-                }
-                
-                Button(action: {
+                if self.price > 0 {
+                    VStack(alignment: .center, spacing: 5) {
+                        Text("৳\(price)")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(Color("green1"))
+                        Text("LEARN MORE")
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(Color("textColor1"))
+                    }
                     
-                }) {
-                    Text("Add")
-                        .font(.system(size: 13, weight: .regular))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+                    Button(action: {
+                        module.isAdded = !(module.isAdded ?? false)
+                        self.viewModel.shouldCalculateData.send(true)
+                    }) {
+                        if module.isAdded == true {
+                            Text("Remove")
+                                .font(.system(size: 13, weight: .regular))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("green1")))
+                        } else {
+                            Text("Add")
+                                .font(.system(size: 13, weight: .regular))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+                        }
+                    }
+                    .padding(.trailing, 8)
+                    .padding(.top, 8)
                 }
-                .padding(.trailing, 8)
-                .padding(.top, 8)
             }.frame(maxWidth: .infinity, minHeight: 70)
             
             VStack(alignment: .leading, spacing: 0) {
-                ForEach(module.submodules, id: \.id) { subModule in
-                    SubModuleListItemView(subModule: subModule)
+                ForEach($module.submodules, id: \.id) { $subModule in
+                    SubModuleListItemView(viewModel: viewModel, subModule: $subModule)
                 }
                 
-                ForEach(module.features, id: \.id) { feature in
-                    FeatureListItemView(feature: feature)
+                ForEach($module.features, id: \.id) { $feature in
+                    FeatureListItemView(viewModel: viewModel, feature: $feature)
                 }
+            }
+        }.onAppear {
+            guard let slab1 = module.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                price = i
+            case .string(let j):
+                print(j)
             }
         }
     }

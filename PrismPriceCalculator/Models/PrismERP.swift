@@ -7,11 +7,17 @@
 
 import Foundation
 
+struct SummaryItem {
+    let id = UUID()
+    let title: String
+    let price: Int
+}
+
 struct ServiceModule: Codable, Identifiable {
     let id = UUID()
     let code: String
     let name: String
-    let moduleGroups: [ModuleGroup]
+    var moduleGroups: [ModuleGroup]
     
     enum CodingKeys: String, CodingKey {
         case code, name, moduleGroups
@@ -22,7 +28,7 @@ struct ModuleGroup: Codable, Identifiable {
     let id = UUID()
     let name: String
     let code: String
-    let modules: [Module]
+    var modules: [Module]
     let multipliers: [MultiplierClass]
     let showMultiplier: String?
     let description: String?
@@ -37,13 +43,14 @@ struct Module: Codable, Identifiable {
     let code: String
     let selfCode: String
     let name: String
-    let submodules: [SubModule]
-    let features: [Feature]
+    var submodules: [SubModule]
+    var features: [Feature]
     let description: String?
     let dependencies: [String]
     let price: Price?
     let ready: String?
     let showMultiplier: String?
+    var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
         case code, selfCode, name, submodules, features, description, dependencies, price, ready, showMultiplier
@@ -58,9 +65,10 @@ struct Feature: Codable, Identifiable {
     let price: Price?
     let ready: String?
     let excludeInAll: Int32?
+    var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
-        case name, code, description, price, ready, excludeInAll
+        case name, code, description, price, ready, excludeInAll, isAdded
     }
 }
 
@@ -68,7 +76,7 @@ struct SubModule: Codable, Identifiable {
     let id = UUID()
     let name: String
     let code: String
-    let features: [Feature]?
+    var features: [Feature]
     let description: String?
     let price: Price?
     

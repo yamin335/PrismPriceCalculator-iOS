@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 struct SubModuleListItemView: View {
-    @State var subModule: SubModule
+    @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var subModule: SubModule
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -40,8 +41,8 @@ struct SubModuleListItemView: View {
                 
             }.frame(maxWidth: .infinity, minHeight: 50)
             
-            ForEach(subModule.features!, id: \.id) { feature in
-                FeatureListItemView(feature: feature)
+            ForEach($subModule.features, id: \.id) { $feature in
+                FeatureListItemView(viewModel: viewModel, feature: $feature)
             }
         }
     }

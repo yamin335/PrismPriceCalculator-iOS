@@ -10,6 +10,7 @@ import Combine
 
 class PriceCalculatorVM: NSObject, ObservableObject {
     var baseModuleList = PassthroughSubject<[ServiceModule], Never>()
+    var shouldCalculateData = PassthroughSubject<Bool, Never>()
     
     func loadAllModuleData() {
         guard let url = Bundle.main.url(forResource: "divine", withExtension: "json") else {
