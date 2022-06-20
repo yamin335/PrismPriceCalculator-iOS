@@ -48,7 +48,7 @@
 		6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModuleListItemView.swift; sourceTree = "<group>"; };
 		6EAAB8602853ED3300332087 /* FeatureListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureListItemView.swift; sourceTree = "<group>"; };
 		6EAE9DEA284F7BCF0002DBEE /* divine.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = divine.json; sourceTree = "<group>"; };
-		E603EAAC284638090066BD07 /* PrismPriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrismPriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E603EAAC284638090066BD07 /* Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Store.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E603EAB32846380B0066BD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E603EAB62846380B0066BD07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E603EABE284638A30066BD07 /* PrismERP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismERP.swift; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 		E603EAAD284638090066BD07 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E603EAAC284638090066BD07 /* PrismPriceCalculator.app */,
+				E603EAAC284638090066BD07 /* Store.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -269,7 +269,7 @@
 			);
 			name = PrismPriceCalculator;
 			productName = PrismPriceCalculator;
-			productReference = E603EAAC284638090066BD07 /* PrismPriceCalculator.app */;
+			productReference = E603EAAC284638090066BD07 /* Store.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -495,7 +495,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rtchubs.PrismPriceCalculator;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Store;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -524,7 +524,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rtchubs.PrismPriceCalculator;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Store;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

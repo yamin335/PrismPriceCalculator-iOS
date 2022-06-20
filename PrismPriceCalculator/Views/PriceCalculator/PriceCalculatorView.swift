@@ -152,7 +152,7 @@ struct PriceCalculatorView: View {
                            self.showSideMenu.toggle()
                        }
                    }) {
-                       Image(systemName: "line.horizontal.3")
+                       Image(systemName: self.showSideMenu ? "clear" : "line.horizontal.3")
                            .imageScale(.large)
                    }
                )).onReceive(self.viewModel.shouldCalculateData.receive(on: RunLoop.main)) { shouldCalculateData in
@@ -179,7 +179,7 @@ struct PriceCalculatorView: View {
                    HStack {
                      Image(systemName: "xmark")
                        .foregroundColor(.white)
-                     Text("close menu")
+                     Text("Select Module")
                    
                        .font(.system(size: 14))
                        .padding(.leading, 15.0)
