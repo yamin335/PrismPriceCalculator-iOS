@@ -27,50 +27,87 @@ struct ModuleRowView: View {
 struct ModuleHeaderView: View {
     var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
+    @State var baseModuleCode: String
+    
     var body: some View {
         HStack(spacing: 5) {
             VStack(alignment: .leading, spacing: 5) {
                 Text(moduleGroup.name)
                     .foregroundColor(Color("textColor2"))
                     .font(.headline)
-                Text("\(moduleGroup.modules.count) modules")
-                    .foregroundColor(.white)
-                    .font(.system(size: 10, weight: .medium))
-                    .frame(height: 20)
-                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                    .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue1")))
-                Text(isExpanded ? "Click to hide Modules" : "Click to show Modules")
-                    .foregroundColor(Color("blue1"))
-                    .font(.system(size: 10))
+                
+                if baseModuleCode != "START" {
+                    Text("\(moduleGroup.modules.count) modules")
+                        .foregroundColor(.white)
+                        .font(.system(size: 10, weight: .medium))
+                        .frame(height: 20)
+                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                        .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue1")))
+                    
+                    Text(isExpanded ? "Click to hide Modules" : "Click to show Modules")
+                        .foregroundColor(Color("blue1"))
+                        .font(.system(size: 10))
+                }
+                
                 Spacer()
             }
             Spacer()
-            VStack(spacing: 6) {
-                HStack(spacing: 5) {
-                    Image("ic_select_all")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .scaledToFit()
-                    Image("ic_add_circle")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .scaledToFit()
-                    Image("is_toggle_selection")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .scaledToFit()
-                    Image("ic_clear_circle")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .scaledToFit()
+            if baseModuleCode != "START" {
+                VStack(spacing: 6) {
+                    HStack(spacing: 8) {
+                        Image("ic_select_all")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .scaledToFit()
+                            .onTapGesture {
+                                withAnimation {
+                                    
+                                }
+                            }
+                        
+                        Image("ic_add_circle")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .scaledToFit()
+                            .onTapGesture {
+                                withAnimation {
+                                    
+                                }
+                            }
+                        
+                        Image("is_toggle_selection")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .scaledToFit()
+                            .onTapGesture {
+                                withAnimation {
+                                    
+                                }
+                            }
+                        
+                        Image("ic_clear_circle")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .scaledToFit()
+                            .onTapGesture {
+                                withAnimation {
+                                    
+                                }
+                            }
+                        
+                    }
+                    Text("No module selected")
+                        .foregroundColor(.black)
+                        .font(.system(size: 11, weight: .medium))
+                        .frame(height: 24)
+                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                        .background(RoundedRectangle(cornerRadius: 12, style: .circular).fill(Color("yellow1")))
+                    Spacer()
                 }
-                Text("No module selected")
-                    .foregroundColor(.black)
-                    .font(.system(size: 11, weight: .medium))
-                    .frame(height: 24)
-                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                    .background(RoundedRectangle(cornerRadius: 12, style: .circular).fill(Color("yellow1")))
-                Spacer()
+            }
+        }.onAppear {
+            if baseModuleCode == "START" {
+                isExpanded = true
             }
         }
     }
@@ -80,13 +117,17 @@ struct ModuleDetailView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
     @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
+    @State var baseModuleCode: String
     
     var body: some View {
         if isExpanded {
             VStack(alignment: .leading, spacing: 0) {
-                ForEach($moduleGroup.modules, id: \.id) { $module in
-                    ModuleListItemView(viewModel: viewModel, module: $module)
+                ForEach(Array($moduleGroup.modules.enumerated()), id: \.offset) { index, $module in
+                    ModuleListItemView(viewModel: viewModel, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
+//                ForEach($moduleGroup.modules, id: \.id) { $module in
+//                    ModuleListItemView(viewModel: viewModel, module: $module)
+//                }
             }
         }
     }
@@ -96,17 +137,20 @@ struct ModuleGroupListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
     @State var isExpanded: Bool = false
     @Binding var moduleGroup: ModuleGroup
+    @State var baseModuleCode: String
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded)
+            ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded, baseModuleCode: baseModuleCode)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 10)
+                .background(.white)
                 .onTapGesture {
                     withAnimation {
                         isExpanded = !isExpanded
                     }
                 }
-            ModuleDetailView(viewModel: viewModel, moduleGroup: $moduleGroup, isExpanded: self.$isExpanded)
+            ModuleDetailView(viewModel: viewModel, moduleGroup: $moduleGroup, isExpanded: self.$isExpanded, baseModuleCode: baseModuleCode)
         }
     }
 }
@@ -125,8 +169,24 @@ struct PriceCalculatorView: View {
     
     @State var summaryList: [SummaryItem] = []
     @State var summaryMap: [String : SummaryItem] = [:]
-    @State var totalPrice = 0
-    let baseTotal = 190000
+    
+    @State var costSoftwareLicense = 0
+    @State var costAdditionalUsers = 150000
+    @State var costImplementation = 0
+    @State var costRequirementAnalysis = 0
+    @State var costDeployment = 10000
+    @State var costConfiguration = 0
+    @State var costOnsiteAdoptionSupport = 0
+    @State var costTraining = 0
+    @State var costProjectManagement = 0
+    @State var costSoftwareCustomizationTotal = 0
+    @State var costSoftwareCustomization = 0
+    @State var costCustomizedReport = 0
+    @State var costConsultancyServices = 0
+    @State var costConsultancy = 0
+    @State var costAnnualMaintenanceTotal = 0
+    @State var costAnnualMaintenance = 30000
+    @State var costTotal = 0
     
     @ObservedObject var viewModel = PriceCalculatorVM()
     
@@ -136,7 +196,7 @@ struct PriceCalculatorView: View {
                ScrollView {
                    if selectedBaseModuleIndex >= 0 {
                        ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
-                           ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup)
+                           ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
                                .overlay (
                                     RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                                )
@@ -166,7 +226,11 @@ struct PriceCalculatorView: View {
                    }
                }.onAppear {
                    viewModel.loadAllModuleData()
-                   self.totalPrice = baseTotal
+                   costAdditionalUsers = 150000
+                   costDeployment = 10000
+                   costAnnualMaintenance = 30000
+
+                   calculateSummaryCost(moduleCost: 0)
                    summaryList = getSummary(baseModuleList: baseModuleList)
                }
            }.sideMenu(isShowing: $showSideMenu) {
@@ -238,15 +302,16 @@ struct PriceCalculatorView: View {
                        Text("Total")
                            .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                        Spacer()
-                       Text("৳\(totalPrice)")
+                       Text("৳\(costTotal)")
                            .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                    }.padding(.top, 1)
                }
                .padding([.top, .bottom, .leading, .trailing], 8)
+               //.background(AnyView(EffectView(effect: UIBlurEffect(style: .systemThickMaterialLight))))
                .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
            }) {
                //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               SummaryView(summaryList: summaryList).padding([.top, .bottom, .leading, .trailing], 8)
+               SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance).padding([.top, .bottom, .leading, .trailing], 8)
            }
        }
     }
@@ -310,19 +375,33 @@ struct PriceCalculatorView: View {
             summaryMap.removeValue(forKey: baseModule.code)
         }
         
-        var total = 0
+        var moduleCost = 0
         var list: [SummaryItem] = []
         
         for key in summaryMap.keys {
             if let item = summaryMap[key] {
                 list.append(item)
-                total += item.price
+                moduleCost += item.price
             }
         }
-        total += baseTotal
-        self.totalPrice = total
+        
+        calculateSummaryCost(moduleCost: moduleCost)
         
         return list
+    }
+    
+    private func calculateSummaryCost(moduleCost: Int) {
+        costSoftwareLicense = moduleCost + costAdditionalUsers
+
+        costImplementation = costRequirementAnalysis + costDeployment + costConfiguration + costOnsiteAdoptionSupport + costTraining + costProjectManagement
+
+        costSoftwareCustomizationTotal = costSoftwareCustomization + costCustomizedReport
+
+        costConsultancyServices = costConsultancy
+
+        costAnnualMaintenanceTotal = costAnnualMaintenance
+
+        costTotal = costSoftwareLicense + costImplementation + costSoftwareCustomizationTotal + costConsultancyServices + costAnnualMaintenanceTotal
     }
 }
 

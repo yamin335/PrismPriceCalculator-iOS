@@ -10,6 +10,7 @@ import SwiftUI
 struct FeatureListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
     @Binding var feature: Feature
+    @Binding var module: Module
     @State var price: Int = 0
     
     var body: some View {
@@ -51,7 +52,15 @@ struct FeatureListItemView: View {
                 }
                 
                 Button(action: {
-                    feature.isAdded = !(feature.isAdded ?? false)
+                    var isFeatureAdded = feature.isAdded ?? false
+                    feature.isAdded = !isFeatureAdded
+                    
+                    isFeatureAdded = feature.isAdded ?? false
+                    
+                    let isModuleAdded = module.isAdded ?? false
+                    if isFeatureAdded && !isModuleAdded {
+                        module.isAdded = true
+                    }
                     self.viewModel.shouldCalculateData.send(true)
                 }) {
                     if feature.isAdded == true {

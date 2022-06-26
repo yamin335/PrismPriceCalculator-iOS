@@ -12,6 +12,23 @@ struct SummaryView: View {
 //    @Binding var isExpanded: Bool
     @State var summaryList: [SummaryItem] = []
     
+    @Binding var costSoftwareLicense: Int
+    @Binding var costAdditionalUsers: Int
+    @Binding var costImplementation: Int
+    @Binding var costRequirementAnalysis: Int
+    @Binding var costDeployment: Int
+    @Binding var costConfiguration: Int
+    @Binding var costOnsiteAdoptionSupport: Int
+    @Binding var costTraining: Int
+    @Binding var costProjectManagement: Int
+    @Binding var costSoftwareCustomizationTotal: Int
+    @Binding var costSoftwareCustomization: Int
+    @Binding var costCustomizedReport: Int
+    @Binding var costConsultancyServices: Int
+    @Binding var costConsultancy: Int
+    @Binding var costAnnualMaintenanceTotal: Int
+    @Binding var costAnnualMaintenance: Int
+    
     var body: some View {
         VStack(spacing: 5) {
             Group {
@@ -19,7 +36,7 @@ struct SummaryView: View {
                     Text("Software License")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳1,90,000")
+                    Text(costSoftwareLicense > 0 ? "৳\(costSoftwareLicense)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                 }.padding(.top)
                 
@@ -27,7 +44,7 @@ struct SummaryView: View {
                 
                 ForEach(summaryList, id: \.id) { summary in
                     HStack(spacing: 5) {
-                        Text(summary.title)
+                        Text(summary.title.trimmingCharacters(in: .whitespacesAndNewlines))
                             .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                         Spacer()
                         Text("৳\(summary.price)")
@@ -47,7 +64,7 @@ struct SummaryView: View {
                     Text("5 Additional User")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳1,50,000")
+                    Text(costAdditionalUsers > 0 ? "৳\(costAdditionalUsers)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
             }
@@ -57,7 +74,7 @@ struct SummaryView: View {
                     Text("Implementation")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳10,000")
+                    Text(costImplementation > 0 ? "৳\(costImplementation)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                 }.padding(.top, 8)
                 
@@ -67,7 +84,7 @@ struct SummaryView: View {
                     Text("Requirement Analysis")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costRequirementAnalysis > 0 ? "৳\(costRequirementAnalysis)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }
                 
@@ -75,7 +92,7 @@ struct SummaryView: View {
                     Text("Deployment")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳10,000")
+                    Text(costDeployment > 0 ? "৳\(costDeployment)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
                 
@@ -83,7 +100,7 @@ struct SummaryView: View {
                     Text("Configuration")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costConfiguration > 0 ? "৳\(costConfiguration)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
                 
@@ -91,7 +108,7 @@ struct SummaryView: View {
                     Text("Onsite Adoption Support")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costOnsiteAdoptionSupport > 0 ? "৳\(costOnsiteAdoptionSupport)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
                 
@@ -99,7 +116,7 @@ struct SummaryView: View {
                     Text("Training")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costTraining > 0 ? "৳\(costTraining)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
                 
@@ -107,7 +124,7 @@ struct SummaryView: View {
                     Text("Project Management")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costProjectManagement > 0 ? "৳\(costProjectManagement)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
             }
@@ -117,7 +134,7 @@ struct SummaryView: View {
                     Text("Software Customization")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costSoftwareCustomizationTotal > 0 ? "৳\(costSoftwareCustomizationTotal)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                 }.padding(.top, 8)
                 
@@ -127,7 +144,7 @@ struct SummaryView: View {
                     Text("Software Customization")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costSoftwareCustomization > 0 ? "৳\(costSoftwareCustomization)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }
                 
@@ -135,7 +152,7 @@ struct SummaryView: View {
                     Text("Customized Report")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costCustomizedReport > 0 ? "৳\(costCustomizedReport)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }.padding(.top, 2)
             }
@@ -145,7 +162,7 @@ struct SummaryView: View {
                     Text("Consultancy Services")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costConsultancyServices > 0 ? "৳\(costConsultancyServices)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                 }.padding(.top, 8)
                 
@@ -155,7 +172,7 @@ struct SummaryView: View {
                     Text("Consultancy")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("-")
+                    Text(costConsultancy > 0 ? "৳\(costConsultancy)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }
                 
@@ -163,7 +180,7 @@ struct SummaryView: View {
                     Text("Annual Maintenance Cost")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳30,000")
+                    Text(costAnnualMaintenanceTotal > 0 ? "৳\(costAnnualMaintenanceTotal)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
                 }.padding(.top, 8)
                 
@@ -173,7 +190,7 @@ struct SummaryView: View {
                     Text("Annual Maintenance Cost")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
-                    Text("৳30,000")
+                    Text(costAnnualMaintenance > 0 ? "৳\(costAnnualMaintenance)" : "-")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }
             }

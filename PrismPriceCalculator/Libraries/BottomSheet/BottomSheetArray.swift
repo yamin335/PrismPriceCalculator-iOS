@@ -36,8 +36,18 @@ internal extension Array where Element == BottomSheet.Options {
         return self.contains(BottomSheet.Options.appleScrollBehavior)
     }
     
+    struct SheetBackgroundSolidView: View {
+        var body: some View {
+            ZStack {
+                Spacer()
+            }.background(.white)
+        }
+    }
+    
     var background: AnyView {
-        var background: AnyView = AnyView(EffectView(effect: UIBlurEffect(style: .systemMaterial)))
+        //var background: AnyView = AnyView(EffectView(effect: UIBlurEffect(style: .systemThickMaterialLight)))
+        
+        var background: AnyView = AnyView(SheetBackgroundSolidView())
         
         self.forEach { item in
             if case .background(let customBackground) = item {
@@ -101,7 +111,7 @@ internal extension Array where Element == BottomSheet.Options {
     }
     
     var shadowColor: Color {
-        var shadowColor: Color = .clear
+        var shadowColor: Color = .gray
         
         self.forEach { item in
             if case .shadow(color: let customShadowColor, radius: _, x: _, y: _) = item {
@@ -113,7 +123,7 @@ internal extension Array where Element == BottomSheet.Options {
     }
     
     var shadowRadius: CGFloat {
-        var shadowRadius: CGFloat = 0
+        var shadowRadius: CGFloat = 6
         
         self.forEach { item in
             if case .shadow(color: _, radius: let customShadowRadius, x: _, y: _) = item {
@@ -125,7 +135,7 @@ internal extension Array where Element == BottomSheet.Options {
     }
     
     var shadowX: CGFloat {
-        var shadowX: CGFloat = 0
+        var shadowX: CGFloat = 1
         
         self.forEach { item in
             if case .shadow(color: _, radius: _, x: let customShadowX, y: _) = item {
@@ -137,7 +147,7 @@ internal extension Array where Element == BottomSheet.Options {
     }
     
     var shadowY: CGFloat {
-        var shadowY: CGFloat = 0
+        var shadowY: CGFloat = 2
         
         self.forEach { item in
             if case .shadow(color: _, radius: _, x: _, y: let customShadowY) = item {
