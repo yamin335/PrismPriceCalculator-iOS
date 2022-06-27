@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeatureListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var moduleGroup: ModuleGroup
     @Binding var feature: Feature
     @Binding var module: Module
     @State var price: Int = 0
@@ -60,6 +61,9 @@ struct FeatureListItemView: View {
                     let isModuleAdded = module.isAdded ?? false
                     if isFeatureAdded && !isModuleAdded {
                         module.isAdded = true
+                        if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule {
+                            moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
+                        }
                     }
                     self.viewModel.shouldCalculateData.send(true)
                 }) {

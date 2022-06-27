@@ -25,7 +25,7 @@ struct ModuleRowView: View {
 }
 
 struct ModuleHeaderView: View {
-    var moduleGroup: ModuleGroup
+    @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
     @State var baseModuleCode: String
     
@@ -61,7 +61,7 @@ struct ModuleHeaderView: View {
                             .scaledToFit()
                             .onTapGesture {
                                 withAnimation {
-                                    
+                                    addAll()
                                 }
                             }
                         
@@ -71,7 +71,7 @@ struct ModuleHeaderView: View {
                             .scaledToFit()
                             .onTapGesture {
                                 withAnimation {
-                                    
+                                    addAll()
                                 }
                             }
                         
@@ -81,7 +81,7 @@ struct ModuleHeaderView: View {
                             .scaledToFit()
                             .onTapGesture {
                                 withAnimation {
-                                    
+                                    toggleSelection()
                                 }
                             }
                         
@@ -91,23 +91,108 @@ struct ModuleHeaderView: View {
                             .scaledToFit()
                             .onTapGesture {
                                 withAnimation {
-                                    
+                                    clearAll()
                                 }
                             }
                         
                     }
-                    Text("No module selected")
-                        .foregroundColor(.black)
+                    Text((moduleGroup.numberOfSelectedModule ?? 0) > 0 ? "\((moduleGroup.numberOfSelectedModule ?? 0)) of \(moduleGroup.modules.count) selected" : "No module selected")
+                        .foregroundColor((moduleGroup.numberOfSelectedModule ?? 0) > 0 ? .white : .black)
                         .font(.system(size: 11, weight: .medium))
                         .frame(height: 24)
                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                        .background(RoundedRectangle(cornerRadius: 12, style: .circular).fill(Color("yellow1")))
+                        .background(RoundedRectangle(cornerRadius: 12, style: .circular).fill((moduleGroup.numberOfSelectedModule ?? 0) > 0 ? Color("green1") : Color("yellow1")))
                     Spacer()
                 }
             }
         }.onAppear {
             if baseModuleCode == "START" {
                 isExpanded = true
+            }
+        }
+    }
+    
+    func addAll() {
+        for moduleIndex in 0..<moduleGroup.modules.count {
+            if moduleGroup.modules[moduleIndex].isAdded != true {
+                moduleGroup.modules[moduleIndex].isAdded = true
+                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule {
+                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
+                }
+            }
+            for featureIndex in 0..<moduleGroup.modules[moduleIndex].features.count {
+                if moduleGroup.modules[moduleIndex].features[featureIndex].isAdded != true {
+                    moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = true
+                }
+            }
+
+            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded != true {
+                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = true
+                    }
+                }
+            }
+        }
+    }
+    
+    func toggleSelection() {
+        for moduleIndex in 0..<moduleGroup.modules.count {
+            //var isAdded = false
+            
+            for featureIndex in 0..<moduleGroup.modules[moduleIndex].features.count {
+                moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
+                //isAdded = isAdded || (moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
+            }
+
+            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+                    moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
+                    //isAdded = isAdded || (moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
+                }
+            }
+            
+            moduleGroup.modules[moduleIndex].isAdded = !(moduleGroup.modules[moduleIndex].isAdded ?? false)
+            
+            if moduleGroup.modules[moduleIndex].isAdded == true {
+                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule {
+                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
+                }
+            } else {
+                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, numberOfSelectedModule > 0 {
+                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule - 1
+                }
+            }
+            
+//            if !(moduleGroup.modules[moduleIndex].isAdded ?? false) {
+//                moduleGroup.modules[moduleIndex].isAdded = (moduleGroup.modules[moduleIndex].isAdded ?? false) || isAdded
+//                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, moduleGroup.modules[moduleIndex].isAdded == true {
+//                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
+//                }
+//            }
+        }
+    }
+
+    func clearAll() {
+        for moduleIndex in 0..<moduleGroup.modules.count {
+            if moduleGroup.modules[moduleIndex].isAdded == true {
+                moduleGroup.modules[moduleIndex].isAdded = false
+                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, numberOfSelectedModule > 0 {
+                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule - 1
+                }
+            }
+            for featureIndex in 0..<moduleGroup.modules[moduleIndex].features.count {
+                if moduleGroup.modules[moduleIndex].features[featureIndex].isAdded == true {
+                    moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = false
+                }
+            }
+
+            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded == true {
+                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = false
+                    }
+                }
             }
         }
     }
@@ -123,7 +208,7 @@ struct ModuleDetailView: View {
         if isExpanded {
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(Array($moduleGroup.modules.enumerated()), id: \.offset) { index, $module in
-                    ModuleListItemView(viewModel: viewModel, module: $module, baseModuleCode: baseModuleCode, index: index)
+                    ModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
 //                ForEach($moduleGroup.modules, id: \.id) { $module in
 //                    ModuleListItemView(viewModel: viewModel, module: $module)
@@ -141,7 +226,7 @@ struct ModuleGroupListItemView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ModuleHeaderView(moduleGroup: moduleGroup, isExpanded: $isExpanded, baseModuleCode: baseModuleCode)
+            ModuleHeaderView(moduleGroup: $moduleGroup, isExpanded: $isExpanded, baseModuleCode: baseModuleCode)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 10)
                 .background(.white)
@@ -219,7 +304,7 @@ struct PriceCalculatorView: View {
                    if shouldCalculateData {
                        summaryList = getSummary(baseModuleList: baseModuleList)
                    }
-               }.onReceive(self.viewModel.baseModuleList.receive(on: RunLoop.main)) { baseModuleList in
+               }.onReceive(self.viewModel.baseModuleListPublisher.receive(on: RunLoop.main)) { baseModuleList in
                    self.baseModuleList = baseModuleList
                    if self.baseModuleList.count > 0 {
                        self.selectedBaseModuleIndex = 0

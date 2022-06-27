@@ -32,9 +32,10 @@ struct ModuleGroup: Codable, Identifiable {
     let multipliers: [MultiplierClass]
     let showMultiplier: String?
     let description: String?
+    var numberOfSelectedModule: Int? = 0
     
     enum CodingKeys: String, CodingKey {
-        case name, code, modules, multipliers, showMultiplier, description
+        case name, code, modules, multipliers, showMultiplier, description, numberOfSelectedModule
     }
 }
 
@@ -53,7 +54,7 @@ struct Module: Codable, Identifiable {
     var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
-        case code, selfCode, name, submodules, features, description, dependencies, price, ready, showMultiplier
+        case code, selfCode, name, submodules, features, description, dependencies, price, ready, showMultiplier, isAdded
     }
 }
 

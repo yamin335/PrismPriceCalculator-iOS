@@ -9,8 +9,9 @@ import Foundation
 import Combine
 
 class PriceCalculatorVM: NSObject, ObservableObject {
-    var baseModuleList = PassthroughSubject<[ServiceModule], Never>()
+    var baseModuleListPublisher = PassthroughSubject<[ServiceModule], Never>()
     var shouldCalculateData = PassthroughSubject<Bool, Never>()
+    var calculateSelectedModuleFor = PassthroughSubject<String, Never>()
     
     func loadAllModuleData() {
         guard let url = Bundle.main.url(forResource: "divine", withExtension: "json") else {
@@ -19,10 +20,18 @@ class PriceCalculatorVM: NSObject, ObservableObject {
         }
         
         guard let data = try? Data(contentsOf: url),
-        let moduleList = try? JSONDecoder().decode([ServiceModule].self, from: data) else {
+        let list = try? JSONDecoder().decode([ServiceModule].self, from: data) else {
             print("Json file parsing failed!")
             return
         }
-        baseModuleList.send(moduleList)
+        
+        var baseModuleList = list
+        
+        for baseModuleIndex in 0..<baseModuleList.count {
+            for moduleGroupIndex in 0..<baseModuleList[baseModuleIndex].moduleGroups.count {
+                baseModuleList[baseModuleIndex].moduleGroups[moduleGroupIndex].numberOfSelectedModule = 0
+            }
+        }
+        baseModuleListPublisher.send(baseModuleList)
     }
 }

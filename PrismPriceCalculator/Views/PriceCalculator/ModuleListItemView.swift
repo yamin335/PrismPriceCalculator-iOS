@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ModuleListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var moduleGroup: ModuleGroup
     @Binding var module: Module
     @State var baseModuleCode: String
     @State var index: Int
@@ -67,6 +68,13 @@ struct ModuleListItemView: View {
                                     module.features[featureIndex].isAdded = false
                                 }
                             }
+                            if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, numberOfSelectedModule > 0 {
+                                moduleGroup.numberOfSelectedModule = numberOfSelectedModule - 1
+                            }
+                        } else {
+                            if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule {
+                                moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
+                            }
                         }
                         self.viewModel.shouldCalculateData.send(true)
                     }) {
@@ -93,11 +101,11 @@ struct ModuleListItemView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 ForEach($module.submodules, id: \.id) { $subModule in
-                    SubModuleListItemView(viewModel: viewModel, subModule: $subModule, module: $module)
+                    SubModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, subModule: $subModule, module: $module)
                 }
                 
                 ForEach($module.features, id: \.id) { $feature in
-                    FeatureListItemView(viewModel: viewModel, feature: $feature, module: $module)
+                    FeatureListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, feature: $feature, module: $module)
                 }
             }
         }.onAppear {

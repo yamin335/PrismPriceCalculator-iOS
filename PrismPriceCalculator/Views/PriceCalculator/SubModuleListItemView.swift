@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SubModuleListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
+    @Binding var moduleGroup: ModuleGroup
     @Binding var subModule: SubModule
     @Binding var module: Module
     
@@ -43,7 +44,7 @@ struct SubModuleListItemView: View {
             }.frame(maxWidth: .infinity, minHeight: 50)
             
             ForEach($subModule.features, id: \.id) { $feature in
-                FeatureListItemView(viewModel: viewModel, feature: $feature, module: $module)
+                FeatureListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, feature: $feature, module: $module)
             }
         }
     }
