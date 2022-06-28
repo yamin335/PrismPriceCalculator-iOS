@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8556286B02BE005C158E /* ChipGroup.swift */; };
+		6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8558286B033F005C158E /* ChipDataModel.swift */; };
+		6E7B855B286B071E005C158E /* HeaderStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855A286B071E005C158E /* HeaderStart.swift */; };
+		6E7B855D286B5856005C158E /* BaseModuleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */; };
 		6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */; };
 		6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */; };
 		6EAAB85C2853D80D00332087 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAAB85B2853D80D00332087 /* Extensions.swift */; };
@@ -40,6 +44,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E7B8556286B02BE005C158E /* ChipGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipGroup.swift; sourceTree = "<group>"; };
+		6E7B8558286B033F005C158E /* ChipDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDataModel.swift; sourceTree = "<group>"; };
+		6E7B855A286B071E005C158E /* HeaderStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStart.swift; sourceTree = "<group>"; };
+		6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModuleHeaderView.swift; sourceTree = "<group>"; };
 		6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListItemView.swift; sourceTree = "<group>"; };
 		6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModuleListItem.swift; sourceTree = "<group>"; };
 		6EAAB85B2853D80D00332087 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -84,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E7B8553286AFFED005C158E /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				6E7B8556286B02BE005C158E /* ChipGroup.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 		6EAAB85A2853D7E200332087 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				E603EABE284638A30066BD07 /* PrismERP.swift */,
+				6E7B8558286B033F005C158E /* ChipDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -178,6 +195,7 @@
 		E603EACF28463A3A0066BD07 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6E7B8553286AFFED005C158E /* CustomViews */,
 				E603EAD028463A850066BD07 /* PriceCalculator */,
 			);
 			path = Views;
@@ -193,6 +211,8 @@
 				6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */,
 				6EAAB8602853ED3300332087 /* FeatureListItemView.swift */,
 				E65057ED2854A1E100FF9CB9 /* SummaryView.swift */,
+				6E7B855A286B071E005C158E /* HeaderStart.swift */,
+				6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -336,17 +356,21 @@
 				6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */,
 				6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */,
 				E64FA8F0284DD96D009EA9E2 /* DragGestureExtension.swift in Sources */,
+				6E7B855D286B5856005C158E /* BaseModuleHeaderView.swift in Sources */,
 				E603EACB284638A30066BD07 /* ButtonStyle.swift in Sources */,
 				E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */,
 				6EAAB85F2853E98400332087 /* SubModuleListItemView.swift in Sources */,
 				E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */,
 				E64FA8F2284DD96D009EA9E2 /* UIApplicationExtension.swift in Sources */,
 				E64FA8DD284DD886009EA9E2 /* SwiftUISideMenu.swift in Sources */,
+				6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */,
 				E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */,
 				6EAAB85C2853D80D00332087 /* Extensions.swift in Sources */,
 				E64FA8EF284DD96D009EA9E2 /* BottomSheetView.swift in Sources */,
 				E64FA8ED284DD96D009EA9E2 /* BottomSheetArray.swift in Sources */,
+				6E7B855B286B071E005C158E /* HeaderStart.swift in Sources */,
 				E603EAD728477CBA0066BD07 /* PrismPriceCalculatorApp.swift in Sources */,
+				6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,25 @@ class PriceCalculatorVM: NSObject, ObservableObject {
     var baseModuleListPublisher = PassthroughSubject<[ServiceModule], Never>()
     var shouldCalculateData = PassthroughSubject<Bool, Never>()
     var calculateSelectedModuleFor = PassthroughSubject<String, Never>()
+    var branches = [
+        ChipsDataModel(label: "1 - 1", isSelected: true),
+        ChipsDataModel(label: "2 - 4", isSelected: false),
+        ChipsDataModel(label: "5 - 8", isSelected: false),
+        ChipsDataModel(label: "Custom", isSelected: false)
+    ]
+    
+    var products = [
+        ChipsDataModel(label: "1 - 100", isSelected: true),
+        ChipsDataModel(label: "101 - 500", isSelected: false),
+        ChipsDataModel(label: "501 - 1500", isSelected: false)
+    ]
+    
+    var businessType = [
+        ChipsDataModel(label: "Manufacturing", isSelected: true),
+        ChipsDataModel(label: "Trading", isSelected: false),
+        ChipsDataModel(label: "Service", isSelected: false),
+        ChipsDataModel(label: "Mixed", isSelected: false)
+    ]
     
     func loadAllModuleData() {
         guard let url = Bundle.main.url(forResource: "divine", withExtension: "json") else {

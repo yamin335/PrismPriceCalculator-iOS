@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-struct ModuleRowView: View {
-    var module: Module
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(module.name)
-                .foregroundColor(.primary)
-                .font(.headline)
-            HStack(spacing: 3) {
-                Label(module.code, systemImage: "phone")
-            }
-            .foregroundColor(.secondary)
-            .font(.subheadline)
-        }
-    }
-}
-
 struct ModuleHeaderView: View {
     @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
@@ -210,9 +193,6 @@ struct ModuleDetailView: View {
                 ForEach(Array($moduleGroup.modules.enumerated()), id: \.offset) { index, $module in
                     ModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
-//                ForEach($moduleGroup.modules, id: \.id) { $module in
-//                    ModuleListItemView(viewModel: viewModel, module: $module)
-//                }
             }
         }
     }
@@ -279,12 +259,18 @@ struct PriceCalculatorView: View {
         GeometryReader { geometry in
            NavigationView {
                ScrollView {
-                   if selectedBaseModuleIndex >= 0 {
-                       ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
-                           ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
-                               .overlay (
-                                    RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
-                               )
+                   VStack(alignment: .leading, spacing: 20) {
+                       if selectedBaseModuleIndex >= 0 {
+                           if baseModuleList[selectedBaseModuleIndex].code == "START" {
+                               BaseModuleHeaderView(viewModel: viewModel, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
+                           }
+                           
+                           ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
+                               ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
+                                   .overlay (
+                                        RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
+                                   )
+                           }
                        }
                    }
                }
