@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E2B846A286EB1EA00A84D89 /* HeaderFMS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B8469286EB1EA00A84D89 /* HeaderFMS.swift */; };
+		6E2B846C286EB80F00A84D89 /* HeaderHCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B846B286EB80F00A84D89 /* HeaderHCM.swift */; };
+		6E2B846E286EB87800A84D89 /* HeaderPPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B846D286EB87800A84D89 /* HeaderPPC.swift */; };
+		6E2B8470286EB90A00A84D89 /* HeaderEAM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B846F286EB90A00A84D89 /* HeaderEAM.swift */; };
+		6E2B8472286EB95B00A84D89 /* HeaderCSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B8471286EB95B00A84D89 /* HeaderCSC.swift */; };
+		6E2B8474286EBA1800A84D89 /* HeaderPIP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B8473286EBA1800A84D89 /* HeaderPIP.swift */; };
+		6E2B8476286EC51400A84D89 /* MultiplierListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B8475286EC51400A84D89 /* MultiplierListItem.swift */; };
 		6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8556286B02BE005C158E /* ChipGroup.swift */; };
 		6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8558286B033F005C158E /* ChipDataModel.swift */; };
 		6E7B855B286B071E005C158E /* HeaderStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855A286B071E005C158E /* HeaderStart.swift */; };
-		6E7B855D286B5856005C158E /* BaseModuleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */; };
 		6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */; };
 		6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */; };
 		6EAAB85C2853D80D00332087 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAAB85B2853D80D00332087 /* Extensions.swift */; };
@@ -44,10 +50,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E2B8469286EB1EA00A84D89 /* HeaderFMS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFMS.swift; sourceTree = "<group>"; };
+		6E2B846B286EB80F00A84D89 /* HeaderHCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderHCM.swift; sourceTree = "<group>"; };
+		6E2B846D286EB87800A84D89 /* HeaderPPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderPPC.swift; sourceTree = "<group>"; };
+		6E2B846F286EB90A00A84D89 /* HeaderEAM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderEAM.swift; sourceTree = "<group>"; };
+		6E2B8471286EB95B00A84D89 /* HeaderCSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCSC.swift; sourceTree = "<group>"; };
+		6E2B8473286EBA1800A84D89 /* HeaderPIP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderPIP.swift; sourceTree = "<group>"; };
+		6E2B8475286EC51400A84D89 /* MultiplierListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplierListItem.swift; sourceTree = "<group>"; };
 		6E7B8556286B02BE005C158E /* ChipGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipGroup.swift; sourceTree = "<group>"; };
 		6E7B8558286B033F005C158E /* ChipDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDataModel.swift; sourceTree = "<group>"; };
 		6E7B855A286B071E005C158E /* HeaderStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStart.swift; sourceTree = "<group>"; };
-		6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModuleHeaderView.swift; sourceTree = "<group>"; };
 		6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListItemView.swift; sourceTree = "<group>"; };
 		6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModuleListItem.swift; sourceTree = "<group>"; };
 		6EAAB85B2853D80D00332087 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -212,7 +224,13 @@
 				6EAAB8602853ED3300332087 /* FeatureListItemView.swift */,
 				E65057ED2854A1E100FF9CB9 /* SummaryView.swift */,
 				6E7B855A286B071E005C158E /* HeaderStart.swift */,
-				6E7B855C286B5856005C158E /* BaseModuleHeaderView.swift */,
+				6E2B8469286EB1EA00A84D89 /* HeaderFMS.swift */,
+				6E2B846B286EB80F00A84D89 /* HeaderHCM.swift */,
+				6E2B846D286EB87800A84D89 /* HeaderPPC.swift */,
+				6E2B846F286EB90A00A84D89 /* HeaderEAM.swift */,
+				6E2B8471286EB95B00A84D89 /* HeaderCSC.swift */,
+				6E2B8473286EBA1800A84D89 /* HeaderPIP.swift */,
+				6E2B8475286EC51400A84D89 /* MultiplierListItem.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -342,7 +360,10 @@
 			files = (
 				E64FA8F3284DD96D009EA9E2 /* ViewExtension.swift in Sources */,
 				E65057EE2854A1E100FF9CB9 /* SummaryView.swift in Sources */,
+				6E2B846E286EB87800A84D89 /* HeaderPPC.swift in Sources */,
+				6E2B8476286EC51400A84D89 /* MultiplierListItem.swift in Sources */,
 				E64FA8F1284DD96D009EA9E2 /* TimerAnimation.swift in Sources */,
+				6E2B8472286EB95B00A84D89 /* HeaderCSC.swift in Sources */,
 				E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */,
 				E603EACD284638A30066BD07 /* TextStyle.swift in Sources */,
 				6EAAB8612853ED3300332087 /* FeatureListItemView.swift in Sources */,
@@ -353,18 +374,21 @@
 				E64FA8F6284DD96D009EA9E2 /* UIScrollViewWrapper.swift in Sources */,
 				E603EACA284638A30066BD07 /* Networking.swift in Sources */,
 				E64FA8D1284DD886009EA9E2 /* AppleDemo.swift in Sources */,
+				6E2B846C286EB80F00A84D89 /* HeaderHCM.swift in Sources */,
+				6E2B8470286EB90A00A84D89 /* HeaderEAM.swift in Sources */,
 				6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */,
 				6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */,
 				E64FA8F0284DD96D009EA9E2 /* DragGestureExtension.swift in Sources */,
-				6E7B855D286B5856005C158E /* BaseModuleHeaderView.swift in Sources */,
 				E603EACB284638A30066BD07 /* ButtonStyle.swift in Sources */,
 				E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */,
+				6E2B8474286EBA1800A84D89 /* HeaderPIP.swift in Sources */,
 				6EAAB85F2853E98400332087 /* SubModuleListItemView.swift in Sources */,
 				E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */,
 				E64FA8F2284DD96D009EA9E2 /* UIApplicationExtension.swift in Sources */,
 				E64FA8DD284DD886009EA9E2 /* SwiftUISideMenu.swift in Sources */,
 				6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */,
 				E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */,
+				6E2B846A286EB1EA00A84D89 /* HeaderFMS.swift in Sources */,
 				6EAAB85C2853D80D00332087 /* Extensions.swift in Sources */,
 				E64FA8EF284DD96D009EA9E2 /* BottomSheetView.swift in Sources */,
 				E64FA8ED284DD96D009EA9E2 /* BottomSheetArray.swift in Sources */,

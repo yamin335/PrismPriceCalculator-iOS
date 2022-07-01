@@ -35,6 +35,7 @@ struct ChipGroup: View {
                   }
                 }) {
                     Text(chipData.label)
+                        .font(.system(size: 15))
                         .lineLimit(1)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 5)

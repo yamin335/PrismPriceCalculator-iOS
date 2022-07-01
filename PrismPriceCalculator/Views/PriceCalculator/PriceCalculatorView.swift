@@ -19,7 +19,7 @@ struct ModuleHeaderView: View {
                     .foregroundColor(Color("textColor2"))
                     .font(.headline)
                 
-                if baseModuleCode != "START" {
+                if baseModuleCode != "START" && moduleGroup.modules.count > 0 {
                     Text("\(moduleGroup.modules.count) modules")
                         .foregroundColor(.white)
                         .font(.system(size: 10, weight: .medium))
@@ -35,7 +35,7 @@ struct ModuleHeaderView: View {
                 Spacer()
             }
             Spacer()
-            if baseModuleCode != "START" {
+            if baseModuleCode != "START" && moduleGroup.modules.count > 0 {
                 VStack(spacing: 6) {
                     HStack(spacing: 8) {
                         Image("ic_select_all")
@@ -89,7 +89,7 @@ struct ModuleHeaderView: View {
                 }
             }
         }.onAppear {
-            if baseModuleCode == "START" {
+            if ["START", "PIP"].contains(baseModuleCode) {
                 isExpanded = true
             }
         }
@@ -193,7 +193,32 @@ struct ModuleDetailView: View {
                 ForEach(Array($moduleGroup.modules.enumerated()), id: \.offset) { index, $module in
                     ModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
+                
+                let validMultiplierList: [MultiplierClass] = getValidMultiplierList(moduleGroup: moduleGroup)
+                
+                if !validMultiplierList.isEmpty {
+                    ForEach(Array(validMultiplierList.enumerated()), id: \.offset) { index, multiplier in
+                        MultiplierListItem(viewModel: viewModel, label: multiplier.label)
+                    }
+                }
             }
+        }
+    }
+    
+    private func getValidMultiplierList(moduleGroup: ModuleGroup) -> [MultiplierClass] {
+        var validMultiplierList: [MultiplierClass] = []
+        let shownMultipliers = moduleGroup.showMultiplier ?? ""
+        let validMultiplierClasses = shownMultipliers.components(separatedBy: ",") 
+        
+        if !validMultiplierClasses.isEmpty {
+            for multiplier in moduleGroup.multipliers {
+                if validMultiplierClasses.contains(multiplier.code) {
+                    validMultiplierList.append(multiplier)
+                }
+            }
+            return validMultiplierList
+        } else {
+            return []
         }
     }
 }
@@ -261,8 +286,45 @@ struct PriceCalculatorView: View {
                ScrollView {
                    VStack(alignment: .leading, spacing: 20) {
                        if selectedBaseModuleIndex >= 0 {
-                           if baseModuleList[selectedBaseModuleIndex].code == "START" {
-                               BaseModuleHeaderView(viewModel: viewModel, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
+                           if ["START", "FMS", "HCM", "PPC", "EAM", "CSC", "PIP"].contains(baseModuleList[selectedBaseModuleIndex].code) {
+                               VStack {
+                                   HStack(alignment: .center, spacing: 8) {
+                                       Text("Licensing Parameters")
+                                           .foregroundColor(Color("textColor1"))
+                                           .frame(maxWidth: .infinity, alignment: .leading)
+                                       Button(action: {
+                                           withAnimation {
+                                           }
+                                       }) {
+                                           Text("Save Changes")
+                                               .font(.system(size: 14, weight: .regular))
+                                               .foregroundColor(.white)
+                                               .padding(.horizontal, 15)
+                                               .padding(.vertical, 6)
+                                               .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+                                       }
+                                   }
+                                   .padding(.horizontal, 10)
+                                   .padding(.top, 10)
+                                   
+                                   Divider().padding(.horizontal, 10)
+                                   if baseModuleList[selectedBaseModuleIndex].code == "START" {
+                                       HeaderStart(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "FMS" {
+                                       HeaderFMS(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "HCM" {
+                                       HeaderHCM(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PPC" {
+                                       HeaderPPC(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "EAM" {
+                                       HeaderEAM(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "CSC" {
+                                       HeaderCSC(viewModel: viewModel)
+                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PIP" {
+                                       HeaderPIP(viewModel: viewModel)
+                                   }
+                               }
+                               .background(RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("blue1"), lineWidth: 1))
                            }
                            
                            ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
@@ -273,6 +335,7 @@ struct PriceCalculatorView: View {
                            }
                        }
                    }
+                   .padding(.bottom, 100)
                }
                .padding(.leading, 10)
                .padding(.trailing, 10)
@@ -315,7 +378,6 @@ struct PriceCalculatorView: View {
                      Image(systemName: "xmark")
                        .foregroundColor(.white)
                      Text("Select Module")
-                   
                        .font(.system(size: 14))
                        .padding(.leading, 15.0)
                    }
