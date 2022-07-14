@@ -17,12 +17,21 @@
 		6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8556286B02BE005C158E /* ChipGroup.swift */; };
 		6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8558286B033F005C158E /* ChipDataModel.swift */; };
 		6E7B855B286B071E005C158E /* HeaderStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855A286B071E005C158E /* HeaderStart.swift */; };
+		6E9EC097287FD51100E4B46D /* ServiceCustomizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9EC096287FD51100E4B46D /* ServiceCustomizationView.swift */; };
+		6E9EC099287FE3B400E4B46D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9EC098287FE3B400E4B46D /* LoginView.swift */; };
+		6E9EC09B287FE8A000E4B46D /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9EC09A287FE8A000E4B46D /* LoginVM.swift */; };
+		6E9EC09D287FF24900E4B46D /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9EC09C287FF24900E4B46D /* SignUpView.swift */; };
+		6E9EC09F287FF25B00E4B46D /* SignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9EC09E287FF25B00E4B46D /* SignUpVM.swift */; };
 		6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */; };
 		6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */; };
 		6EAAB85C2853D80D00332087 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAAB85B2853D80D00332087 /* Extensions.swift */; };
 		6EAAB85F2853E98400332087 /* SubModuleListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */; };
 		6EAAB8612853ED3300332087 /* FeatureListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAAB8602853ED3300332087 /* FeatureListItemView.swift */; };
 		6EAE9DEB284F7BCF0002DBEE /* divine.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EAE9DEA284F7BCF0002DBEE /* divine.json */; };
+		6EBF770E287F269B00C42339 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF770D287F269B00C42339 /* DashboardView.swift */; };
+		6EBF7710287F26B500C42339 /* DashboardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF770F287F26B500C42339 /* DashboardVM.swift */; };
+		6EBF7712287F26DE00C42339 /* DashboardModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF7711287F26DE00C42339 /* DashboardModels.swift */; };
+		6EBF7715287F2B5D00C42339 /* DashboardListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBF7714287F2B5D00C42339 /* DashboardListItem.swift */; };
 		E603EAB42846380B0066BD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB32846380B0066BD07 /* Assets.xcassets */; };
 		E603EAB72846380B0066BD07 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E603EAB62846380B0066BD07 /* Preview Assets.xcassets */; };
 		E603EAC8284638A30066BD07 /* PrismERP.swift in Sources */ = {isa = PBXBuildFile; fileRef = E603EABE284638A30066BD07 /* PrismERP.swift */; };
@@ -60,12 +69,21 @@
 		6E7B8556286B02BE005C158E /* ChipGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipGroup.swift; sourceTree = "<group>"; };
 		6E7B8558286B033F005C158E /* ChipDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDataModel.swift; sourceTree = "<group>"; };
 		6E7B855A286B071E005C158E /* HeaderStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStart.swift; sourceTree = "<group>"; };
+		6E9EC096287FD51100E4B46D /* ServiceCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCustomizationView.swift; sourceTree = "<group>"; };
+		6E9EC098287FE3B400E4B46D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6E9EC09A287FE8A000E4B46D /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
+		6E9EC09C287FF24900E4B46D /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		6E9EC09E287FF25B00E4B46D /* SignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVM.swift; sourceTree = "<group>"; };
 		6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListItemView.swift; sourceTree = "<group>"; };
 		6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModuleListItem.swift; sourceTree = "<group>"; };
 		6EAAB85B2853D80D00332087 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModuleListItemView.swift; sourceTree = "<group>"; };
 		6EAAB8602853ED3300332087 /* FeatureListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureListItemView.swift; sourceTree = "<group>"; };
 		6EAE9DEA284F7BCF0002DBEE /* divine.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = divine.json; sourceTree = "<group>"; };
+		6EBF770D287F269B00C42339 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		6EBF770F287F26B500C42339 /* DashboardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVM.swift; sourceTree = "<group>"; };
+		6EBF7711287F26DE00C42339 /* DashboardModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModels.swift; sourceTree = "<group>"; };
+		6EBF7714287F2B5D00C42339 /* DashboardListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardListItem.swift; sourceTree = "<group>"; };
 		E603EAAC284638090066BD07 /* Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Store.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E603EAB32846380B0066BD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E603EAB62846380B0066BD07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -175,6 +193,7 @@
 			children = (
 				E603EABE284638A30066BD07 /* PrismERP.swift */,
 				6E7B8558286B033F005C158E /* ChipDataModel.swift */,
+				6EBF7711287F26DE00C42339 /* DashboardModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -216,21 +235,29 @@
 		E603EAD028463A850066BD07 /* PriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
-				E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */,
-				E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */,
-				6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */,
-				6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */,
-				6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */,
+				6EBF7714287F2B5D00C42339 /* DashboardListItem.swift */,
+				6EBF770D287F269B00C42339 /* DashboardView.swift */,
+				6EBF770F287F26B500C42339 /* DashboardVM.swift */,
 				6EAAB8602853ED3300332087 /* FeatureListItemView.swift */,
-				E65057ED2854A1E100FF9CB9 /* SummaryView.swift */,
-				6E7B855A286B071E005C158E /* HeaderStart.swift */,
+				6E2B8471286EB95B00A84D89 /* HeaderCSC.swift */,
+				6E2B846F286EB90A00A84D89 /* HeaderEAM.swift */,
 				6E2B8469286EB1EA00A84D89 /* HeaderFMS.swift */,
 				6E2B846B286EB80F00A84D89 /* HeaderHCM.swift */,
-				6E2B846D286EB87800A84D89 /* HeaderPPC.swift */,
-				6E2B846F286EB90A00A84D89 /* HeaderEAM.swift */,
-				6E2B8471286EB95B00A84D89 /* HeaderCSC.swift */,
 				6E2B8473286EBA1800A84D89 /* HeaderPIP.swift */,
+				6E2B846D286EB87800A84D89 /* HeaderPPC.swift */,
+				6E7B855A286B071E005C158E /* HeaderStart.swift */,
+				6EAA056F2852FEA100902DE2 /* ModuleListItemView.swift */,
 				6E2B8475286EC51400A84D89 /* MultiplierListItem.swift */,
+				E603EAD128463AA40066BD07 /* PriceCalculatorView.swift */,
+				E603EAD328463AB90066BD07 /* PriceCalculatorVM.swift */,
+				6EAA05712852FEF900902DE2 /* SubModuleListItem.swift */,
+				6EAAB85E2853E98400332087 /* SubModuleListItemView.swift */,
+				E65057ED2854A1E100FF9CB9 /* SummaryView.swift */,
+				6E9EC096287FD51100E4B46D /* ServiceCustomizationView.swift */,
+				6E9EC098287FE3B400E4B46D /* LoginView.swift */,
+				6E9EC09A287FE8A000E4B46D /* LoginVM.swift */,
+				6E9EC09C287FF24900E4B46D /* SignUpView.swift */,
+				6E9EC09E287FF25B00E4B46D /* SignUpVM.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -360,17 +387,22 @@
 			files = (
 				E64FA8F3284DD96D009EA9E2 /* ViewExtension.swift in Sources */,
 				E65057EE2854A1E100FF9CB9 /* SummaryView.swift in Sources */,
+				6E9EC09F287FF25B00E4B46D /* SignUpVM.swift in Sources */,
 				6E2B846E286EB87800A84D89 /* HeaderPPC.swift in Sources */,
 				6E2B8476286EC51400A84D89 /* MultiplierListItem.swift in Sources */,
 				E64FA8F1284DD96D009EA9E2 /* TimerAnimation.swift in Sources */,
 				6E2B8472286EB95B00A84D89 /* HeaderCSC.swift in Sources */,
 				E603EAD228463AA40066BD07 /* PriceCalculatorView.swift in Sources */,
 				E603EACD284638A30066BD07 /* TextStyle.swift in Sources */,
+				6E9EC099287FE3B400E4B46D /* LoginView.swift in Sources */,
 				6EAAB8612853ED3300332087 /* FeatureListItemView.swift in Sources */,
 				E64FA8EC284DD96D009EA9E2 /* BottomSheet.swift in Sources */,
 				E603EAD428463AB90066BD07 /* PriceCalculatorVM.swift in Sources */,
+				6E9EC09B287FE8A000E4B46D /* LoginVM.swift in Sources */,
 				E603EAC8284638A30066BD07 /* PrismERP.swift in Sources */,
+				6E9EC097287FD51100E4B46D /* ServiceCustomizationView.swift in Sources */,
 				E603EACE284638A30066BD07 /* AppState.swift in Sources */,
+				6E9EC09D287FF24900E4B46D /* SignUpView.swift in Sources */,
 				E64FA8F6284DD96D009EA9E2 /* UIScrollViewWrapper.swift in Sources */,
 				E603EACA284638A30066BD07 /* Networking.swift in Sources */,
 				E64FA8D1284DD886009EA9E2 /* AppleDemo.swift in Sources */,
@@ -384,7 +416,11 @@
 				6E2B8474286EBA1800A84D89 /* HeaderPIP.swift in Sources */,
 				6EAAB85F2853E98400332087 /* SubModuleListItemView.swift in Sources */,
 				E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */,
+				6EBF7715287F2B5D00C42339 /* DashboardListItem.swift in Sources */,
 				E64FA8F2284DD96D009EA9E2 /* UIApplicationExtension.swift in Sources */,
+				6EBF7710287F26B500C42339 /* DashboardVM.swift in Sources */,
+				6EBF7712287F26DE00C42339 /* DashboardModels.swift in Sources */,
+				6EBF770E287F269B00C42339 /* DashboardView.swift in Sources */,
 				E64FA8DD284DD886009EA9E2 /* SwiftUISideMenu.swift in Sources */,
 				6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */,
 				E64FA8F4284DD96D009EA9E2 /* EffectView.swift in Sources */,

@@ -282,7 +282,7 @@ struct PriceCalculatorView: View {
     
     var body: some View {
         GeometryReader { geometry in
-           NavigationView {
+           VStack {
                ScrollView {
                    VStack(alignment: .leading, spacing: 20) {
                        if selectedBaseModuleIndex >= 0 {
@@ -440,11 +440,12 @@ struct PriceCalculatorView: View {
                    }.padding(.top, 1)
                }
                .padding([.top, .bottom, .leading, .trailing], 8)
-               //.background(AnyView(EffectView(effect: UIBlurEffect(style: .systemThickMaterialLight))))
                .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
            }) {
                //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance).padding([.top, .bottom, .leading, .trailing], 8)
+               SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance)
+                   .padding([.top, .bottom, .leading, .trailing], 8)
+                   .background(.white)
            }
        }
     }
