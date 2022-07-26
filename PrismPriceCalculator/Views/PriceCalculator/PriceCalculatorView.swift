@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct ModuleHeaderView: View {
+struct ModuleGroupHeaderView: View {
     @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
     @State var baseModuleCode: String
+    @ObservedObject var  viewModel: PriceCalculatorVM
     
     var body: some View {
         HStack(spacing: 5) {
@@ -117,6 +118,7 @@ struct ModuleHeaderView: View {
                 }
             }
         }
+        self.viewModel.shouldCalculateData.send(true)
     }
     
     func toggleSelection() {
@@ -154,6 +156,7 @@ struct ModuleHeaderView: View {
 //                }
 //            }
         }
+        self.viewModel.shouldCalculateData.send(true)
     }
 
     func clearAll() {
@@ -178,10 +181,11 @@ struct ModuleHeaderView: View {
                 }
             }
         }
+        self.viewModel.shouldCalculateData.send(true)
     }
 }
 
-struct ModuleDetailView: View {
+struct ModuleGroupDetailView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
     @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
@@ -198,7 +202,7 @@ struct ModuleDetailView: View {
                 
                 if !validMultiplierList.isEmpty {
                     ForEach(Array(validMultiplierList.enumerated()), id: \.offset) { index, multiplier in
-                        MultiplierListItem(viewModel: viewModel, label: multiplier.label)
+                        SliderMultiplierListItem(viewModel: viewModel, label: multiplier.label)
                     }
                 }
             }
@@ -231,7 +235,7 @@ struct ModuleGroupListItemView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ModuleHeaderView(moduleGroup: $moduleGroup, isExpanded: $isExpanded, baseModuleCode: baseModuleCode)
+            ModuleGroupHeaderView(moduleGroup: $moduleGroup, isExpanded: $isExpanded, baseModuleCode: baseModuleCode, viewModel: viewModel)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 10)
                 .background(.white)
@@ -240,12 +244,13 @@ struct ModuleGroupListItemView: View {
                         isExpanded = !isExpanded
                     }
                 }
-            ModuleDetailView(viewModel: viewModel, moduleGroup: $moduleGroup, isExpanded: self.$isExpanded, baseModuleCode: baseModuleCode)
+            ModuleGroupDetailView(viewModel: viewModel, moduleGroup: $moduleGroup, isExpanded: self.$isExpanded, baseModuleCode: baseModuleCode)
         }
     }
 }
 
 struct PriceCalculatorView: View {
+    @EnvironmentObject var appGlobalState: AppState
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
     let bookmarkColors: [Color] = [Color(red: 0.28, green: 0.28, blue: 0.53), Color(red: 0.44, green: 0.44, blue: 0.83)]
@@ -277,16 +282,27 @@ struct PriceCalculatorView: View {
     @State var costAnnualMaintenanceTotal = 0
     @State var costAnnualMaintenance = 30000
     @State var costTotal = 0
+    @State var submitButtonDisabled = true
     
     @ObservedObject var viewModel = PriceCalculatorVM()
     
+    @State var showSuccessToast = false
+    @State var successMessage: String = ""
+    @State var showErrorToast = false
+    @State var errorMessage: String = ""
+    
+    @State private var showLoader = false
+    
+    @State private var hasHeaderView = false
+    @State private var multipliers: [MultiplierClass] = []
+    
     var body: some View {
         GeometryReader { geometry in
-           VStack {
+           ZStack {
                ScrollView {
                    VStack(alignment: .leading, spacing: 20) {
                        if selectedBaseModuleIndex >= 0 {
-                           if ["START", "FMS", "HCM", "PPC", "EAM", "CSC", "PIP"].contains(baseModuleList[selectedBaseModuleIndex].code) {
+                           if hasHeaderView {
                                VStack {
                                    HStack(alignment: .center, spacing: 8) {
                                        Text("Licensing Parameters")
@@ -308,21 +324,25 @@ struct PriceCalculatorView: View {
                                    .padding(.top, 10)
                                    
                                    Divider().padding(.horizontal, 10)
-                                   if baseModuleList[selectedBaseModuleIndex].code == "START" {
-                                       HeaderStart(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "FMS" {
-                                       HeaderFMS(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "HCM" {
-                                       HeaderHCM(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PPC" {
-                                       HeaderPPC(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "EAM" {
-                                       HeaderEAM(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "CSC" {
-                                       HeaderCSC(viewModel: viewModel)
-                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PIP" {
-                                       HeaderPIP(viewModel: viewModel)
+                                   
+                                   ForEach(multipliers, id: \.id) { multiplier in
+                                       MultiplierListItem(viewModel: viewModel, multiplier: multiplier)
                                    }
+//                                   if baseModuleList[selectedBaseModuleIndex].code == "START" {
+//                                       HeaderStart(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "FMS" {
+//                                       HeaderFMS(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "HCM" {
+//                                       HeaderHCM(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PPC" {
+//                                       HeaderPPC(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "EAM" {
+//                                       HeaderEAM(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "CSC" {
+//                                       HeaderCSC(viewModel: viewModel)
+//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PIP" {
+//                                       HeaderPIP(viewModel: viewModel)
+//                                   }
                                }
                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("blue1"), lineWidth: 1))
                            }
@@ -357,6 +377,7 @@ struct PriceCalculatorView: View {
                    self.baseModuleList = baseModuleList
                    if self.baseModuleList.count > 0 {
                        self.selectedBaseModuleIndex = 0
+                       prepareHeaderView()
                    }
                }.onAppear {
                    viewModel.loadAllModuleData()
@@ -367,87 +388,162 @@ struct PriceCalculatorView: View {
                    calculateSummaryCost(moduleCost: 0)
                    summaryList = getSummary(baseModuleList: baseModuleList)
                }
-           }.sideMenu(isShowing: $showSideMenu) {
-               VStack(alignment: .leading) {
-                 Button(action: {
-                   withAnimation {
-                     self.showSideMenu = false
-                   }
-                 }) {
-                   HStack {
-                     Image(systemName: "xmark")
-                       .foregroundColor(.white)
-                     Text("Select Module")
-                       .font(.system(size: 14))
-                       .padding(.leading, 15.0)
-                   }
-                 }.padding(.top, 20)
-                   Divider().frame(height: 20)
-                   ForEach(Array(baseModuleList.enumerated()), id: \.offset) { index, baseModule in
-                       Button(action: {
-                         withAnimation {
-                           self.showSideMenu = false
-                             self.selectedBaseModuleIndex = index
-                         }
-                       }) {
-                           if selectedBaseModuleIndex == index {
-                               HStack(alignment: .center) {
-                                   Text(baseModule.code)
-                                       .foregroundColor(.black)
-                                       .padding(.horizontal, 20)
-                                       .padding(.vertical, 10)
-                               }
-                               .frame(maxWidth: .infinity)
-                               .background(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .strokeBorder(Color("blue4"), lineWidth: 3)
-                                    .foregroundColor(Color("gray5"))
-                                    .background(Color("gray6"))
-                               )
-                           } else {
-                               HStack(alignment: .center) {
-                                   Text(baseModule.code)
-                                       .foregroundColor(Color("blue3"))
-                                       .padding(.horizontal, 20)
-                                       .padding(.vertical, 10)
-                               }
-                               .frame(maxWidth: .infinity)
-                               .background(
-                                RoundedRectangle(cornerRadius: 0)
-                                    .strokeBorder(style: StrokeStyle(lineWidth: 3, dash: [10, 5]))
-                                    .foregroundColor(Color("gray5"))
-                                    .background(Color("grayBlue1"))
-                               )
+               
+               if self.showSuccessToast {
+                   SuccessToast(message: self.successMessage).onAppear {
+                       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                           withAnimation() {
+                               self.showSuccessToast = false
+                               self.successMessage = ""
                            }
                        }
                    }
-                  Spacer()
-                }.padding()
-                .frame(maxWidth: .infinity, alignment: .trailing)
-           }.bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [ .allowContentDrag, .relativePositionValue], headerContent: {
-               //The name of the book as the heading and the author as the subtitle with a divider.
-               VStack(alignment: .leading) {
-                   Text("Summary")
-                       .font(.system(size: 20)).bold()
-                       .foregroundColor(Color("textColor1"))
-                   
-                   HStack(spacing: 5) {
-                       Text("Total")
-                           .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                       Spacer()
-                       Text("৳\(costTotal)")
-                           .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                   }.padding(.top, 1)
                }
-               .padding([.top, .bottom, .leading, .trailing], 8)
-               .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
-           }) {
-               //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-               SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance)
-                   .padding([.top, .bottom, .leading, .trailing], 8)
-                   .background(.white)
+
+               if showErrorToast {
+                   ErrorToast(message: self.errorMessage).onAppear {
+                       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                           withAnimation() {
+                               self.showErrorToast = false
+                               self.errorMessage = ""
+                           }
+                       }
+                   }
+               }
+
+               if self.showLoader {
+                   SpinLoaderView()
+               }
+           }.onReceive(self.viewModel.quotationStatusPublisher.receive(on: RunLoop.main)) { isSubmitted in
+               if isSubmitted {
+                   
+               }
+           }.onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { isShowing in
+               self.showLoader = isShowing
+           }.onReceive(self.viewModel.successToastPublisher.receive(on: RunLoop.main)) {
+               showToast, message in
+               self.successMessage = message
+               withAnimation() {
+                   self.showSuccessToast = showToast
+               }
+           }.onReceive(self.viewModel.errorToastPublisher.receive(on: RunLoop.main)) {
+               showToast, message in
+               self.errorMessage = message
+               withAnimation() {
+                   self.showErrorToast = showToast
+               }
+           }.onReceive(self.viewModel.submitEnableDisablePublisher.receive(on: RunLoop.main)) { isValid in
+               self.submitButtonDisabled = !isValid
            }
-       }
+       }.sideMenu(isShowing: $showSideMenu) {
+            VStack(alignment: .leading) {
+              Button(action: {
+                withAnimation {
+                  self.showSideMenu = false
+                }
+              }) {
+                HStack {
+                  Image(systemName: "xmark")
+                    .foregroundColor(.white)
+                  Text("Select Module")
+                    .font(.system(size: 14))
+                    .padding(.leading, 15.0)
+                }
+              }.padding(.top, 20)
+                Divider().frame(height: 20)
+                ForEach(Array(baseModuleList.enumerated()), id: \.offset) { index, baseModule in
+                    Button(action: {
+                      withAnimation {
+                          self.showSideMenu = false
+                          self.selectedBaseModuleIndex = index
+                          self.prepareHeaderView()
+                      }
+                    }) {
+                        if selectedBaseModuleIndex == index {
+                            HStack(alignment: .center) {
+                                Text(baseModule.code)
+                                    .foregroundColor(.black)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 10)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .background(
+                             RoundedRectangle(cornerRadius: 0)
+                                 .strokeBorder(Color("blue4"), lineWidth: 3)
+                                 .foregroundColor(Color("gray5"))
+                                 .background(Color("gray6"))
+                            )
+                        } else {
+                            HStack(alignment: .center) {
+                                Text(baseModule.code)
+                                    .foregroundColor(Color("blue3"))
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 10)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .background(
+                             RoundedRectangle(cornerRadius: 0)
+                                 .strokeBorder(style: StrokeStyle(lineWidth: 3, dash: [10, 5]))
+                                 .foregroundColor(Color("gray5"))
+                                 .background(Color("grayBlue1"))
+                            )
+                        }
+                    }
+                }
+               Spacer()
+             }.padding()
+             .frame(maxWidth: .infinity, alignment: .trailing)
+        }.bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [ .allowContentDrag, .relativePositionValue], headerContent: {
+            //The name of the book as the heading and the author as the subtitle with a divider.
+            VStack(alignment: .leading) {
+                Text("Summary")
+                    .font(.system(size: 20)).bold()
+                    .foregroundColor(Color("textColor1"))
+                
+                HStack(spacing: 5) {
+                    Text("Total")
+                        .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                    Spacer()
+                    Text("৳\(costTotal)")
+                        .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+                }.padding(.top, 1)
+            }
+            .padding([.top, .bottom, .leading, .trailing], 8)
+            .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
+        }) {
+            //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
+            SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel)
+                .padding([.top, .bottom, .leading, .trailing], 8)
+                .background(.white)
+        }
+    }
+    
+    private func prepareHeaderView() {
+        if baseModuleList.isEmpty {
+            return
+        }
+        
+        let baseModule = baseModuleList[selectedBaseModuleIndex]
+        var multipliersMap: [String : MultiplierClass] = [:]
+        var multipliers: [MultiplierClass] = []
+        
+        for moduleGroup in baseModule.moduleGroups {
+            for multiplier in moduleGroup.multipliers {
+                let hideInApp = multiplier.slabConfig.hideInApp ?? false
+                if !hideInApp && multipliersMap[multiplier.code] == nil {
+                    multipliersMap[multiplier.code] = multiplier
+                }
+            }
+        }
+        
+        for key in multipliersMap.keys {
+            if let multiplier = multipliersMap[key] {
+                multipliers.append(multiplier)
+            }
+        }
+        
+        self.multipliers = multipliers
+        self.hasHeaderView = !self.multipliers.isEmpty
     }
     
     private func getSummary(baseModuleList: [ServiceModule]) -> [SummaryItem] {
@@ -457,6 +553,10 @@ struct PriceCalculatorView: View {
         let baseModule = baseModuleList[selectedBaseModuleIndex]
         var isAdded = false
         var price = 0
+        
+        var summaryModuleFeatureList: [SummaryModuleFeature] = []
+        var summaryModuleTotalPrice = 0
+        
         for moduleGroup in baseModule.moduleGroups {
             for module in moduleGroup.modules {
                 if module.isAdded == true {
@@ -464,6 +564,10 @@ struct PriceCalculatorView: View {
                         switch slab1 {
                         case .integer(let i):
                             price += i
+                            
+                            summaryModuleTotalPrice += i
+                            summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: i, type: "module"))
+                            
                         case .string(let j):
                             print(j)
                         }
@@ -477,6 +581,10 @@ struct PriceCalculatorView: View {
                             switch slab1 {
                             case .integer(let i):
                                 price += i
+                                
+                                summaryModuleTotalPrice += i
+                                summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: i, type: "feature"))
+                                
                             case .string(let j):
                                 print(j)
                             }
@@ -492,6 +600,10 @@ struct PriceCalculatorView: View {
                                 switch slab1 {
                                 case .integer(let i):
                                     price += i
+                                    
+                                    summaryModuleTotalPrice += i
+                                    summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: i, type: "feature"))
+                                    
                                 case .string(let j):
                                     print(j)
                                 }
@@ -505,9 +617,14 @@ struct PriceCalculatorView: View {
         
         if isAdded {
             summaryMap[baseModule.code] = SummaryItem(title: baseModule.name, price: price)
+            
+            self.viewModel.softwareLicenseModuleMap[baseModule.code] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, features: summaryModuleFeatureList)
         } else {
             summaryMap.removeValue(forKey: baseModule.code)
+            self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code)
         }
+        
+        self.viewModel.submitEnableDisablePublisher.send(self.viewModel.softwareLicenseModuleMap.count > 0)
         
         var moduleCost = 0
         var list: [SummaryItem] = []
@@ -541,6 +658,6 @@ struct PriceCalculatorView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PriceCalculatorView()
+        PriceCalculatorView().environmentObject(AppState())
     }
 }

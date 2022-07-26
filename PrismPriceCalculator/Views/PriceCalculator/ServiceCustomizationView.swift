@@ -8,9 +8,19 @@
 import SwiftUI
 
 struct ServiceCustomizationView: View {
+    @EnvironmentObject var appGlobalState: AppState
     @State private var isShowingDetailView = false
+    @State private var selectedTag: Int? = -1
+    
     var body: some View {
         VStack {
+            NavigationLink(destination: LoginView(), tag: 3, selection: self.$selectedTag) {
+                EmptyView()
+            }.isDetailLink(false)
+            
+            NavigationLink(destination: PriceCalculatorView(), tag: 4, selection: self.$selectedTag) {
+                EmptyView()
+            }
             VStack(alignment: .leading, spacing: 16) {
                 Text("CUSTOM")
                     .foregroundColor(Color("textColor3"))
@@ -29,20 +39,18 @@ struct ServiceCustomizationView: View {
                     .padding(.top, 12)
                 
                 Button(action: {
-                    self.isShowingDetailView = true
+                    self.selectedTag = 4
                 }) {
-                    NavigationLink(destination: PriceCalculatorView(), isActive: $isShowingDetailView) {
-                        HStack {
-                            Spacer()
-                            Text("CUSTOMIZE")
-                                .font(.system(size: 14, weight: .regular))
-                                .foregroundColor(.white)
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 15)
-                            Spacer()
-                        }
-                        .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
-                    }//.isDetailLink(false)
+                    HStack {
+                        Spacer()
+                        Text("CUSTOMIZE")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 15)
+                        Spacer()
+                    }
+                    .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
                 }
                 .padding(.horizontal, 12)
                 .padding(.bottom, 12)
@@ -57,8 +65,16 @@ struct ServiceCustomizationView: View {
         .navigationTitle("Customization")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: LoginView()) {
-                    Text("LOGIN")
+                Button(action: {
+                    if UserSessionManager.isLoggedIn {
+                        UserSessionManager.logout()
+                        appGlobalState.isLoggedIn = false
+                        selectedTag = -1
+                    } else {
+                        selectedTag = 3
+                    }
+                }) {
+                    Text(appGlobalState.isLoggedIn ? "LOGOUT" : "LOGIN")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(Color("blue1"))
                         .padding(.horizontal, 15)
@@ -75,6 +91,6 @@ struct ServiceCustomizationView: View {
 
 struct ServiceCustomizationView_Previews: PreviewProvider {
     static var previews: some View {
-        ServiceCustomizationView()
+        ServiceCustomizationView().environmentObject(AppState())
     }
 }

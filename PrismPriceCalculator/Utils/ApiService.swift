@@ -1,0 +1,149 @@
+//
+//  ApiService.swift
+//  PrismPriceCalculator
+//
+//  Created by Md. Yamin on 7/18/22.
+//
+
+import Foundation
+import Combine
+
+class ApiService {
+    enum APIFailureCondition: Error {
+        case InvalidServerResponse
+    }
+    
+    static func login(email: String, password: String, viewModel: BaseViewModel) -> AnyPublisher<LoginResponse, Error>? {
+        let jsonObject = ["email": email, "password": password]
+        
+        if !JSONSerialization.isValidJSONObject(jsonObject) {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        let tempJson = try? JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        
+        guard let jsonData = tempJson else {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        guard let urlComponents = URLComponents(string: NetworkUtils.login) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //Setting body for POST request
+        request.httpBody = jsonData
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
+    static func signUp(userName: String, password: String, email: String,
+                       userType: Int, firstName: String, lastName: String,
+                       company: String, mobile: String, reTypePassword: String,
+                       fullName: String, type: String, role: String, viewModel: BaseViewModel) -> AnyPublisher<SignUpResponse, Error>? {
+        let jsonObject = [
+            "username": userName,
+            "password": password,
+            "email": email,
+            "usertype": userType,
+            "firstname": firstName,
+            "lastname": lastName,
+            "company": company,
+            "mobile": mobile,
+            "retypepassword": reTypePassword,
+            "fullname": fullName,
+            "type": type,
+            "role": role
+        ] as [String : Any]
+        
+        if !JSONSerialization.isValidJSONObject(jsonObject) {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        let tempJson = try? JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        
+        guard let jsonData = tempJson else {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        guard let urlComponents = URLComponents(string: NetworkUtils.signUp) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //Setting body for POST request
+        request.httpBody = jsonData
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
+    static func submitQuotation(quotationStoreBody: SummaryStoreModel, viewModel: BaseViewModel) -> AnyPublisher<SummaryResponse, Error>? {
+        
+        guard let data = try? JSONEncoder().encode(quotationStoreBody) else {
+            print("Problem in JSONData creation...")
+            return nil
+        }
+        
+        guard let urlComponents = URLComponents(string: NetworkUtils.submitQuotation) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //Setting body for POST request
+        request.httpBody = data
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
+    static func getDataTask<T: Codable>(request: URLRequest, viewModel: BaseViewModel) -> AnyPublisher<T, Error>? {
+        return viewModel.session.dataTaskPublisher(for: request)
+            .handleEvents(receiveSubscription: { _ in
+                viewModel.showLoader.send(true)
+            }, receiveOutput: { _ in
+                viewModel.showLoader.send(false)
+            }, receiveCompletion: { _ in
+                viewModel.showLoader.send(false)
+            }, receiveCancel: {
+                viewModel.showLoader.send(false)
+            })
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw ApiService.APIFailureCondition.InvalidServerResponse
+                }
+            
+                return data
+        }
+        .retry(1)
+        .decode(type: T.self, decoder: JSONDecoder())
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+}

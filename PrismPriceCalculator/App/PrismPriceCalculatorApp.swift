@@ -11,7 +11,7 @@ import SwiftUI
 struct PrismPriceCalculatorApp: App {
     var body: some Scene {
         WindowGroup {
-            DashboardView()
+            DashboardView().environmentObject(AppState())
         }
     }
 }

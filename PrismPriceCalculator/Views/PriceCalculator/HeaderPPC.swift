@@ -17,8 +17,8 @@ struct HeaderPPC: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
 
-            ChipGroup(chips: viewModel.industryType, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.industryType, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Production Units")
                 .foregroundColor(Color("textColor3"))
@@ -26,8 +26,8 @@ struct HeaderPPC: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.productionUnits, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.productionUnits, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Line/Machine")
                 .foregroundColor(Color("textColor3"))
@@ -35,8 +35,8 @@ struct HeaderPPC: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.lineOrMachine, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.lineOrMachine, selectedItemIndex: 0)
+//                .padding(.leading, 10)
             
             Text("Type of Finished Goods")
                 .foregroundColor(Color("textColor3"))
@@ -44,8 +44,8 @@ struct HeaderPPC: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.typeOfFinishedGoods, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.typeOfFinishedGoods, selectedItemIndex: 0)
+//                .padding(.leading, 10)
             
             Spacer()
         }

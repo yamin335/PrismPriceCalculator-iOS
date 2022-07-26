@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct SummaryItem {
     let id = UUID()

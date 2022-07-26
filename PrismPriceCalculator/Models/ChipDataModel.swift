@@ -11,5 +11,4 @@ import SwiftUI
 struct ChipsDataModel: Identifiable {
     let id = UUID()
     let label: String
-    @State var isSelected: Bool
 }

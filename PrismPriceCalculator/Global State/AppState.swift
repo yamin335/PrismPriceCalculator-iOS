@@ -21,6 +21,10 @@ class AppState: ObservableObject {
     @Published var deploymentBuild: AppDeployment = .production
     #endif
     
+    @Published var isLoggedIn: Bool
+    
+    @Published var isLoading: Bool
+    
     @Published var phoneNumberPrettified: String {
         didSet {
             UserDefaults.standard.set(phoneNumberPrettified, forKey: "phone_number_prettified")
@@ -84,11 +88,6 @@ class AppState: ObservableObject {
             UserDefaults.standard.set(active, forKey: "active")
         }
     }
-    @Published var isLoggingIn: Bool {
-        didSet {
-            UserDefaults.standard.set(active, forKey: "isLoggingIn")
-        }
-    }
     
     @Published var isShowingErrorText: Bool = false
     @Published var isShowingErrorFromServer: Bool = false
@@ -100,7 +99,7 @@ class AppState: ObservableObject {
     @Published var isShowingCreateListModal: Bool = false
         
     init() {
-    
+        self.isLoading = false
         self.phoneNumberPrettified = UserDefaults.standard.string(forKey: "phone_number_prettified") ?? ""
         self.phoneNumber = UserDefaults.standard.string(forKey: "phone_number") ?? ""
         self.accessToken = UserDefaults.standard.string(forKey: "access_token") ?? ""
@@ -111,8 +110,7 @@ class AppState: ObservableObject {
         self.username = UserDefaults.standard.string(forKey: "username") ?? ""
         self.picture = UserDefaults.standard.string(forKey: "picture") ?? ""
         self.active = (UserDefaults.standard.object(forKey: "active") != nil)
-        self.isLoggingIn = (UserDefaults.standard.object(forKey: "isLoggingIn") != nil)
+        self.isLoggedIn = UserDefaults.standard.bool(forKey: AppConstants.keyIsLoggedIn)
         self.isShowingCreateListModal = false
     }
-    
 }

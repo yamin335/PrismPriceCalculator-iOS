@@ -17,8 +17,8 @@ struct HeaderEAM: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
 
-            ChipGroup(chips: viewModel.serials, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.serials, selectedItemIndex: 0)
+//                .padding(.leading, 10)
             
             Spacer()
         }

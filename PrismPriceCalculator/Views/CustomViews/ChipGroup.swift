@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChipGroup: View {
     @State var chips: [ChipsDataModel]
-    @State var selectedItemIndex: Int
+    @Binding var selectedItemIndex: Int
     @State private var totalHeight = CGFloat.zero       // << variant for ScrollView/List //    = CGFloat.infinity   // << variant for VStack
     
     var body: some View {
@@ -69,7 +69,7 @@ struct ChipGroup: View {
                 }
                 .onTapGesture {
                     selectedItemIndex = index
-                    chips[selectedItemIndex].isSelected = true
+                    //chips[selectedItemIndex].isSelected = true
                 }
             }
         }.background(viewHeightReader($totalHeight))
@@ -86,8 +86,8 @@ struct ChipGroup: View {
     }
 }
 
-struct ChipGroup_Previews: PreviewProvider {
-    static var previews: some View {
-        ChipGroup(chips: [ChipsDataModel(label: "Selected", isSelected: true), ChipsDataModel(label: "Not Selected", isSelected: false)], selectedItemIndex: 0)
-    }
-}
+//struct ChipGroup_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChipGroup(chips: [ChipsDataModel(label: "Selected", isSelected: true), ChipsDataModel(label: "Not Selected", isSelected: false)], selectedItemIndex: Binding(0))
+//    }
+//}

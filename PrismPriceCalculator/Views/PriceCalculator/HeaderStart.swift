@@ -17,8 +17,8 @@ struct HeaderStart: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
 
-            ChipGroup(chips: viewModel.branches, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.branches, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Products")
                 .foregroundColor(Color("textColor3"))
@@ -26,17 +26,17 @@ struct HeaderStart: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.products, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.products, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Business Type")
                 .foregroundColor(Color("textColor3"))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
-
-            ChipGroup(chips: viewModel.businessType, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//
+//            ChipGroup(chips: viewModel.businessType, selectedItemIndex: 0)
+//                .padding(.leading, 10)
             
             Spacer()
         }

@@ -17,8 +17,8 @@ struct HeaderFMS: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
 
-            ChipGroup(chips: viewModel.accounts, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.accounts, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Customers")
                 .foregroundColor(Color("textColor3"))
@@ -26,8 +26,8 @@ struct HeaderFMS: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.customers, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.customers, selectedItemIndex: 0)
+//                .padding(.leading, 10)
 
             Text("Vendors")
                 .foregroundColor(Color("textColor3"))
@@ -35,8 +35,8 @@ struct HeaderFMS: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 10)
 
-            ChipGroup(chips: viewModel.vendors, selectedItemIndex: 0)
-                .padding(.leading, 10)
+//            ChipGroup(chips: viewModel.vendors, selectedItemIndex: 0)
+//                .padding(.leading, 10)
             
             Spacer()
         }

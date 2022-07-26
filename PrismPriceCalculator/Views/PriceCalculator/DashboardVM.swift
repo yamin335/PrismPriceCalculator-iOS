@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class DashboardVM: NSObject, ObservableObject {
+class DashboardVM: BaseViewModel {
     var businessServiceListPublisher = PassthroughSubject<[BusinessService], Never>()
     func getBusinessServiceList() {
         businessServiceListPublisher.send(

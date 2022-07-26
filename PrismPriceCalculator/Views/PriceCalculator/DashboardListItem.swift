@@ -9,9 +9,12 @@ import SwiftUI
 
 struct DashboardListItem: View {
     @State var businessServiceItem: BusinessService
-    @State private var isShowingDetailView = false
+    @State private var selectedTag: Int? = -1
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            NavigationLink(destination: ServiceCustomizationView(), tag: 1, selection: self.$selectedTag) {
+                EmptyView()
+            }.isDetailLink(false)
             AsyncImage(
                 url: URL(string: businessServiceItem.image),
                 content: { image in
@@ -50,20 +53,17 @@ struct DashboardListItem: View {
                 Spacer()
                 
                 Button(action: {
-                    self.isShowingDetailView = true
+                    self.selectedTag = 1
                 }) {
-                    NavigationLink(destination: ServiceCustomizationView(), isActive: $isShowingDetailView) {
-                        Text("View Pricing")
-                            .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(Color("blue1"))
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 5, style: .circular)
-                                    .stroke(Color("blue1"), lineWidth: 1)
-                            )
-                    }//.isDetailLink(false)
-                    
+                    Text("View Pricing")
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundColor(Color("blue1"))
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 5, style: .circular)
+                                .stroke(Color("blue1"), lineWidth: 1)
+                        )
                 }
             }
             .padding(.horizontal, 12)

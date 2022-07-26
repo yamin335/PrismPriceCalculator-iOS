@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @EnvironmentObject var appGlobalState: AppState
     @ObservedObject var viewModel = DashboardVM()
     @State var businessServiceList: [BusinessService] = []
-    @State private var isShowingDetailView = false
+    @State private var selectedTag: Int? = -1
     
     var body: some View {
         NavigationView {
@@ -18,6 +19,10 @@ struct DashboardView: View {
                 ForEach(businessServiceList, id: \.id) { businessServiceItem in
                     DashboardListItem(businessServiceItem: businessServiceItem)
                 }
+                
+                NavigationLink(destination: LoginView(), tag: 2, selection: self.$selectedTag) {
+                    EmptyView()
+                }.isDetailLink(false)
                 
                 Spacer()
             }
@@ -31,8 +36,16 @@ struct DashboardView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: LoginView()) {
-                        Text("LOGIN")
+                    Button(action: {
+                        if UserSessionManager.isLoggedIn {
+                            UserSessionManager.logout()
+                            appGlobalState.isLoggedIn = false
+                            selectedTag = -1
+                        } else {
+                            selectedTag = 2
+                        }
+                    }) {
+                        Text(appGlobalState.isLoggedIn ? "LOGOUT" : "LOGIN")
                             .font(.system(size: 14, weight: .regular))
                             .foregroundColor(Color("blue1"))
                             .padding(.horizontal, 15)
@@ -51,6 +64,6 @@ struct DashboardView: View {
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardView()
+        DashboardView().environmentObject(AppState())
     }
 }

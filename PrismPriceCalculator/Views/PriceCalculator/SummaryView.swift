@@ -28,9 +28,19 @@ struct SummaryView: View {
     @Binding var costConsultancy: Int
     @Binding var costAnnualMaintenanceTotal: Int
     @Binding var costAnnualMaintenance: Int
+    @Binding var submitButtonDisabled: Bool
+    @Binding var bottomSheetPosition: BottomSheetPosition
+    
+    @ObservedObject var  viewModel: PriceCalculatorVM
+    
+    @State private var selectedTag: Int? = -1
+    
     
     var body: some View {
         VStack(spacing: 5) {
+            NavigationLink(destination: LoginView(), tag: 5, selection: self.$selectedTag) {
+                EmptyView()
+            }
             Group {
                 HStack(spacing: 5) {
                     Text("Software License")
@@ -196,17 +206,102 @@ struct SummaryView: View {
             }
             
             Button(action: {
-              
+                if UserSessionManager.isLoggedIn {
+                    submitSummary()
+                } else {
+                    selectedTag = 5
+                }
+                //bottomSheetPosition = .bottom
             }) {
                 HStack {
                     Spacer()
                     Text("Submit").foregroundColor(.white).padding(.vertical, 5)
                     Spacer()
                 }
-                .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(Color("blue2"))).padding(.top, 10)
-            }
+                .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(submitButtonDisabled ? Color("gray5") : Color("blue2"))).padding(.top, 10)
+            }.disabled(submitButtonDisabled)
             Spacer()
         }.padding([.horizontal])
+    }
+    
+    private func submitSummary() {
+        let maintenance = SummaryService(
+            header: "Annual Maintenance Cost", totalamount: costAnnualMaintenanceTotal,
+            modules: [
+                SummaryServiceModule(name: "Annual Maintenance Cost", details: nil,
+                                     detailsValue: nil, detailsMultiplier: nil,
+                                     totalamount: costAnnualMaintenance)
+            ]
+        )
+        
+        let consultancy = SummaryService(
+            header: "Consultancy Services", totalamount: costConsultancyServices,
+            modules: [
+                SummaryServiceModule(name: "Consultancy", details: " man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 20000,
+                                     totalamount: costConsultancy)
+            ]
+        )
+        
+        let customization = SummaryService(
+            header: "Software Customization", totalamount: costSoftwareCustomizationTotal,
+            modules: [
+                SummaryServiceModule(name: "Software Customization", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 16000,
+                                     totalamount: costSoftwareCustomization),
+                SummaryServiceModule(name: "Customized Report", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 16000,
+                                     totalamount: costCustomizedReport)
+            ]
+        )
+        
+        let implementation = SummaryService(
+            header: "Implementation", totalamount: costImplementation,
+            modules: [
+                SummaryServiceModule(name: "Requirement Analysis", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 10000,
+                                     totalamount: 0),
+                SummaryServiceModule(name: "Deployment", details: "(onetime) x ৳",
+                                     detailsValue: 1, detailsMultiplier: 10000,
+                                     totalamount: costImplementation),
+                SummaryServiceModule(name: "Configuration", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 10000,
+                                     totalamount: 0),
+                SummaryServiceModule(name: "Onsite Adoption Support", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 6000,
+                                     totalamount: 0),
+                SummaryServiceModule(name: "Training", details: "sessions x ৳",
+                                     detailsValue: 0, detailsMultiplier: 6000,
+                                     totalamount: 0),
+                SummaryServiceModule(name: "Project Management", details: "man-days x ৳",
+                                     detailsValue: 0, detailsMultiplier: 12000,
+                                     totalamount: 0)
+            ]
+        )
+        
+        var totatAmount = (maintenance.totalamount ?? 0) + (consultancy.totalamount ?? 0) +
+        (customization.totalamount ?? 0) + (implementation.totalamount ?? 0)
+        
+        var softwareLicenseModuleList: [SoftwareLicenseModule] = []
+        
+        for key in viewModel.softwareLicenseModuleMap.keys {
+            if let softwareLicenseModule = viewModel.softwareLicenseModuleMap[key] {
+                softwareLicenseModuleList.append(softwareLicenseModule)
+                totatAmount += softwareLicenseModule.totalamount ?? 0
+            }
+        }
+        
+        let summarySoftwareLicense = SummarySoftwareLicense(additionalusers: 0, users: 24,
+                                                            header: "Software License", totalamount: totatAmount,
+                                                            modules: softwareLicenseModuleList)
+        
+        let summaryStoreBody = SummaryStoreModel(salesmanid: UserSessionManager.userAccount?.salesmanid,
+                                                 customerid: UserSessionManager.userAccount?.id, details: false,
+                                                 header: "Summery", productid: "prismerp",
+                                                 totalamount: totatAmount, softwareLicense: summarySoftwareLicense,
+                                                 implementation: implementation, customization: customization,
+                                                 consultancy: consultancy, maintainance: maintenance)
+        viewModel.submitQuotation(quotationStoreBody: summaryStoreBody)
     }
 }
 
