@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 func loadLocalJsonFile<T: Decodable>(_ filename: String) -> T {
     let data: Data
@@ -63,5 +64,17 @@ extension String {
         }
         
         return result
+    }
+}
+
+extension Binding {
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        Binding(
+            get: { self.wrappedValue },
+            set: { newValue in
+                self.wrappedValue = newValue
+                handler(newValue)
+            }
+        )
     }
 }

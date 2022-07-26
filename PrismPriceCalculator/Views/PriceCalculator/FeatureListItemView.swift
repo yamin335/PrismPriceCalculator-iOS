@@ -89,13 +89,128 @@ struct FeatureListItemView: View {
         }
         .frame(maxWidth: .infinity, minHeight: 50)
         .onAppear {
+            if feature.slabPrice == nil || feature.slabPrice == 0 {
+                guard let slab1 = feature.price?.slab1 else {
+                    return
+                }
+                
+                switch slab1 {
+                case .integer(let i):
+                    setPrice(with: i)
+                case .string(let j):
+                    print(j)
+                }
+            } else {
+                price = feature.slabPrice ?? 0
+            }
+        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+            guard let multiplierCode = feature.price?.multiplier else {
+                return
+            }
+            
+            switch multiplierCode {
+            case .integer(let intValue):
+                print(intValue)
+            case .string(let stringValue):
+                if pair.0 == stringValue {
+                    calculatePrice(with: pair.1)
+                }
+            }
+        }
+    }
+    
+    private func setPrice(with value: Int) {
+        price = value
+        feature.slabPrice = value
+    }
+    
+    private func calculatePrice(with index: Int) {
+        switch index {
+        case 0:
             guard let slab1 = feature.price?.slab1 else {
                 return
             }
             
             switch slab1 {
             case .integer(let i):
-                price = i
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 1:
+            guard let slab2 = feature.price?.slab2 else {
+                return
+            }
+            
+            switch slab2 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 2:
+            guard let slab3 = feature.price?.slab3 else {
+                return
+            }
+            
+            switch slab3 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 3:
+            guard let slab4 = feature.price?.slab4 else {
+                return
+            }
+            
+            switch slab4 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 4:
+            guard let slab5 = feature.price?.slab5 else {
+                return
+            }
+            
+            switch slab5 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 5:
+            guard let slab6 = feature.price?.slab6 else {
+                return
+            }
+            
+            switch slab6 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 6:
+            guard let slab7 = feature.price?.slab7 else {
+                return
+            }
+            
+            switch slab7 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        default:
+            guard let slab1 = feature.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                setPrice(with: i)
             case .string(let j):
                 print(j)
             }

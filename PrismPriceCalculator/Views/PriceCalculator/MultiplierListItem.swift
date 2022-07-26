@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MultiplierListItem: View {
     @ObservedObject var viewModel: PriceCalculatorVM
-    @State var multiplier: MultiplierClass
+    @Binding var multiplier: MultiplierClass
     @State var selectedItemIndex: Int = 0
     @State var chips: [ChipsDataModel] = []
     @State var showChipGroup: Bool = false
@@ -35,7 +35,12 @@ struct MultiplierListItem: View {
             
             Spacer()
         }.onAppear {
+            selectedItemIndex = multiplier.slabIndex ?? 0
             prepareChipList()
+        }.onChange(of: selectedItemIndex) { newValue in
+            multiplier.slabIndex = newValue
+            viewModel.selectedMultiplierPublisher.send((multiplier.code, newValue))
+            self.viewModel.shouldCalculateData.send(true)
         }
     }
     
@@ -95,6 +100,8 @@ struct MultiplierListItem: View {
             self.chips = chips
             if !self.chips.isEmpty {
                 showChipGroup = true
+            } else {
+                showChipGroup = false
             }
         }
     }

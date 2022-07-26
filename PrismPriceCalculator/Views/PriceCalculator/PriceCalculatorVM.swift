@@ -17,6 +17,7 @@ class PriceCalculatorVM: BaseViewModel {
     var quotationStatusPublisher = PassthroughSubject<Bool, Never>()
     
     var submitEnableDisablePublisher = PassthroughSubject<Bool, Never>()
+    var selectedMultiplierPublisher = PassthroughSubject<(String, Int), Never>()
     
 //    // MARK: Header START
 //    var branches = [

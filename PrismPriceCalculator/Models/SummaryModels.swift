@@ -43,6 +43,7 @@ struct SummaryModuleFeature: Codable {
     let code: String?
     let multipliercode: String?
     let price: Int?
+    let prices: Price?
     let type: String?
 }
 

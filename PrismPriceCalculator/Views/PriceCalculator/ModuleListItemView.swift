@@ -109,13 +109,128 @@ struct ModuleListItemView: View {
                 }
             }
         }.onAppear {
+            if module.slabPrice == nil || module.slabPrice == 0 {
+                guard let slab1 = module.price?.slab1 else {
+                    return
+                }
+                
+                switch slab1 {
+                case .integer(let i):
+                    setPrice(with: i)
+                case .string(let j):
+                    print(j)
+                }
+            } else {
+                price = module.slabPrice ?? 0
+            }
+        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+            guard let multiplierCode = module.price?.multiplier else {
+                return
+            }
+            
+            switch multiplierCode {
+            case .integer(let intValue):
+                print(intValue)
+            case .string(let stringValue):
+                if pair.0 == stringValue {
+                    calculatePrice(with: pair.1)
+                }
+            }
+        }
+    }
+    
+    private func setPrice(with value: Int) {
+        price = value
+        module.slabPrice = value
+    }
+    
+    private func calculatePrice(with index: Int) {
+        switch index {
+        case 0:
             guard let slab1 = module.price?.slab1 else {
                 return
             }
             
             switch slab1 {
             case .integer(let i):
-                price = i
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 1:
+            guard let slab2 = module.price?.slab2 else {
+                return
+            }
+            
+            switch slab2 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 2:
+            guard let slab3 = module.price?.slab3 else {
+                return
+            }
+            
+            switch slab3 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 3:
+            guard let slab4 = module.price?.slab4 else {
+                return
+            }
+            
+            switch slab4 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 4:
+            guard let slab5 = module.price?.slab5 else {
+                return
+            }
+            
+            switch slab5 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 5:
+            guard let slab6 = module.price?.slab6 else {
+                return
+            }
+            
+            switch slab6 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        case 6:
+            guard let slab7 = module.price?.slab7 else {
+                return
+            }
+            
+            switch slab7 {
+            case .integer(let i):
+                setPrice(with: i)
+            case .string(let j):
+                print(j)
+            }
+        default:
+            guard let slab1 = module.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                setPrice(with: i)
             case .string(let j):
                 print(j)
             }

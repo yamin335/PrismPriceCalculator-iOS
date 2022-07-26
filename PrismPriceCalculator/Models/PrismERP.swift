@@ -30,7 +30,7 @@ struct ModuleGroup: Codable, Identifiable {
     let name: String
     let code: String
     var modules: [Module]
-    let multipliers: [MultiplierClass]
+    var multipliers: [MultiplierClass]
     let showMultiplier: String?
     let description: String?
     var numberOfSelectedModule: Int? = 0
@@ -49,13 +49,14 @@ struct Module: Codable, Identifiable {
     var features: [Feature]
     let description: String?
     let dependencies: [String]
+    var slabPrice: Int? = 0
     let price: Price?
     let ready: String?
     let showMultiplier: String?
     var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
-        case code, selfCode, name, submodules, features, description, dependencies, price, ready, showMultiplier, isAdded
+        case code, selfCode, name, submodules, features, description, dependencies, slabPrice, price, ready, showMultiplier, isAdded
     }
 }
 
@@ -64,13 +65,14 @@ struct Feature: Codable, Identifiable {
     let name: String
     let code: String
     let description: String?
+    var slabPrice: Int? = 0
     let price: Price?
     let ready: String?
     let excludeInAll: Int32?
     var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
-        case name, code, description, price, ready, excludeInAll, isAdded
+        case name, code, description, slabPrice, price, ready, excludeInAll, isAdded
     }
 }
 
@@ -91,6 +93,7 @@ struct MultiplierClass: Codable, Identifiable {
     let id = UUID()
     let code: String
     let label: String
+    var slabIndex: Int? = 0
     let slabConfig: SlabConfig
     let slabs: [IntOrStringElement] // Can be long or string type
     let name: String

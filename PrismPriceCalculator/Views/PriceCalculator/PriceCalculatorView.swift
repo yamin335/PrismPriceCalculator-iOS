@@ -284,7 +284,7 @@ struct PriceCalculatorView: View {
     @State var costTotal = 0
     @State var submitButtonDisabled = true
     
-    @ObservedObject var viewModel = PriceCalculatorVM()
+    @StateObject var viewModel = PriceCalculatorVM()
     
     @State var showSuccessToast = false
     @State var successMessage: String = ""
@@ -294,7 +294,7 @@ struct PriceCalculatorView: View {
     @State private var showLoader = false
     
     @State private var hasHeaderView = false
-    @State private var multipliers: [MultiplierClass] = []
+    //@State private var multipliers: [MultiplierClass] = []
     
     var body: some View {
         GeometryReader { geometry in
@@ -325,8 +325,12 @@ struct PriceCalculatorView: View {
                                    
                                    Divider().padding(.horizontal, 10)
                                    
-                                   ForEach(multipliers, id: \.id) { multiplier in
-                                       MultiplierListItem(viewModel: viewModel, multiplier: multiplier)
+                                   ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups[0].multipliers, id: \.id) { $multiplier in
+                                       let hideInApp = multiplier.slabConfig.hideInApp ?? false
+                                       let label = multiplier.label.trimmingCharacters(in: .whitespacesAndNewlines)
+                                       if !hideInApp && !label.isEmpty {
+                                           MultiplierListItem(viewModel: viewModel, multiplier: $multiplier)
+                                       }
                                    }
 //                                   if baseModuleList[selectedBaseModuleIndex].code == "START" {
 //                                       HeaderStart(viewModel: viewModel)
@@ -352,6 +356,9 @@ struct PriceCalculatorView: View {
                                    .overlay (
                                         RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                                    )
+                           }
+                           .onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+                               calculateModuleAndFeaturePrice(with: pair)
                            }
                        }
                    }
@@ -518,32 +525,276 @@ struct PriceCalculatorView: View {
         }
     }
     
+    private func calculateModuleAndFeaturePrice(with pair: (String, Int)) {
+        for moduleGroupIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups.count {
+            for moduleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules.count {
+                guard let moduleMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].price?.multiplier else {
+                    return
+                }
+                
+                switch moduleMultiplierCode {
+                case .integer(let intValue):
+                    print(intValue)
+                case .string(let stringValue):
+                    if pair.0 == stringValue {
+                        calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
+                    }
+                }
+                
+                for featureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features.count {
+                    
+                    guard let featureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex].price?.multiplier else {
+                        return
+                    }
+                    
+                    switch featureMultiplierCode {
+                    case .integer(let intValue):
+                        print(intValue)
+                    case .string(let stringValue):
+                        if pair.0 == stringValue {
+                            calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
+                        }
+                    }
+                }
+                
+                for subModuleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules.count {
+                    for subFeatureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features.count {
+                        
+                        guard let subFeatureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features[subFeatureIndex].price?.multiplier else {
+                            return
+                        }
+                        
+                        switch subFeatureMultiplierCode {
+                        case .integer(let intValue):
+                            print(intValue)
+                        case .string(let stringValue):
+                            if pair.0 == stringValue {
+                                calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[subFeatureIndex], with: pair.1)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func calculateModulePrice(module: inout Module, with index: Int) {
+        switch index {
+        case 0:
+            guard let slab1 = module.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 1:
+            guard let slab2 = module.price?.slab2 else {
+                return
+            }
+            
+            switch slab2 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 2:
+            guard let slab3 = module.price?.slab3 else {
+                return
+            }
+            
+            switch slab3 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 3:
+            guard let slab4 = module.price?.slab4 else {
+                return
+            }
+            
+            switch slab4 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 4:
+            guard let slab5 = module.price?.slab5 else {
+                return
+            }
+            
+            switch slab5 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 5:
+            guard let slab6 = module.price?.slab6 else {
+                return
+            }
+            
+            switch slab6 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 6:
+            guard let slab7 = module.price?.slab7 else {
+                return
+            }
+            
+            switch slab7 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        default:
+            guard let slab1 = module.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                module.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        }
+    }
+    
+    private func calculateFeaturePrice(feature: inout Feature, with index: Int) {
+        switch index {
+        case 0:
+            guard let slab1 = feature.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 1:
+            guard let slab2 = feature.price?.slab2 else {
+                return
+            }
+            
+            switch slab2 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 2:
+            guard let slab3 = feature.price?.slab3 else {
+                return
+            }
+            
+            switch slab3 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 3:
+            guard let slab4 = feature.price?.slab4 else {
+                return
+            }
+            
+            switch slab4 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 4:
+            guard let slab5 = feature.price?.slab5 else {
+                return
+            }
+            
+            switch slab5 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 5:
+            guard let slab6 = feature.price?.slab6 else {
+                return
+            }
+            
+            switch slab6 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        case 6:
+            guard let slab7 = feature.price?.slab7 else {
+                return
+            }
+            
+            switch slab7 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        default:
+            guard let slab1 = feature.price?.slab1 else {
+                return
+            }
+            
+            switch slab1 {
+            case .integer(let i):
+                feature.slabPrice = i
+            case .string(let j):
+                print(j)
+            }
+        }
+    }
+    
     private func prepareHeaderView() {
         if baseModuleList.isEmpty {
             return
         }
-        
+
         let baseModule = baseModuleList[selectedBaseModuleIndex]
-        var multipliersMap: [String : MultiplierClass] = [:]
-        var multipliers: [MultiplierClass] = []
-        
-        for moduleGroup in baseModule.moduleGroups {
-            for multiplier in moduleGroup.multipliers {
-                let hideInApp = multiplier.slabConfig.hideInApp ?? false
-                if !hideInApp && multipliersMap[multiplier.code] == nil {
-                    multipliersMap[multiplier.code] = multiplier
-                }
-            }
+        if baseModule.moduleGroups.isEmpty {
+            return
         }
         
-        for key in multipliersMap.keys {
-            if let multiplier = multipliersMap[key] {
-                multipliers.append(multiplier)
-            }
-        }
-        
-        self.multipliers = multipliers
-        self.hasHeaderView = !self.multipliers.isEmpty
+        //var multipliersMap: [String : MultiplierClass] = [:]
+        //var multipliers: [MultiplierClass] = []
+
+//        for moduleGroup in baseModule.moduleGroups {
+//            for multiplier in moduleGroup.multipliers {
+//                let hideInApp = multiplier.slabConfig.hideInApp ?? false
+//                let label = multiplier.label.trimmingCharacters(in: .whitespacesAndNewlines)
+//                if !hideInApp && multipliersMap[multiplier.code] == nil && !label.isEmpty {
+//                    multipliersMap[multiplier.code] = multiplier
+//                }
+//            }
+//        }
+//
+//        for key in multipliersMap.keys {
+//            if let multiplier = multipliersMap[key] {
+//                multipliers.append(multiplier)
+//            }
+//        }
+
+        //self.multipliers = multipliers
+        self.hasHeaderView = !baseModule.moduleGroups[0].multipliers.isEmpty
     }
     
     private func getSummary(baseModuleList: [ServiceModule]) -> [SummaryItem] {
@@ -560,34 +811,22 @@ struct PriceCalculatorView: View {
         for moduleGroup in baseModule.moduleGroups {
             for module in moduleGroup.modules {
                 if module.isAdded == true {
-                    if let slab1 = module.price?.slab1 {
-                        switch slab1 {
-                        case .integer(let i):
-                            price += i
-                            
-                            summaryModuleTotalPrice += i
-                            summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: i, type: "module"))
-                            
-                        case .string(let j):
-                            print(j)
-                        }
+                    if let slabPrice = module.slabPrice {
+                        price += slabPrice
+                        
+                        summaryModuleTotalPrice += slabPrice
+                        summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: slabPrice, prices: module.price, type: "module"))
                     }
                     isAdded = true
                 }
                 
                 for feature in module.features {
                     if feature.isAdded == true {
-                        if let slab1 = feature.price?.slab1 {
-                            switch slab1 {
-                            case .integer(let i):
-                                price += i
-                                
-                                summaryModuleTotalPrice += i
-                                summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: i, type: "feature"))
-                                
-                            case .string(let j):
-                                print(j)
-                            }
+                        if let slabPrice = feature.slabPrice {
+                            price += slabPrice
+                            
+                            summaryModuleTotalPrice += slabPrice
+                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
                         }
                         isAdded = true
                     }
@@ -596,17 +835,11 @@ struct PriceCalculatorView: View {
                 for submodule in module.submodules {
                     for feature in submodule.features {
                         if feature.isAdded == true {
-                            if let slab1 = feature.price?.slab1 {
-                                switch slab1 {
-                                case .integer(let i):
-                                    price += i
-                                    
-                                    summaryModuleTotalPrice += i
-                                    summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: i, type: "feature"))
-                                    
-                                case .string(let j):
-                                    print(j)
-                                }
+                            if let slabPrice = feature.slabPrice {
+                                price += slabPrice
+                                
+                                summaryModuleTotalPrice += slabPrice
+                                summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
                             }
                             isAdded = true
                         }

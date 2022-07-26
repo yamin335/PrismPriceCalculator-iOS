@@ -112,8 +112,7 @@ struct LoginView: View {
         .navigationTitle("Sign In")
         .onReceive(self.viewModel.validatedCredentials.receive(on: RunLoop.main)) { validCredential in
             self.loginButtonDisabled = !validCredential
-        }
-        .onReceive(self.viewModel.loginStatusPublisher.receive(on: RunLoop.main)) { isLoggedIn in
+        }.onReceive(self.viewModel.loginStatusPublisher.receive(on: RunLoop.main)) { isLoggedIn in
             if isLoggedIn {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     withAnimation() {
@@ -122,18 +121,15 @@ struct LoginView: View {
                     }
                 }
             }
-        }
-        .onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { isShowing in
+        }.onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { isShowing in
             self.showLoader = isShowing
-        }
-        .onReceive(self.viewModel.successToastPublisher.receive(on: RunLoop.main)) {
+        }.onReceive(self.viewModel.successToastPublisher.receive(on: RunLoop.main)) {
             showToast, message in
             self.successMessage = message
             withAnimation() {
                 self.showSuccessToast = showToast
             }
-        }
-        .onReceive(self.viewModel.errorToastPublisher.receive(on: RunLoop.main)) {
+        }.onReceive(self.viewModel.errorToastPublisher.receive(on: RunLoop.main)) {
             showToast, message in
             self.errorMessage = message
             withAnimation() {
