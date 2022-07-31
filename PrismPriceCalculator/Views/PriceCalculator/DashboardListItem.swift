@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DashboardListItem: View {
-    @State var businessServiceItem: BusinessService
+    var product: ServiceProduct
     @State private var selectedTag: Int? = -1
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -16,7 +16,7 @@ struct DashboardListItem: View {
                 EmptyView()
             }.isDetailLink(false)
             AsyncImage(
-                url: URL(string: businessServiceItem.image),
+                url: URL(string: "https://prismerpbackend.rtchubs.com/\(product.logo ?? "")"),
                 content: { image in
                     image
                         .resizable()
@@ -32,7 +32,7 @@ struct DashboardListItem: View {
 //                    .frame(width: .infinity, alignment: .leading)
 //              )
             
-            Text(businessServiceItem.description)
+            Text(product.description ?? "")
                 .foregroundColor(Color("textColor2"))
                 .font(.system(size: 16))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -45,7 +45,7 @@ struct DashboardListItem: View {
                     Text("STARTING FROM")
                         .foregroundColor(Color("textColor4"))
                         .font(.system(size: 12))
-                    Text("৳\(businessServiceItem.startingPrice)")
+                    Text("৳\(product.price ?? 0)")
                         .foregroundColor(Color("textColor3"))
                         .font(.system(size: 14))
                 }
@@ -80,8 +80,6 @@ struct DashboardListItem: View {
 
 struct DashboardListItem_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardListItem(businessServiceItem: BusinessService(image: "https://prismerp.rtchubs.com/img/prismerp.png",
-                                          description: "An ERP System to cover all business needs designed for medium and large business",
-                                          startingPrice: 2500000))
+        DashboardListItem(product: ServiceProduct(id: "prismerp", name: "PrismERP", logo: "prismerp.png", title: "An ERP System to cover all business needs designed for medium and large business", description: "An ERP System to cover all business needs designed for medium and large business", sheetlink: " https://docs.google.com/spreadsheets/d/e/2PACX-1vTX1GAAhTy2wXRTEgweR9hJj8FllG2h1N_zgYgfUf5iRx37XfbapHcuOz_wB0NA2L-XSZxhKKifatUK/pub?output=xlsx", productdetailslink: "https://store.divineit.net/prismerp/", isactive: true, price: 2500000, Table: ""))
     }
 }

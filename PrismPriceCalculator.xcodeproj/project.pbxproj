@@ -23,6 +23,7 @@
 		6E3FD352288588950015DBAF /* UserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3FD351288588950015DBAF /* UserSessionManager.swift */; };
 		6E3FD35428858B8A0015DBAF /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3FD35328858B8A0015DBAF /* AppConstants.swift */; };
 		6E3FD358288598420015DBAF /* SpinLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3FD357288598420015DBAF /* SpinLoaderView.swift */; };
+		6E594DC728964E9B004E4C2B /* AllProductsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E594DC628964E9B004E4C2B /* AllProductsModels.swift */; };
 		6E5F35EF288E669600177C04 /* SliderMultiplierListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F35EE288E669600177C04 /* SliderMultiplierListItem.swift */; };
 		6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8556286B02BE005C158E /* ChipGroup.swift */; };
 		6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8558286B033F005C158E /* ChipDataModel.swift */; };
@@ -88,6 +89,7 @@
 		6E3FD351288588950015DBAF /* UserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionManager.swift; sourceTree = "<group>"; };
 		6E3FD35328858B8A0015DBAF /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		6E3FD357288598420015DBAF /* SpinLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinLoaderView.swift; sourceTree = "<group>"; };
+		6E594DC628964E9B004E4C2B /* AllProductsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsModels.swift; sourceTree = "<group>"; };
 		6E5F35EE288E669600177C04 /* SliderMultiplierListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderMultiplierListItem.swift; sourceTree = "<group>"; };
 		6E7B8556286B02BE005C158E /* ChipGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipGroup.swift; sourceTree = "<group>"; };
 		6E7B8558286B033F005C158E /* ChipDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDataModel.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				6E3FD34828851C5F0015DBAF /* SignUpModels.swift */,
 				6EAD3BEB28870CF300EDB6F3 /* SummaryModels.swift */,
 				6EAD3BED2887C2BE00EDB6F3 /* SummaryResponseModels.swift */,
+				6E594DC628964E9B004E4C2B /* AllProductsModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */,
 				6E2B8474286EBA1800A84D89 /* HeaderPIP.swift in Sources */,
 				6EAD3BEE2887C2BE00EDB6F3 /* SummaryResponseModels.swift in Sources */,
+				6E594DC728964E9B004E4C2B /* AllProductsModels.swift in Sources */,
 				6EAAB85F2853E98400332087 /* SubModuleListItemView.swift in Sources */,
 				6E3FD34C28851D660015DBAF /* BaseViewModel.swift in Sources */,
 				E64FA8EE284DD96D009EA9E2 /* BottomSheetPosition.swift in Sources */,

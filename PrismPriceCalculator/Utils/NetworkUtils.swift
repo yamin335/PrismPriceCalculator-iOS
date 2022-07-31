@@ -11,10 +11,12 @@ class NetworkUtils {
     private static let baseUrl = "https://prismerpbackend.rtchubs.com"
     private static let apiVersion = "v1"
     private static let authRepo = "auth"
+    private static let productRepo = "product"
     
     static let login = "\(baseUrl)/\(apiVersion)/\(authRepo)/login"
     static let signUp = "\(baseUrl)/\(apiVersion)/\(authRepo)/registercustomer"
     static let submitQuotation = "\(baseUrl)/\(apiVersion)/quotation/submit"
+    static let allProducts = "\(baseUrl)/\(apiVersion)/\(productRepo)/allactive"
     
     static func getCommonUrlRequest(url: URL) -> URLRequest {
         //Request type

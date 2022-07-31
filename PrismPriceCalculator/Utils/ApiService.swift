@@ -123,6 +123,24 @@ class ApiService {
         return getDataTask(request: request, viewModel: viewModel)
     }
     
+    static func allProducts(viewModel: BaseViewModel) -> AnyPublisher<AllProductsResponse, Error>? {
+        
+        guard let urlComponents = URLComponents(string: NetworkUtils.allProducts) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
     static func getDataTask<T: Codable>(request: URLRequest, viewModel: BaseViewModel) -> AnyPublisher<T, Error>? {
         return viewModel.session.dataTaskPublisher(for: request)
             .handleEvents(receiveSubscription: { _ in
