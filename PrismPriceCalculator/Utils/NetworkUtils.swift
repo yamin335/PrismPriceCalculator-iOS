@@ -8,7 +8,7 @@
 import Foundation
 
 class NetworkUtils {
-    private static let baseUrl = "https://prismerpbackend.rtchubs.com"
+    static let baseUrl = "https://prismerpbackend.rtchubs.com"
     private static let apiVersion = "v1"
     private static let authRepo = "auth"
     private static let productRepo = "product"

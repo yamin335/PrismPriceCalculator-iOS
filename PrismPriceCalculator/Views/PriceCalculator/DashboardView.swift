@@ -23,18 +23,19 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                VStack(spacing: 16) {
-                    ForEach(businessServiceList, id: \.id) { product in
-                        DashboardListItem(product: product)
-                    }
-                    
-                    NavigationLink(destination: LoginView(), tag: 2, selection: self.$selectedTag) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                    
-                    Spacer()
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ForEach(businessServiceList, id: \.id) { product in
+                            DashboardListItem(product: product)
+                        }
+                        
+                        NavigationLink(destination: LoginView(), tag: 2, selection: self.$selectedTag) {
+                            EmptyView()
+                        }.isDetailLink(false)
+                        
+                        Spacer()
+                    }.padding(.vertical, 16)
                 }
-                .padding(.vertical, 16)
                 .navigationTitle("Prism Price Calculator")
                 .onReceive(self.viewModel.allProductsListPublisher.receive(on: RunLoop.main)) { allProducts in
                     self.businessServiceList = allProducts

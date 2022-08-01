@@ -82,15 +82,12 @@ struct MultiplierListItem: View {
                             
                         }
                         
-                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(startItem)-\(i)" : "\(slabText)(\(startItem)-\(i))")
+                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? startItem == i ? "\(i)" : "\(startItem)-\(i)" : startItem == i ? "\(slabText)(\(i))" : "\(slabText)(\(startItem)-\(i))")
                         chips.append(chipItem)
                     case .string( _):
                         let chipItem: ChipsDataModel = ChipsDataModel(label: "\(i)")
                         chips.append(chipItem)
                     }
-                        
-                    
-                    
                 case .string(let j):
                     let chipItem: ChipsDataModel = ChipsDataModel(label: j)
                     chips.append(chipItem)

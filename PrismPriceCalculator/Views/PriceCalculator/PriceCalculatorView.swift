@@ -11,7 +11,7 @@ struct ModuleGroupHeaderView: View {
     @Binding var moduleGroup: ModuleGroup
     @Binding var isExpanded: Bool
     @State var baseModuleCode: String
-    @ObservedObject var  viewModel: PriceCalculatorVM
+    @ObservedObject var viewModel: PriceCalculatorVM
     
     var body: some View {
         HStack(spacing: 5) {
@@ -123,17 +123,13 @@ struct ModuleGroupHeaderView: View {
     
     func toggleSelection() {
         for moduleIndex in 0..<moduleGroup.modules.count {
-            //var isAdded = false
-            
             for featureIndex in 0..<moduleGroup.modules[moduleIndex].features.count {
                 moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
-                //isAdded = isAdded || (moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
             }
 
             for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
                 for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
                     moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
-                    //isAdded = isAdded || (moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
                 }
             }
             
@@ -148,13 +144,6 @@ struct ModuleGroupHeaderView: View {
                     moduleGroup.numberOfSelectedModule = numberOfSelectedModule - 1
                 }
             }
-            
-//            if !(moduleGroup.modules[moduleIndex].isAdded ?? false) {
-//                moduleGroup.modules[moduleIndex].isAdded = (moduleGroup.modules[moduleIndex].isAdded ?? false) || isAdded
-//                if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, moduleGroup.modules[moduleIndex].isAdded == true {
-//                    moduleGroup.numberOfSelectedModule = numberOfSelectedModule + 1
-//                }
-//            }
         }
         self.viewModel.shouldCalculateData.send(true)
     }
@@ -294,7 +283,6 @@ struct PriceCalculatorView: View {
     @State private var showLoader = false
     
     @State private var hasHeaderView = false
-    //@State private var multipliers: [MultiplierClass] = []
     
     var body: some View {
         GeometryReader { geometry in
@@ -332,21 +320,6 @@ struct PriceCalculatorView: View {
                                            MultiplierListItem(viewModel: viewModel, multiplier: $multiplier)
                                        }
                                    }
-//                                   if baseModuleList[selectedBaseModuleIndex].code == "START" {
-//                                       HeaderStart(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "FMS" {
-//                                       HeaderFMS(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "HCM" {
-//                                       HeaderHCM(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PPC" {
-//                                       HeaderPPC(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "EAM" {
-//                                       HeaderEAM(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "CSC" {
-//                                       HeaderCSC(viewModel: viewModel)
-//                                   } else if baseModuleList[selectedBaseModuleIndex].code == "PIP" {
-//                                       HeaderPIP(viewModel: viewModel)
-//                                   }
                                }
                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("blue1"), lineWidth: 1))
                            }
@@ -811,23 +784,49 @@ struct PriceCalculatorView: View {
         for moduleGroup in baseModule.moduleGroups {
             for module in moduleGroup.modules {
                 if module.isAdded == true {
-                    if let slabPrice = module.slabPrice {
-                        price += slabPrice
-                        
-                        summaryModuleTotalPrice += slabPrice
-                        summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: slabPrice, prices: module.price, type: "module"))
+                    var slabPrice = 0
+                    if module.slabPrice == nil || module.slabPrice == 0 {
+                        if let slab1 = module.price?.slab1 {
+                            switch slab1 {
+                            case .integer(let i):
+                                slabPrice = i
+                            case .string(let j):
+                                print(j)
+                            }
+                        }
+                    } else {
+                        slabPrice = module.slabPrice ?? 0
                     }
+                    
+                    price += slabPrice
+                    
+                    summaryModuleTotalPrice += slabPrice
+                    summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: slabPrice, prices: module.price, type: "module"))
+                    
                     isAdded = true
                 }
                 
                 for feature in module.features {
                     if feature.isAdded == true {
-                        if let slabPrice = feature.slabPrice {
-                            price += slabPrice
-                            
-                            summaryModuleTotalPrice += slabPrice
-                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+                        var slabPrice = 0
+                        if feature.slabPrice == nil || feature.slabPrice == 0 {
+                            if let slab1 = feature.price?.slab1 {
+                                switch slab1 {
+                                case .integer(let i):
+                                    slabPrice = i
+                                case .string(let j):
+                                    print(j)
+                                }
+                            }
+                        } else {
+                            slabPrice = feature.slabPrice ?? 0
                         }
+                        
+                        price += slabPrice
+                        
+                        summaryModuleTotalPrice += slabPrice
+                        summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+                        
                         isAdded = true
                     }
                 }
@@ -835,12 +834,25 @@ struct PriceCalculatorView: View {
                 for submodule in module.submodules {
                     for feature in submodule.features {
                         if feature.isAdded == true {
-                            if let slabPrice = feature.slabPrice {
-                                price += slabPrice
-                                
-                                summaryModuleTotalPrice += slabPrice
-                                summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+                            var slabPrice = 0
+                            if feature.slabPrice == nil || feature.slabPrice == 0 {
+                                if let slab1 = feature.price?.slab1 {
+                                    switch slab1 {
+                                    case .integer(let i):
+                                        slabPrice = i
+                                    case .string(let j):
+                                        print(j)
+                                    }
+                                }
+                            } else {
+                                slabPrice = feature.slabPrice ?? 0
                             }
+                            
+                            price += slabPrice
+                            
+                            summaryModuleTotalPrice += slabPrice
+                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+                            
                             isAdded = true
                         }
                     }

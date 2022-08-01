@@ -16,7 +16,7 @@ struct DashboardListItem: View {
                 EmptyView()
             }.isDetailLink(false)
             AsyncImage(
-                url: URL(string: "https://prismerpbackend.rtchubs.com/\(product.logo ?? "")"),
+                url: URL(string: "\(NetworkUtils.baseUrl)/\(product.logo ?? "")"),
                 content: { image in
                     image
                         .resizable()
