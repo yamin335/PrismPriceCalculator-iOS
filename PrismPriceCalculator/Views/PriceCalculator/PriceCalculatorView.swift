@@ -239,6 +239,7 @@ struct ModuleGroupListItemView: View {
 }
 
 struct PriceCalculatorView: View {
+    
     @EnvironmentObject var appGlobalState: AppState
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
@@ -360,7 +361,7 @@ struct PriceCalculatorView: View {
                        prepareHeaderView()
                    }
                }.onAppear {
-                   viewModel.loadAllModuleData()
+                   viewModel.productDetails(productId: <#T##String#>)
                    costAdditionalUsers = 150000
                    costDeployment = 10000
                    costAnnualMaintenance = 30000

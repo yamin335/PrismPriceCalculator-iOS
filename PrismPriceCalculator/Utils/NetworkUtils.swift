@@ -17,6 +17,7 @@ class NetworkUtils {
     static let signUp = "\(baseUrl)/\(apiVersion)/\(authRepo)/registercustomer"
     static let submitQuotation = "\(baseUrl)/\(apiVersion)/quotation/submit"
     static let allProducts = "\(baseUrl)/\(apiVersion)/\(productRepo)/allactive"
+    static let productDetails = "\(baseUrl)/\(apiVersion)/\(productRepo)/json"
     
     static func getCommonUrlRequest(url: URL) -> URLRequest {
         //Request type

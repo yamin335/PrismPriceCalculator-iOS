@@ -12,13 +12,15 @@ struct SummaryStoreModel: Codable {
     let salesmanid: Int?
     let customerid: Int?
     let details: Bool?
-    let header, productid: String?
+    let header: String?
+    let productid: String?
     let totalamount: Int?
-    let softwareLicense: SummarySoftwareLicense?
-    let implementation: SummaryService?
-    let customization: SummaryService?
-    let consultancy: SummaryService?
-    let maintainance: SummaryService?
+    let Software_License: SummarySoftwareLicense?
+    let Implementation: SummaryService?
+    let Customization: SummaryService?
+    let Consultancy: SummaryService?
+    let Maintainance: SummaryService?
+    let company: String?
 }
 
 // MARK: - SummarySoftwareLicense
@@ -35,16 +37,18 @@ struct SoftwareLicenseModule: Codable {
     let name: String?
     let totalamount: Int?
     let code: String?
+    let licensingparameters: [LicensingParameter]
     let features: [SummaryModuleFeature]
 }
 
 // MARK: - SummaryModuleFeature
 struct SummaryModuleFeature: Codable {
     let code: String?
+    let multiplier: String?
     let multipliercode: String?
-    let price: Int?
-    let prices: Price?
+    let price: [String]
     let type: String?
+    let defaultprice: Int?
 }
 
 // MARK: - SummaryService
@@ -58,9 +62,18 @@ struct SummaryService: Codable {
 struct SummaryServiceModule: Codable {
     let name: String?
     let details: String?
-    let detailsValue: Int?
-    let detailsMultiplier: Int?
+    let details_value: Int?
+    let details_multiplier: Int?
     let totalamount: Int?
 }
+
+// MARK: - LicensingParameter
+struct LicensingParameter: Codable {
+    let name: String?
+    let value: String?
+    let slabid: Int?
+}
+
+
 
 
