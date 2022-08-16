@@ -10,7 +10,7 @@ import SwiftUI
 struct SliderItem: View {
     let sliderRange: Double
     let increment: Double
-    @State private var sliderValue: Double = 0
+    @Binding var sliderValue: Double
     
     var body: some View {
         HStack {
@@ -29,8 +29,8 @@ struct SliderItem: View {
     }
 }
 
-struct SliderItem_Previews: PreviewProvider {
-    static var previews: some View {
-        SliderItem(sliderRange: 50, increment: 1)
-    }
-}
+//struct SliderItem_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SliderItem(sliderRange: 50, increment: 1)
+//    }
+//}

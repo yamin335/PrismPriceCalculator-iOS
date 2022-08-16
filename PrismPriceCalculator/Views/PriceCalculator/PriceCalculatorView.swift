@@ -16,7 +16,7 @@ struct ModuleGroupHeaderView: View {
     var body: some View {
         HStack(spacing: 5) {
             VStack(alignment: .leading, spacing: 5) {
-                Text(moduleGroup.name)
+                Text(moduleGroup.name ?? "")
                     .foregroundColor(Color("textColor2"))
                     .font(.headline)
                 
@@ -110,13 +110,13 @@ struct ModuleGroupHeaderView: View {
                 }
             }
 
-            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded != true {
-                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = true
-                    }
-                }
-            }
+//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+//                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded != true {
+//                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = true
+//                    }
+//                }
+//            }
         }
         self.viewModel.shouldCalculateData.send(true)
     }
@@ -127,11 +127,11 @@ struct ModuleGroupHeaderView: View {
                 moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
             }
 
-            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-                    moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
-                }
-            }
+//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+//                    moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
+//                }
+//            }
             
             moduleGroup.modules[moduleIndex].isAdded = !(moduleGroup.modules[moduleIndex].isAdded ?? false)
             
@@ -162,13 +162,13 @@ struct ModuleGroupHeaderView: View {
                 }
             }
 
-            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded == true {
-                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = false
-                    }
-                }
-            }
+//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
+//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
+//                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded == true {
+//                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = false
+//                    }
+//                }
+//            }
         }
         self.viewModel.shouldCalculateData.send(true)
     }
@@ -187,33 +187,33 @@ struct ModuleGroupDetailView: View {
                     ModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
                 
-                let validMultiplierList: [MultiplierClass] = getValidMultiplierList(moduleGroup: moduleGroup)
-                
-                if !validMultiplierList.isEmpty {
-                    ForEach(Array(validMultiplierList.enumerated()), id: \.offset) { index, multiplier in
-                        SliderMultiplierListItem(viewModel: viewModel, label: multiplier.label)
-                    }
-                }
+//                let validMultiplierList: [MultiplierClass] = getValidMultiplierList(moduleGroup: moduleGroup)
+//
+//                if !validMultiplierList.isEmpty {
+//                    ForEach(Array(validMultiplierList.enumerated()), id: \.offset) { index, multiplier in
+//                        SliderMultiplierListItem(viewModel: viewModel, label: multiplier.label ?? "")
+//                    }
+//                }
             }
         }
     }
     
-    private func getValidMultiplierList(moduleGroup: ModuleGroup) -> [MultiplierClass] {
-        var validMultiplierList: [MultiplierClass] = []
-        let shownMultipliers = moduleGroup.showMultiplier ?? ""
-        let validMultiplierClasses = shownMultipliers.components(separatedBy: ",") 
-        
-        if !validMultiplierClasses.isEmpty {
-            for multiplier in moduleGroup.multipliers {
-                if validMultiplierClasses.contains(multiplier.code) {
-                    validMultiplierList.append(multiplier)
-                }
-            }
-            return validMultiplierList
-        } else {
-            return []
-        }
-    }
+//    private func getValidMultiplierList(baseModule: BaseServiceModule) -> [MultiplierClass] {
+//        var validMultiplierList: [MultiplierClass] = []
+//        let shownMultipliers = moduleGroup.showMultiplier ?? ""
+//        let validMultiplierClasses = shownMultipliers.components(separatedBy: ",")
+//
+//        if !validMultiplierClasses.isEmpty {
+//            for multiplier in moduleGroup.multipliers {
+//                if validMultiplierClasses.contains(multiplier.code) {
+//                    validMultiplierList.append(multiplier)
+//                }
+//            }
+//            return validMultiplierList
+//        } else {
+//            return []
+//        }
+//    }
 }
 
 struct ModuleGroupListItemView: View {
@@ -239,8 +239,8 @@ struct ModuleGroupListItemView: View {
 }
 
 struct PriceCalculatorView: View {
-    
     @EnvironmentObject var appGlobalState: AppState
+    var productId: String
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
     let bookmarkColors: [Color] = [Color(red: 0.28, green: 0.28, blue: 0.53), Color(red: 0.44, green: 0.44, blue: 0.83)]
@@ -249,17 +249,19 @@ struct PriceCalculatorView: View {
     
     @State private var showSideMenu = false
     
-    @State var baseModuleList: [ServiceModule] = []
+    @State var baseModuleList: [BaseServiceModule] = []
     @State var selectedBaseModuleIndex: Int = -1
     
     @State var summaryList: [SummaryItem] = []
     @State var summaryMap: [String : SummaryItem] = [:]
     
     @State var costSoftwareLicense = 0
-    @State var costAdditionalUsers = 150000
+    @State var costAdditionalUsers = 0
+    @State var additionalUsers = 5
+    @State var usersIncluded = AppConstants.additionalUsers
     @State var costImplementation = 0
     @State var costRequirementAnalysis = 0
-    @State var costDeployment = 10000
+    @State var costDeployment = 0
     @State var costConfiguration = 0
     @State var costOnsiteAdoptionSupport = 0
     @State var costTraining = 0
@@ -287,7 +289,7 @@ struct PriceCalculatorView: View {
     
     var body: some View {
         GeometryReader { geometry in
-           ZStack {
+            ZStack {
                ScrollView {
                    VStack(alignment: .leading, spacing: 20) {
                        if selectedBaseModuleIndex >= 0 {
@@ -314,9 +316,9 @@ struct PriceCalculatorView: View {
                                    
                                    Divider().padding(.horizontal, 10)
                                    
-                                   ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups[0].multipliers, id: \.id) { $multiplier in
-                                       let hideInApp = multiplier.slabConfig.hideInApp ?? false
-                                       let label = multiplier.label.trimmingCharacters(in: .whitespacesAndNewlines)
+                                   ForEach($baseModuleList[selectedBaseModuleIndex].multipliers, id: \.id) { $multiplier in
+                                       let hideInApp = multiplier.slabConfig?.hideInApp ?? false
+                                       let label = (multiplier.label ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                                        if !hideInApp && !label.isEmpty {
                                            MultiplierListItem(viewModel: viewModel, multiplier: $multiplier)
                                        }
@@ -326,7 +328,7 @@ struct PriceCalculatorView: View {
                            }
                            
                            ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
-                               ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code)
+                               ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code ?? "")
                                    .overlay (
                                         RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                                    )
@@ -361,11 +363,7 @@ struct PriceCalculatorView: View {
                        prepareHeaderView()
                    }
                }.onAppear {
-                   viewModel.productDetails(productId: <#T##String#>)
-                   costAdditionalUsers = 150000
-                   costDeployment = 10000
-                   costAnnualMaintenance = 30000
-
+                   viewModel.productDetails(productId: productId)
                    calculateSummaryCost(moduleCost: 0)
                    summaryList = getSummary(baseModuleList: baseModuleList)
                }
@@ -393,7 +391,11 @@ struct PriceCalculatorView: View {
                }
 
                if self.showLoader {
-                   SpinLoaderView()
+                   HStack(alignment: .center) {
+                       Spacer()
+                       SpinLoaderView()
+                       Spacer()
+                   }
                }
            }.onReceive(self.viewModel.quotationStatusPublisher.receive(on: RunLoop.main)) { isSubmitted in
                if isSubmitted {
@@ -415,6 +417,17 @@ struct PriceCalculatorView: View {
                }
            }.onReceive(self.viewModel.submitEnableDisablePublisher.receive(on: RunLoop.main)) { isValid in
                self.submitButtonDisabled = !isValid
+           }.onReceive(self.viewModel.sliderValuePublisher.receive(on: RunLoop.main)) { (multiplierCode, sliderValue) in
+               switch multiplierCode {
+               case "custom":
+                   costSoftwareCustomization = sliderValue * AppConstants.unitPriceSoftwareCustomization
+                   self.viewModel.shouldCalculateData.send(true)
+               case "report":
+                   costCustomizedReport = sliderValue * AppConstants.unitPriceCustomizedReports
+                   self.viewModel.shouldCalculateData.send(true)
+               default:
+                   print("No multiplier code mached!")
+               }
            }
        }.sideMenu(isShowing: $showSideMenu) {
             VStack(alignment: .leading) {
@@ -442,7 +455,7 @@ struct PriceCalculatorView: View {
                     }) {
                         if selectedBaseModuleIndex == index {
                             HStack(alignment: .center) {
-                                Text(baseModule.code)
+                                Text(baseModule.code ?? "")
                                     .foregroundColor(.black)
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 10)
@@ -456,7 +469,7 @@ struct PriceCalculatorView: View {
                             )
                         } else {
                             HStack(alignment: .center) {
-                                Text(baseModule.code)
+                                Text(baseModule.code ?? "")
                                     .foregroundColor(Color("blue3"))
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 10)
@@ -493,7 +506,7 @@ struct PriceCalculatorView: View {
             .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
         }) {
             //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-            SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel)
+            SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel)
                 .padding([.top, .bottom, .leading, .trailing], 8)
                 .background(.white)
         }
@@ -502,240 +515,88 @@ struct PriceCalculatorView: View {
     private func calculateModuleAndFeaturePrice(with pair: (String, Int)) {
         for moduleGroupIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups.count {
             for moduleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules.count {
-                guard let moduleMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].price?.multiplier else {
+                guard let moduleMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].multiplier else {
                     return
                 }
                 
-                switch moduleMultiplierCode {
-                case .integer(let intValue):
-                    print(intValue)
-                case .string(let stringValue):
-                    if pair.0 == stringValue {
-                        calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
-                    }
+                if pair.0 == moduleMultiplierCode {
+                    calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
                 }
+                
+//                switch moduleMultiplierCode {
+//                case .integer(let intValue):
+//                    print(intValue)
+//                case .string(let stringValue):
+//                    if pair.0 == stringValue {
+//                        calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
+//                    }
+//                }
                 
                 for featureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features.count {
                     
-                    guard let featureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex].price?.multiplier else {
+                    guard let featureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex].multiplier else {
                         return
                     }
                     
-                    switch featureMultiplierCode {
-                    case .integer(let intValue):
-                        print(intValue)
-                    case .string(let stringValue):
-                        if pair.0 == stringValue {
-                            calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
-                        }
+                    if pair.0 == featureMultiplierCode {
+                        calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
                     }
+                    
+//                    switch featureMultiplierCode {
+//                    case .integer(let intValue):
+//                        print(intValue)
+//                    case .string(let stringValue):
+//                        if pair.0 == stringValue {
+//                            calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
+//                        }
+//                    }
                 }
                 
-                for subModuleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules.count {
-                    for subFeatureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features.count {
-                        
-                        guard let subFeatureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features[subFeatureIndex].price?.multiplier else {
-                            return
-                        }
-                        
-                        switch subFeatureMultiplierCode {
-                        case .integer(let intValue):
-                            print(intValue)
-                        case .string(let stringValue):
-                            if pair.0 == stringValue {
-                                calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[subFeatureIndex], with: pair.1)
-                            }
-                        }
-                    }
-                }
+//                for subModuleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules.count {
+//                    for subFeatureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features.count {
+//
+//                        guard let subFeatureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features[subFeatureIndex].price?.multiplier else {
+//                            return
+//                        }
+//
+//                        switch subFeatureMultiplierCode {
+//                        case .integer(let intValue):
+//                            print(intValue)
+//                        case .string(let stringValue):
+//                            if pair.0 == stringValue {
+//                                calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[subFeatureIndex], with: pair.1)
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }
     
-    private func calculateModulePrice(module: inout Module, with index: Int) {
-        switch index {
-        case 0:
-            guard let slab1 = module.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 1:
-            guard let slab2 = module.price?.slab2 else {
-                return
-            }
-            
-            switch slab2 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 2:
-            guard let slab3 = module.price?.slab3 else {
-                return
-            }
-            
-            switch slab3 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 3:
-            guard let slab4 = module.price?.slab4 else {
-                return
-            }
-            
-            switch slab4 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 4:
-            guard let slab5 = module.price?.slab5 else {
-                return
-            }
-            
-            switch slab5 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 5:
-            guard let slab6 = module.price?.slab6 else {
-                return
-            }
-            
-            switch slab6 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 6:
-            guard let slab7 = module.price?.slab7 else {
-                return
-            }
-            
-            switch slab7 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        default:
-            guard let slab1 = module.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                module.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
+    private func calculateModulePrice(module: inout ServiceModule, with index: Int) {
+        if module.price.count <= index {
+            return
         }
+        
+        let price = module.price[index]
+        if price.isEmpty {
+            return
+        }
+        
+        module.defaultprice = Double(price) ?? 0.0
     }
     
     private func calculateFeaturePrice(feature: inout Feature, with index: Int) {
-        switch index {
-        case 0:
-            guard let slab1 = feature.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 1:
-            guard let slab2 = feature.price?.slab2 else {
-                return
-            }
-            
-            switch slab2 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 2:
-            guard let slab3 = feature.price?.slab3 else {
-                return
-            }
-            
-            switch slab3 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 3:
-            guard let slab4 = feature.price?.slab4 else {
-                return
-            }
-            
-            switch slab4 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 4:
-            guard let slab5 = feature.price?.slab5 else {
-                return
-            }
-            
-            switch slab5 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 5:
-            guard let slab6 = feature.price?.slab6 else {
-                return
-            }
-            
-            switch slab6 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        case 6:
-            guard let slab7 = feature.price?.slab7 else {
-                return
-            }
-            
-            switch slab7 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
-        default:
-            guard let slab1 = feature.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                feature.slabPrice = i
-            case .string(let j):
-                print(j)
-            }
+        if feature.price.count <= index {
+            return
         }
+        
+        let price = feature.price[index]
+        if price.isEmpty {
+            return
+        }
+        
+        feature.defaultprice = Double(price) ?? 0.0
     }
     
     private func prepareHeaderView() {
@@ -768,10 +629,10 @@ struct PriceCalculatorView: View {
 //        }
 
         //self.multipliers = multipliers
-        self.hasHeaderView = !baseModule.moduleGroups[0].multipliers.isEmpty
+        self.hasHeaderView = !baseModule.multipliers.isEmpty
     }
     
-    private func getSummary(baseModuleList: [ServiceModule]) -> [SummaryItem] {
+    private func getSummary(baseModuleList: [BaseServiceModule]) -> [SummaryItem] {
         guard selectedBaseModuleIndex >= 0 else {
             return []
         }
@@ -786,23 +647,22 @@ struct PriceCalculatorView: View {
             for module in moduleGroup.modules {
                 if module.isAdded == true {
                     var slabPrice = 0
-                    if module.slabPrice == nil || module.slabPrice == 0 {
-                        if let slab1 = module.price?.slab1 {
-                            switch slab1 {
-                            case .integer(let i):
-                                slabPrice = i
-                            case .string(let j):
-                                print(j)
+                    if module.defaultprice == 0 {
+                        if !module.price.isEmpty {
+                            let modulePrice = module.price[0]
+                            if !modulePrice.isEmpty {
+                                let tempDPrice = Double(modulePrice) ?? 0.0
+                                slabPrice = Int(tempDPrice)
                             }
                         }
                     } else {
-                        slabPrice = module.slabPrice ?? 0
+                        slabPrice = Int(module.defaultprice ?? 0.0)
                     }
                     
                     price += slabPrice
                     
                     summaryModuleTotalPrice += slabPrice
-                    summaryModuleFeatureList.append(SummaryModuleFeature(code: module.code, multipliercode: "", price: slabPrice, prices: module.price, type: "module"))
+                    summaryModuleFeatureList.append(SummaryModuleFeature(name: module.name, code: module.code, multiplier: module.multiplier, multipliercode: "", price: module.price, type: "module", defaultprice: Int(module.defaultprice ?? 0.0), totalamount: Int(module.defaultprice ?? 0.0)))
                     
                     isAdded = true
                 }
@@ -810,64 +670,105 @@ struct PriceCalculatorView: View {
                 for feature in module.features {
                     if feature.isAdded == true {
                         var slabPrice = 0
-                        if feature.slabPrice == nil || feature.slabPrice == 0 {
-                            if let slab1 = feature.price?.slab1 {
-                                switch slab1 {
-                                case .integer(let i):
-                                    slabPrice = i
-                                case .string(let j):
-                                    print(j)
+                        if feature.defaultprice == 0 {
+                            if !feature.price.isEmpty {
+                                let featurePrice = feature.price[0]
+                                if !featurePrice.isEmpty {
+                                    let tempDPrice = Double(featurePrice) ?? 0.0
+                                    slabPrice = Int(tempDPrice)
                                 }
                             }
                         } else {
-                            slabPrice = feature.slabPrice ?? 0
+                            slabPrice = Int(feature.defaultprice ?? 0.0)
                         }
                         
                         price += slabPrice
                         
                         summaryModuleTotalPrice += slabPrice
-                        summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+                        summaryModuleFeatureList.append(SummaryModuleFeature(name: feature.name, code: feature.code, multiplier: feature.multiplier, multipliercode: "", price: feature.price, type: "feature", defaultprice: Int(feature.defaultprice ?? 0.0), totalamount: Int(feature.defaultprice ?? 0.0)))
                         
                         isAdded = true
                     }
                 }
                 
-                for submodule in module.submodules {
-                    for feature in submodule.features {
-                        if feature.isAdded == true {
-                            var slabPrice = 0
-                            if feature.slabPrice == nil || feature.slabPrice == 0 {
-                                if let slab1 = feature.price?.slab1 {
-                                    switch slab1 {
-                                    case .integer(let i):
-                                        slabPrice = i
-                                    case .string(let j):
-                                        print(j)
-                                    }
-                                }
-                            } else {
-                                slabPrice = feature.slabPrice ?? 0
-                            }
-                            
-                            price += slabPrice
-                            
-                            summaryModuleTotalPrice += slabPrice
-                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
-                            
-                            isAdded = true
+//                for submodule in module.submodules {
+//                    for feature in submodule.features {
+//                        if feature.isAdded == true {
+//                            var slabPrice = 0
+//                            if feature.slabPrice == nil || feature.slabPrice == 0 {
+//                                if let slab1 = feature.price?.slab1 {
+//                                    switch slab1 {
+//                                    case .integer(let i):
+//                                        slabPrice = i
+//                                    case .string(let j):
+//                                        print(j)
+//                                    }
+//                                }
+//                            } else {
+//                                slabPrice = feature.slabPrice ?? 0
+//                            }
+//
+//                            price += slabPrice
+//
+//                            summaryModuleTotalPrice += slabPrice
+//                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
+//
+//                            isAdded = true
+//                        }
+//                    }
+//                }
+            }
+        }
+        
+        var licensingParameters: [LicensingParameter] = []
+        
+        // Add all valid parameters
+        
+        for multiplier in baseModuleList[selectedBaseModuleIndex].multipliers {
+            let hideInApp = multiplier.slabConfig?.hideInApp ?? false
+            let label = (multiplier.label ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            if !hideInApp && !label.isEmpty {
+                if multiplier.slabConfig?.inputType == "slider" {
+                    continue
+                }
+                
+                var chips: [ChipsDataModel] = []
+                for (index, item) in multiplier.slabs.enumerated() {
+                    let regex = NSRegularExpression("((\\d+\\.?)*\\d*)")
+                    let isNumber = regex.matches(in: item)
+                    
+                    if isNumber {
+                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
+                        let increment = multiplier.slabConfig?.increment ?? 0
+                        
+                        let itemValue = Int(Double(item) ?? 0.0)
+                        
+                        var startItem = increment
+                        if index > 0 {
+                            startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
                         }
+                        
+                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? startItem == itemValue ? "\(itemValue)" : "\(startItem)-\(itemValue)" : startItem == itemValue ? "\(slabText)(\(itemValue))" : "\(slabText)(\(startItem)-\(itemValue))")
+                        chips.append(chipItem)
+                    } else {
+                        let chipItem: ChipsDataModel = ChipsDataModel(label: item)
+                        chips.append(chipItem)
                     }
+                }
+                
+                if chips.count > (multiplier.slabIndex ?? 0) {
+                    licensingParameters.append(LicensingParameter(name: multiplier.code, value: chips[multiplier.slabIndex ?? 0].label, slabid: 0))
                 }
             }
         }
         
         if isAdded {
-            summaryMap[baseModule.code] = SummaryItem(title: baseModule.name, price: price)
+            summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
             
-            self.viewModel.softwareLicenseModuleMap[baseModule.code] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, features: summaryModuleFeatureList)
+            self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
         } else {
-            summaryMap.removeValue(forKey: baseModule.code)
-            self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code)
+            summaryMap.removeValue(forKey: baseModule.code ?? "")
+            self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
         }
         
         self.viewModel.submitEnableDisablePublisher.send(self.viewModel.softwareLicenseModuleMap.count > 0)
@@ -888,13 +789,37 @@ struct PriceCalculatorView: View {
     }
     
     private func calculateSummaryCost(moduleCost: Int) {
+        let users = ceil((Double(moduleCost) / Double(AppConstants.perUserCost)))
+        let totalUsers = Int(users)
+        
+        if totalUsers <= AppConstants.additionalUsers {
+            additionalUsers = AppConstants.additionalUsers - totalUsers
+        } else {
+            additionalUsers = 0
+        }
+        usersIncluded = totalUsers
+        costAdditionalUsers = (AppConstants.costAdditionalUsers / AppConstants.additionalUsers) * additionalUsers
+        
         costSoftwareLicense = moduleCost + costAdditionalUsers
 
-        costImplementation = costRequirementAnalysis + costDeployment + costConfiguration + costOnsiteAdoptionSupport + costTraining + costProjectManagement
+        costRequirementAnalysis = (costSoftwareLicense * AppConstants.percentRequirementAnalysis) / 100
+        costDeployment = (costSoftwareLicense * AppConstants.percentDeployment) / 100
+        costOnsiteAdoptionSupport = (costSoftwareLicense * AppConstants.percentOnSiteAdoption) / 100
+        costTraining = (costSoftwareLicense * AppConstants.percentTraining) / 100
+        costProjectManagement = (costSoftwareLicense * AppConstants.percentProjectManagement) / 100
+        
+        costImplementation = costRequirementAnalysis +
+                costDeployment + costConfiguration +
+                costOnsiteAdoptionSupport +
+                costTraining + costProjectManagement
 
         costSoftwareCustomizationTotal = costSoftwareCustomization + costCustomizedReport
 
+        costConsultancy = (costSoftwareLicense * AppConstants.percentConsultancy) / 100
+
         costConsultancyServices = costConsultancy
+
+        costAnnualMaintenance = (costSoftwareLicense * AppConstants.percentMaintenance) / 100
 
         costAnnualMaintenanceTotal = costAnnualMaintenance
 
@@ -904,6 +829,6 @@ struct PriceCalculatorView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PriceCalculatorView().environmentObject(AppState())
+        PriceCalculatorView(productId: "prismperp").environmentObject(AppState())
     }
 }

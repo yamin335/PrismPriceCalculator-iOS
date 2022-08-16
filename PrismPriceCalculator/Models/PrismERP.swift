@@ -28,13 +28,13 @@ struct ServiceModuleResponseData: Codable {
 
 struct BaseServiceModule: Codable, Identifiable {
     let id = UUID()
-    let code: String?
     let name: String?
-    let moduleGroups: [ModuleGroup]
+    let code: String?
+    var moduleGroups: [ModuleGroup]
     var multipliers: [MultiplierClass]
     
     enum CodingKeys: String, CodingKey {
-        case id, code, name, moduleGroups, multipliers
+        case name, code, moduleGroups, multipliers
     }
 }
 
@@ -44,35 +44,33 @@ struct ModuleGroup: Codable, Identifiable {
     let code: String?
     let ModuleStartIndex: Int?
     let ModuleEndIndex: Int?
-    let modules: [ServiceModule]
-    let dependencies: [String?]
-    let showMultiplier: String?
-    let description: String?
+    var modules: [ServiceModule]
     var numberOfSelectedModule: Int? = 0
     
     enum CodingKeys: String, CodingKey {
-        case name, code, ModuleStartIndex, ModuleEndIndex, modules, dependencies, showMultiplier, description, numberOfSelectedModule
+        case name, code, ModuleStartIndex, ModuleEndIndex, modules
     }
 }
 
 struct ServiceModule: Codable, Identifiable {
     let id = UUID()
+    let licensingparameters: String?
     let name: String?
     let code: String?
     let description: String?
     let selfCode: String?
     let totalamount: Int?
     let discount: Int?
-    let features: [Feature]
+    var features: [Feature]
     let dependencies: [String]
     let multiplier: String?
     let price: [String]
     let excludeInAll: Bool?
-    var defaultprice: Double = 0.0
+    var defaultprice: Double? = 0.0
     var isAdded: Bool? = false
     
     enum CodingKeys: String, CodingKey {
-        case name, code, description, selfCode, totalamount, discount, features, dependencies, multiplier, price, excludeInAll, defaultprice, isAdded
+        case licensingparameters, name, code, description, selfCode, totalamount, discount, features, dependencies, multiplier, price, excludeInAll, defaultprice
     }
 }
 
@@ -88,11 +86,11 @@ struct Feature: Codable, Identifiable {
     let discount: Int?
     let multiplier: String?
     let price: [String]
-    var isAdded: Bool = false
-    var defaultprice: Double = 0.0
+    var isAdded: Bool? = false
+    var defaultprice: Double? = 0.0
     
     enum CodingKeys: String, CodingKey {
-        case name, code, parentcode, description, multipliercode, type, excludeInAll, discount, multiplier, price, isAdded, defaultprice
+        case name, code, parentcode, description, multipliercode, type, excludeInAll, discount, multiplier, price, defaultprice
     }
 }
 
@@ -104,10 +102,10 @@ struct MultiplierClass: Codable, Identifiable {
     let slabConfig: SlabConfig?
     let slabs: [String]
     let slabTexts: [String]
-    var slabIndex: Int = 0
+    var slabIndex: Int? = 0
     
     enum CodingKeys: String, CodingKey {
-        case name, code, label, slabConfig, slabs, slabTexts, slabIndex
+        case name, code, label, slabConfig, slabs, slabTexts
     }
 }
 

@@ -43,12 +43,14 @@ struct SoftwareLicenseModule: Codable {
 
 // MARK: - SummaryModuleFeature
 struct SummaryModuleFeature: Codable {
+    let name: String?
     let code: String?
     let multiplier: String?
     let multipliercode: String?
     let price: [String]
     let type: String?
     let defaultprice: Int?
+    let totalamount: Int?
 }
 
 // MARK: - SummaryService

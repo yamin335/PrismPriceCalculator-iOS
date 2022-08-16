@@ -11,6 +11,7 @@ struct ServiceCustomizationView: View {
     @EnvironmentObject var appGlobalState: AppState
     @State private var isShowingDetailView = false
     @State private var selectedTag: Int? = -1
+    var productId: String
     
     var body: some View {
         VStack {
@@ -18,7 +19,7 @@ struct ServiceCustomizationView: View {
                 EmptyView()
             }.isDetailLink(false)
             
-            NavigationLink(destination: PriceCalculatorView(), tag: 4, selection: self.$selectedTag) {
+            NavigationLink(destination: PriceCalculatorView(productId: productId), tag: 4, selection: self.$selectedTag) {
                 EmptyView()
             }
             VStack(alignment: .leading, spacing: 16) {
@@ -91,6 +92,6 @@ struct ServiceCustomizationView: View {
 
 struct ServiceCustomizationView_Previews: PreviewProvider {
     static var previews: some View {
-        ServiceCustomizationView().environmentObject(AppState())
+        ServiceCustomizationView(productId: "prismerp").environmentObject(AppState())
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct ModuleListItemView: View {
     @ObservedObject var viewModel: PriceCalculatorVM
     @Binding var moduleGroup: ModuleGroup
-    @Binding var module: Module
+    @Binding var module: ServiceModule
     @State var baseModuleCode: String
     @State var index: Int
     @State var price: Int = 0
@@ -19,7 +19,7 @@ struct ModuleListItemView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .top, spacing: 8) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(baseModuleCode == "START" ? "\(Double(index) + 1.0)" : module.name.toShortForm())
+                    Text((baseModuleCode == "START" ? "\(Double(index) + 1.0)" : module.name?.toShortForm()) ?? "")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
                         .frame(width: 45, height: 45)
@@ -34,7 +34,7 @@ struct ModuleListItemView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(module.name)
+                    Text(module.name ?? "")
                         .font(.system(size: 15, weight: .regular))
                         .foregroundColor(Color("textColor3"))
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -63,11 +63,11 @@ struct ModuleListItemView: View {
                                 module.features[featureIndex].isAdded = false
                             }
                             
-                            for subModuleIndex in 0..<module.submodules.count {
-                                for featureIndex in 0..<module.submodules[subModuleIndex].features.count {
-                                    module.features[featureIndex].isAdded = false
-                                }
-                            }
+//                            for subModuleIndex in 0..<module.submodules.count {
+//                                for featureIndex in 0..<module.submodules[subModuleIndex].features.count {
+//                                    module.features[featureIndex].isAdded = false
+//                                }
+//                            }
                             if let numberOfSelectedModule = moduleGroup.numberOfSelectedModule, numberOfSelectedModule > 0 {
                                 moduleGroup.numberOfSelectedModule = numberOfSelectedModule - 1
                             }
@@ -100,141 +100,39 @@ struct ModuleListItemView: View {
             }.frame(maxWidth: .infinity, minHeight: 70)
             
             VStack(alignment: .leading, spacing: 0) {
-                ForEach($module.submodules, id: \.id) { $subModule in
-                    SubModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, subModule: $subModule, module: $module)
-                }
+//                ForEach($module.submodules, id: \.id) { $subModule in
+//                    SubModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, subModule: $subModule, module: $module)
+//                }
                 
                 ForEach($module.features, id: \.id) { $feature in
                     FeatureListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, feature: $feature, module: $module)
                 }
             }
         }.onAppear {
-            if module.slabPrice == nil || module.slabPrice == 0 {
-                guard let slab1 = module.price?.slab1 else {
+            if module.defaultprice == nil || module.defaultprice == 0 {
+                guard !module.price.isEmpty else {
                     return
                 }
-                
-                switch slab1 {
-                case .integer(let i):
-                    setPrice(with: i)
-                case .string(let j):
-                    print(j)
-                }
+                let priceValue = module.price[0]
+                setPrice(with: Int(Double(priceValue) ?? 0.0))
             } else {
-                price = module.slabPrice ?? 0
+                price = Int(module.defaultprice ?? 0.0)
             }
         }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
-            guard let multiplierCode = module.price?.multiplier else {
+            guard let multiplierCode = module.multiplier else {
                 return
             }
             
-            switch multiplierCode {
-            case .integer(let intValue):
-                print(intValue)
-            case .string(let stringValue):
-                if pair.0 == stringValue {
-                    calculatePrice(with: pair.1)
-                }
+            if pair.0 == multiplierCode && module.price.count > pair.1 {
+                let priceValue = module.price[pair.1]
+                setPrice(with: Int(Double(priceValue) ?? 0.0))
             }
         }
     }
     
     private func setPrice(with value: Int) {
         price = value
-        module.slabPrice = value
-    }
-    
-    private func calculatePrice(with index: Int) {
-        switch index {
-        case 0:
-            guard let slab1 = module.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 1:
-            guard let slab2 = module.price?.slab2 else {
-                return
-            }
-            
-            switch slab2 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 2:
-            guard let slab3 = module.price?.slab3 else {
-                return
-            }
-            
-            switch slab3 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 3:
-            guard let slab4 = module.price?.slab4 else {
-                return
-            }
-            
-            switch slab4 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 4:
-            guard let slab5 = module.price?.slab5 else {
-                return
-            }
-            
-            switch slab5 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 5:
-            guard let slab6 = module.price?.slab6 else {
-                return
-            }
-            
-            switch slab6 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        case 6:
-            guard let slab7 = module.price?.slab7 else {
-                return
-            }
-            
-            switch slab7 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        default:
-            guard let slab1 = module.price?.slab1 else {
-                return
-            }
-            
-            switch slab1 {
-            case .integer(let i):
-                setPrice(with: i)
-            case .string(let j):
-                print(j)
-            }
-        }
+        module.defaultprice = Double(value)
     }
 }
 

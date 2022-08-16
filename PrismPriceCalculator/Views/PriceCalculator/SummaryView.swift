@@ -14,6 +14,8 @@ struct SummaryView: View {
     
     @Binding var costSoftwareLicense: Int
     @Binding var costAdditionalUsers: Int
+    @Binding var additionalUsers: Int
+    @Binding var usersIncluded: Int
     @Binding var costImplementation: Int
     @Binding var costRequirementAnalysis: Int
     @Binding var costDeployment: Int
@@ -63,20 +65,22 @@ struct SummaryView: View {
                 }
                 
                 HStack(spacing: 5) {
-                    Text("0 Users Included")
+                    Text("\(usersIncluded) Users Included")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
                     Spacer()
                     Text("[INCLUDED]")
                         .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
                 }
                 
-                HStack(spacing: 5) {
-                    Text("5 Additional User")
-                        .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
-                    Spacer()
-                    Text(costAdditionalUsers > 0 ? "৳\(costAdditionalUsers)" : "-")
-                        .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
-                }.padding(.top, 2)
+                if additionalUsers > 0 {
+                    HStack(spacing: 5) {
+                        Text("\(additionalUsers) Additional User")
+                            .font(.system(size: 13, weight: .regular)).foregroundColor(Color("textColor2"))
+                        Spacer()
+                        Text(costAdditionalUsers > 0 ? "৳\(costAdditionalUsers)" : "-")
+                            .font(.system(size: 13, weight: .regular)).foregroundColor(Color("green1"))
+                    }.padding(.top, 2)
+                }
             }
             
             Group {
@@ -229,7 +233,7 @@ struct SummaryView: View {
             header: "Annual Maintenance Cost", totalamount: costAnnualMaintenanceTotal,
             modules: [
                 SummaryServiceModule(name: "Annual Maintenance Cost", details: nil,
-                                     detailsValue: nil, detailsMultiplier: nil,
+                                     details_value: nil, details_multiplier: nil,
                                      totalamount: costAnnualMaintenance)
             ]
         )
@@ -238,7 +242,7 @@ struct SummaryView: View {
             header: "Consultancy Services", totalamount: costConsultancyServices,
             modules: [
                 SummaryServiceModule(name: "Consultancy", details: " man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 20000,
+                                     details_value: 0, details_multiplier: 20000,
                                      totalamount: costConsultancy)
             ]
         )
@@ -247,10 +251,10 @@ struct SummaryView: View {
             header: "Software Customization", totalamount: costSoftwareCustomizationTotal,
             modules: [
                 SummaryServiceModule(name: "Software Customization", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 16000,
+                                     details_value: 0, details_multiplier: 16000,
                                      totalamount: costSoftwareCustomization),
                 SummaryServiceModule(name: "Customized Report", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 16000,
+                                     details_value: 0, details_multiplier: 16000,
                                      totalamount: costCustomizedReport)
             ]
         )
@@ -259,22 +263,22 @@ struct SummaryView: View {
             header: "Implementation", totalamount: costImplementation,
             modules: [
                 SummaryServiceModule(name: "Requirement Analysis", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 10000,
+                                     details_value: 0, details_multiplier: 10000,
                                      totalamount: 0),
                 SummaryServiceModule(name: "Deployment", details: "(onetime) x ৳",
-                                     detailsValue: 1, detailsMultiplier: 10000,
+                                     details_value: 1, details_multiplier: 10000,
                                      totalamount: costImplementation),
                 SummaryServiceModule(name: "Configuration", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 10000,
+                                     details_value: 0, details_multiplier: 10000,
                                      totalamount: 0),
                 SummaryServiceModule(name: "Onsite Adoption Support", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 6000,
+                                     details_value: 0, details_multiplier: 6000,
                                      totalamount: 0),
                 SummaryServiceModule(name: "Training", details: "sessions x ৳",
-                                     detailsValue: 0, detailsMultiplier: 6000,
+                                     details_value: 0, details_multiplier: 6000,
                                      totalamount: 0),
                 SummaryServiceModule(name: "Project Management", details: "man-days x ৳",
-                                     detailsValue: 0, detailsMultiplier: 12000,
+                                     details_value: 0, details_multiplier: 12000,
                                      totalamount: 0)
             ]
         )
@@ -298,9 +302,9 @@ struct SummaryView: View {
         let summaryStoreBody = SummaryStoreModel(salesmanid: UserSessionManager.userAccount?.salesmanid,
                                                  customerid: UserSessionManager.userAccount?.id, details: false,
                                                  header: "Summery", productid: "prismerp",
-                                                 totalamount: totatAmount, softwareLicense: summarySoftwareLicense,
-                                                 implementation: implementation, customization: customization,
-                                                 consultancy: consultancy, maintainance: maintenance)
+                                                 totalamount: totatAmount, Software_License: summarySoftwareLicense,
+                                                 Implementation: implementation, Customization: customization,
+                                                 Consultancy: consultancy, Maintainance: maintenance, company: "RTC Hubs")
         viewModel.submitQuotation(quotationStoreBody: summaryStoreBody)
     }
 }

@@ -78,3 +78,18 @@ extension Binding {
         )
     }
 }
+
+extension NSRegularExpression {
+    convenience init(_ pattern: String) {
+        do {
+            try self.init(pattern: pattern)
+        } catch {
+            preconditionFailure("Illegal regular expression: \(pattern).")
+        }
+    }
+    
+    func matches(in value: String) -> Bool {
+        let range = NSRange(location: 0, length: value.utf16.count)
+        return firstMatch(in: value, options: [], range: range) != nil
+    }
+}

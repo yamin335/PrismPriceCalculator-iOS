@@ -12,4 +12,16 @@ struct AppConstants {
     static let keyIsLoggedIn = "is_logged_in"
     static let keyLoginToken = "login_token"
     static let keyUserAccount = "user_account"
+    static let percentRequirementAnalysis = 10
+    static let percentDeployment = 5
+    static let percentOnSiteAdoption = 5
+    static let percentTraining = 3
+    static let percentProjectManagement = 10
+    static let percentConsultancy = 10
+    static let percentMaintenance = 20
+    static let costAdditionalUsers = 150000
+    static let unitPriceSoftwareCustomization = 16000
+    static let unitPriceCustomizedReports = 16000
+    static let perUserCost = 50000
+    static let additionalUsers = 5
 }

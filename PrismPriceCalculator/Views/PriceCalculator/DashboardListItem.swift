@@ -12,7 +12,7 @@ struct DashboardListItem: View {
     @State private var selectedTag: Int? = -1
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            NavigationLink(destination: ServiceCustomizationView(), tag: 1, selection: self.$selectedTag) {
+            NavigationLink(destination: ServiceCustomizationView(productId: product.id ?? ""), tag: 1, selection: self.$selectedTag) {
                 EmptyView()
             }.isDetailLink(false)
             AsyncImage(

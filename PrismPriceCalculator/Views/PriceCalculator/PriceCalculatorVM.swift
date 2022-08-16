@@ -19,6 +19,7 @@ class PriceCalculatorVM: BaseViewModel {
     
     var submitEnableDisablePublisher = PassthroughSubject<Bool, Never>()
     var selectedMultiplierPublisher = PassthroughSubject<(String, Int), Never>()
+    var sliderValuePublisher = PassthroughSubject<(String, Int), Never>()
     
     var softwareLicenseModuleList: [SoftwareLicenseModule] = []
     var softwareLicenseModuleMap: [String : SoftwareLicenseModule] = [:]
@@ -58,6 +59,8 @@ class PriceCalculatorVM: BaseViewModel {
                         break
                     case .failure(let error):
                         self.errorToastPublisher.send((true, error.localizedDescription))
+                        let des = error.localizedDescription
+                        print(des)
                 }
             }, receiveValue: { response in
                 if response.code == 2000001 {
