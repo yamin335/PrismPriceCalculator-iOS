@@ -14,17 +14,7 @@ struct SliderItem: View {
     
     var body: some View {
         HStack {
-            Text("STD(0)")
-                .font(.system(size: 15))
-                .foregroundColor(Color("textColor2"))
-                .padding(.leading, 10)
-            
-            Slider(value: $sliderValue, in: 0...sliderRange, step: increment)
-            
-            Text("MAX(\(sliderRange))")
-                .font(.system(size: 15))
-                .foregroundColor(Color("textColor2"))
-                .padding(.trailing, 10)
+            Slider(value: $sliderValue, in: 0...sliderRange, step: increment).padding(.horizontal, 20)
         }
     }
 }

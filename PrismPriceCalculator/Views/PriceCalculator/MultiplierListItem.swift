@@ -77,18 +77,27 @@ struct MultiplierListItem: View {
                 let isNumber = regex.matches(in: item)
                 
                 if isNumber {
-                    let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
-                    let increment = multiplier.slabConfig?.increment ?? 0
-                    
-                    let itemValue = Int(Double(item) ?? 0.0)
-                    
-                    var startItem = increment
-                    if index > 0 {
-                        startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
+                    if multiplier.slabConfig?.showRange == true {
+                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
+                        let increment = 1
+                        
+                        let itemValue = Int(Double(item) ?? 0.0)
+                        
+                        var startItem = increment
+                        if index > 0 {
+                            startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
+                        }
+                        
+                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(startItem)-\(itemValue)" : "\(slabText)(\(startItem)-\(itemValue))")
+                        chips.append(chipItem)
+                    } else {
+                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
+                        
+                        let itemValue = Int(Double(item) ?? 0.0)
+                        
+                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(itemValue)" : "\(slabText)(\(itemValue))")
+                        chips.append(chipItem)
                     }
-                    
-                    let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? startItem == itemValue ? "\(itemValue)" : "\(startItem)-\(itemValue)" : startItem == itemValue ? "\(slabText)(\(itemValue))" : "\(slabText)(\(startItem)-\(itemValue))")
-                    chips.append(chipItem)
                 } else {
                     let chipItem: ChipsDataModel = ChipsDataModel(label: item)
                     chips.append(chipItem)

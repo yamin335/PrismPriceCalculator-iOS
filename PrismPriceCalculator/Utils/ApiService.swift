@@ -104,6 +104,16 @@ class ApiService {
             return nil
         }
         
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+            return nil
+        }
+        
+        print(json)
+        
+//        guard let jsonString = String(data: json, encoding: String.Encoding.ascii) else {
+//            return nil
+//        }
+        
         guard let urlComponents = URLComponents(string: NetworkUtils.submitQuotation) else {
             print("Problem in UrlComponent creation...")
             return nil

@@ -361,6 +361,7 @@ struct PriceCalculatorView: View {
                    if self.baseModuleList.count > 0 {
                        self.selectedBaseModuleIndex = 0
                        prepareHeaderView()
+                       summaryList = getSummary(baseModuleList: self.baseModuleList)
                    }
                }.onAppear {
                    viewModel.productDetails(productId: productId)
@@ -609,27 +610,24 @@ struct PriceCalculatorView: View {
             return
         }
         
-        //var multipliersMap: [String : MultiplierClass] = [:]
-        //var multipliers: [MultiplierClass] = []
+        var multipliersMap: [String : MultiplierClass] = [:]
+        var multipliers: [MultiplierClass] = []
 
-//        for moduleGroup in baseModule.moduleGroups {
-//            for multiplier in moduleGroup.multipliers {
-//                let hideInApp = multiplier.slabConfig.hideInApp ?? false
-//                let label = multiplier.label.trimmingCharacters(in: .whitespacesAndNewlines)
-//                if !hideInApp && multipliersMap[multiplier.code] == nil && !label.isEmpty {
-//                    multipliersMap[multiplier.code] = multiplier
-//                }
-//            }
-//        }
-//
-//        for key in multipliersMap.keys {
-//            if let multiplier = multipliersMap[key] {
-//                multipliers.append(multiplier)
-//            }
-//        }
+        for multiplier in baseModule.multipliers {
+            let hideInApp = multiplier.slabConfig?.hideInApp ?? false
+            let label = multiplier.label?.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !hideInApp && multipliersMap[multiplier.code ?? ""] == nil && !(label ?? "").isEmpty {
+                multipliersMap[multiplier.code ?? ""] = multiplier
+            }
+        }
 
-        //self.multipliers = multipliers
-        self.hasHeaderView = !baseModule.multipliers.isEmpty
+        for key in multipliersMap.keys {
+            if let multiplier = multipliersMap[key] {
+                multipliers.append(multiplier)
+            }
+        }
+
+        self.hasHeaderView = !multipliers.isEmpty
     }
     
     private func getSummary(baseModuleList: [BaseServiceModule]) -> [SummaryItem] {
@@ -734,22 +732,31 @@ struct PriceCalculatorView: View {
                 
                 var chips: [ChipsDataModel] = []
                 for (index, item) in multiplier.slabs.enumerated() {
-                    let regex = NSRegularExpression("((\\d+\\.?)*\\d*)")
+                    let regex = NSRegularExpression(#"^[0-9]+(?:[.,][0-9]+)*$"#)
                     let isNumber = regex.matches(in: item)
                     
                     if isNumber {
-                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
-                        let increment = multiplier.slabConfig?.increment ?? 0
-                        
-                        let itemValue = Int(Double(item) ?? 0.0)
-                        
-                        var startItem = increment
-                        if index > 0 {
-                            startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
+                        if multiplier.slabConfig?.showRange == true {
+                            let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
+                            let increment = 1
+                            
+                            let itemValue = Int(Double(item) ?? 0.0)
+                            
+                            var startItem = increment
+                            if index > 0 {
+                                startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
+                            }
+                            
+                            let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(startItem)-\(itemValue)" : "\(slabText)(\(startItem)-\(itemValue))")
+                            chips.append(chipItem)
+                        } else {
+                            let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
+                            
+                            let itemValue = Int(Double(item) ?? 0.0)
+                            
+                            let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(itemValue)" : "\(slabText)(\(itemValue))")
+                            chips.append(chipItem)
                         }
-                        
-                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? startItem == itemValue ? "\(itemValue)" : "\(startItem)-\(itemValue)" : startItem == itemValue ? "\(slabText)(\(itemValue))" : "\(slabText)(\(startItem)-\(itemValue))")
-                        chips.append(chipItem)
                     } else {
                         let chipItem: ChipsDataModel = ChipsDataModel(label: item)
                         chips.append(chipItem)
@@ -762,13 +769,17 @@ struct PriceCalculatorView: View {
             }
         }
         
-        if isAdded {
-            summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
-            
+        if selectedBaseModuleIndex == 0 && self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] == nil {
             self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
         } else {
-            summaryMap.removeValue(forKey: baseModule.code ?? "")
-            self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
+            if isAdded {
+                summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
+                
+                self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
+            } else {
+                summaryMap.removeValue(forKey: baseModule.code ?? "")
+                self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
+            }
         }
         
         self.viewModel.submitEnableDisablePublisher.send(self.viewModel.softwareLicenseModuleMap.count > 0)
