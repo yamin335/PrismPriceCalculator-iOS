@@ -275,6 +275,8 @@ struct PriceCalculatorView: View {
     @State var costAnnualMaintenance = 30000
     @State var costTotal = 0
     @State var submitButtonDisabled = true
+    @State var summaryListUpdated = true
+    
     
     @StateObject var viewModel = PriceCalculatorVM()
     
@@ -287,120 +289,157 @@ struct PriceCalculatorView: View {
     
     @State private var hasHeaderView = false
     
+    @State private var bottomSheetShown = false
+    
+    var bottomSheetHeaderView: some View {
+        VStack(alignment: .leading) {
+            Text("Summary")
+                .font(.system(size: 20)).bold()
+                .foregroundColor(Color("textColor1"))
+            
+            HStack(spacing: 5) {
+                Text("Total")
+                    .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
+                Spacer()
+                Text("৳\(costTotal)")
+                    .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
+            }.padding(.top, 1)
+        }
+        .padding([.leading, .trailing])
+        .background(RoundedRectangle(cornerRadius: 5).fill(.white))
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-               ScrollView {
-                   VStack(alignment: .leading, spacing: 20) {
-                       if selectedBaseModuleIndex >= 0 {
-                           if hasHeaderView {
-                               VStack {
-                                   HStack(alignment: .center, spacing: 8) {
-                                       Text("Licensing Parameters")
-                                           .foregroundColor(Color("textColor1"))
-                                           .frame(maxWidth: .infinity, alignment: .leading)
-                                       Button(action: {
-                                           withAnimation {
-                                           }
-                                       }) {
-                                           Text("Save Changes")
-                                               .font(.system(size: 14, weight: .regular))
-                                               .foregroundColor(.white)
-                                               .padding(.horizontal, 15)
-                                               .padding(.vertical, 6)
-                                               .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
-                                       }
-                                   }
-                                   .padding(.horizontal, 10)
-                                   .padding(.top, 10)
-                                   
-                                   Divider().padding(.horizontal, 10)
-                                   
-                                   ForEach($baseModuleList[selectedBaseModuleIndex].multipliers, id: \.id) { $multiplier in
-                                       let hideInApp = multiplier.slabConfig?.hideInApp ?? false
-                                       let label = (multiplier.label ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-                                       if !hideInApp && !label.isEmpty {
-                                           MultiplierListItem(viewModel: viewModel, multiplier: $multiplier)
-                                       }
-                                   }
-                               }
-                               .background(RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("blue1"), lineWidth: 1))
-                           }
-                           
-                           ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
-                               ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code ?? "")
-                                   .overlay (
-                                        RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
-                                   )
-                           }
-                           .onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
-                               calculateModuleAndFeaturePrice(with: pair)
-                           }
-                       }
-                   }
-                   .padding(.bottom, 100)
-               }
-               .padding(.leading, 10)
-               .padding(.trailing, 10)
-               .navigationTitle("Prism Price Calculator")
-               .navigationBarItems(trailing: (
-                   Button(action: {
-                       withAnimation {
-                           self.showSideMenu.toggle()
-                       }
-                   }) {
-                       Image(systemName: self.showSideMenu ? "clear" : "line.horizontal.3")
-                           .imageScale(.large)
-                   }
-               )).onReceive(self.viewModel.shouldCalculateData.receive(on: RunLoop.main)) { shouldCalculateData in
-                   if shouldCalculateData {
-                       summaryList = getSummary(baseModuleList: baseModuleList)
-                   }
-               }.onReceive(self.viewModel.baseModuleListPublisher.receive(on: RunLoop.main)) { baseModuleList in
-                   self.baseModuleList = baseModuleList
-                   if self.baseModuleList.count > 0 {
-                       self.selectedBaseModuleIndex = 0
-                       prepareHeaderView()
-                       summaryList = getSummary(baseModuleList: self.baseModuleList)
-                   }
-               }.onAppear {
-                   viewModel.productDetails(productId: productId)
-                   calculateSummaryCost(moduleCost: 0)
-                   summaryList = getSummary(baseModuleList: baseModuleList)
-               }
-               
-               if self.showSuccessToast {
-                   SuccessToast(message: self.successMessage).onAppear {
-                       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                           withAnimation() {
-                               self.showSuccessToast = false
-                               self.successMessage = ""
-                           }
-                       }
-                   }
-               }
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        if selectedBaseModuleIndex >= 0 {
+                            if hasHeaderView {
+                                VStack {
+                                    HStack(alignment: .center, spacing: 8) {
+                                        Text("Licensing Parameters")
+                                            .foregroundColor(Color("textColor1"))
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+//                                        Button(action: {
+//                                            withAnimation {
+//                                            }
+//                                        }) {
+//                                            Text("Save Changes")
+//                                                .font(.system(size: 14, weight: .regular))
+//                                                .foregroundColor(.white)
+//                                                .padding(.horizontal, 15)
+//                                                .padding(.vertical, 6)
+//                                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
+//                                        }
+                                    }
+                                    .padding(.horizontal, 10)
+                                    .padding(.top, 10)
+                                    
+                                    Divider().padding(.horizontal, 10)
+                                    
+                                    ForEach($baseModuleList[selectedBaseModuleIndex].multipliers, id: \.id) { $multiplier in
+                                        let hideInApp = multiplier.slabConfig?.hideInApp ?? false
+                                        let label = (multiplier.label ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                                        if !hideInApp && !label.isEmpty {
+                                            MultiplierListItem(viewModel: viewModel, multiplier: $multiplier)
+                                        }
+                                    }
+                                }
+                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("blue1"), lineWidth: 1))
+                            }
+                            
+                            ForEach($baseModuleList[selectedBaseModuleIndex].moduleGroups) { $moduleGroup in
+                                ModuleGroupListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, baseModuleCode: baseModuleList[selectedBaseModuleIndex].code ?? "")
+                                    .overlay (
+                                         RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
+                                    )
+                            }
+                            .onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+                                calculateModuleAndFeaturePrice(with: pair)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 100)
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("Prism Price Calculator")
+                .navigationBarItems(trailing: (
+                    Button(action: {
+                        withAnimation {
+                            self.showSideMenu.toggle()
+                        }
+                    }) {
+                        Image(systemName: self.showSideMenu ? "clear" : "line.horizontal.3")
+                            .imageScale(.large)
+                    }
+                )).onReceive(self.viewModel.shouldCalculateData.receive(on: RunLoop.main)) { shouldCalculateData in
+                    if shouldCalculateData {
+                        summaryList = getSummary(baseModuleList: baseModuleList)
+                        summaryListUpdated.toggle()
+                    }
+                }.onReceive(self.viewModel.baseModuleListPublisher.receive(on: RunLoop.main)) { baseModuleList in
+                    self.baseModuleList = baseModuleList
+                    if self.baseModuleList.count > 0 {
+                        self.selectedBaseModuleIndex = 0
+                        prepareHeaderView()
+                        summaryList = getSummary(baseModuleList: self.baseModuleList)
+                        summaryListUpdated.toggle()
+                    }
+                }.onAppear {
+                    viewModel.productDetails(productId: productId)
+                    calculateSummaryCost(moduleCost: 0)
+                    summaryList = getSummary(baseModuleList: baseModuleList)
+                    summaryListUpdated.toggle()
+                }
+                
+                DraggableBottomSheet(
+                    isOpen: self.$bottomSheetShown,
+                    maxHeight: geometry.size.height + 25,
+                    headerView: {
+                        bottomSheetHeaderView
+                    }) {
+                    VStack(spacing: 0) {
+                        SummaryView(summaryList: $summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel).background(.white)
+                    }
+                }
+                
+                if self.showSuccessToast {
+                    SuccessToast(message: self.successMessage).onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            withAnimation() {
+                                self.showSuccessToast = false
+                                self.successMessage = ""
+                            }
+                        }
+                    }
+                }
 
-               if showErrorToast {
-                   ErrorToast(message: self.errorMessage).onAppear {
-                       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                           withAnimation() {
-                               self.showErrorToast = false
-                               self.errorMessage = ""
-                           }
-                       }
-                   }
-               }
+                if showErrorToast {
+                    ErrorToast(message: self.errorMessage).onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            withAnimation() {
+                                self.showErrorToast = false
+                                self.errorMessage = ""
+                            }
+                        }
+                    }
+                }
 
-               if self.showLoader {
-                   HStack(alignment: .center) {
-                       Spacer()
-                       SpinLoaderView()
-                       Spacer()
-                   }
-               }
-           }.onReceive(self.viewModel.quotationStatusPublisher.receive(on: RunLoop.main)) { isSubmitted in
+                if self.showLoader {
+                    HStack(alignment: .center) {
+                        Spacer()
+                        SpinLoaderView()
+                        Spacer()
+                    }
+                }
+            }.onReceive(self.viewModel.quotationStatusPublisher.receive(on: RunLoop.main)) { isSubmitted in
                if isSubmitted {
-                   
+                   withAnimation {
+                       bottomSheetShown = false
+                   }
                }
            }.onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { isShowing in
                self.showLoader = isShowing
@@ -430,7 +469,9 @@ struct PriceCalculatorView: View {
                    print("No multiplier code mached!")
                }
            }
-       }.sideMenu(isShowing: $showSideMenu) {
+       }
+        .edgesIgnoringSafeArea(.bottom)
+        .sideMenu(isShowing: $showSideMenu) {
             VStack(alignment: .leading) {
               Button(action: {
                 withAnimation {
@@ -488,28 +529,6 @@ struct PriceCalculatorView: View {
                Spacer()
              }.padding()
              .frame(maxWidth: .infinity, alignment: .trailing)
-        }.bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [ .allowContentDrag, .relativePositionValue], headerContent: {
-            //The name of the book as the heading and the author as the subtitle with a divider.
-            VStack(alignment: .leading) {
-                Text("Summary")
-                    .font(.system(size: 20)).bold()
-                    .foregroundColor(Color("textColor1"))
-                
-                HStack(spacing: 5) {
-                    Text("Total")
-                        .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
-                    Spacer()
-                    Text("৳\(costTotal)")
-                        .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                }.padding(.top, 1)
-            }
-            .padding([.top, .bottom, .leading, .trailing], 8)
-            .background(RoundedRectangle(cornerRadius: 5).fill(.white)) // Double tap is not working on every point of the header view without a solid background color. Don't know why! may be a bug of SwiftUI.
-        }) {
-            //A short introduction to the book, with a "Read More" button and a "Bookmark" button.
-            SummaryView(summaryList: summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel)
-                .padding([.top, .bottom, .leading, .trailing], 8)
-                .background(.white)
         }
     }
     
@@ -769,7 +788,7 @@ struct PriceCalculatorView: View {
             }
         }
         
-        if selectedBaseModuleIndex == 0 && self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] == nil {
+        if selectedBaseModuleIndex == 0 {
             self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
         } else {
             if isAdded {
@@ -816,6 +835,7 @@ struct PriceCalculatorView: View {
         costRequirementAnalysis = (costSoftwareLicense * AppConstants.percentRequirementAnalysis) / 100
         costDeployment = (costSoftwareLicense * AppConstants.percentDeployment) / 100
         costOnsiteAdoptionSupport = (costSoftwareLicense * AppConstants.percentOnSiteAdoption) / 100
+        costConfiguration = (costSoftwareLicense * AppConstants.percentConfiguration) / 100
         costTraining = (costSoftwareLicense * AppConstants.percentTraining) / 100
         costProjectManagement = (costSoftwareLicense * AppConstants.percentProjectManagement) / 100
         

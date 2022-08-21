@@ -126,7 +126,7 @@ struct ModuleGroupSummary {
     let price: Int
 }
 
-struct SummaryItem {
+struct SummaryItem: Equatable {
     let id = UUID()
     let title: String
     let price: Int

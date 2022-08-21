@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct AppConstants {
     // MARK: - Local Storage Keys
@@ -14,6 +15,7 @@ struct AppConstants {
     static let keyUserAccount = "user_account"
     static let percentRequirementAnalysis = 10
     static let percentDeployment = 5
+    static let percentConfiguration = 5
     static let percentOnSiteAdoption = 5
     static let percentTraining = 3
     static let percentProjectManagement = 10
@@ -24,4 +26,11 @@ struct AppConstants {
     static let unitPriceCustomizedReports = 16000
     static let perUserCost = 50000
     static let additionalUsers = 5
+    
+    // MARK: - BottomSheetConstants
+    static let radius: CGFloat = 16
+    static let indicatorHeight: CGFloat = 5
+    static let indicatorWidth: CGFloat = 50
+    static let snapRatio: CGFloat = 0.25
+    static let minHeightRatio: CGFloat = 0.2
 }

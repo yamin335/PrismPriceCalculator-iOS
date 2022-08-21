@@ -25,6 +25,7 @@
 		6E3FD358288598420015DBAF /* SpinLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3FD357288598420015DBAF /* SpinLoaderView.swift */; };
 		6E594DC728964E9B004E4C2B /* AllProductsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E594DC628964E9B004E4C2B /* AllProductsModels.swift */; };
 		6E5F35EF288E669600177C04 /* SliderMultiplierListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F35EE288E669600177C04 /* SliderMultiplierListItem.swift */; };
+		6E6AC1D028B2166800A45641 /* DraggableBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6AC1CF28B2166800A45641 /* DraggableBottomSheet.swift */; };
 		6E7B8557286B02BE005C158E /* ChipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8556286B02BE005C158E /* ChipGroup.swift */; };
 		6E7B8559286B033F005C158E /* ChipDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B8558286B033F005C158E /* ChipDataModel.swift */; };
 		6E7B855B286B071E005C158E /* HeaderStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B855A286B071E005C158E /* HeaderStart.swift */; };
@@ -91,6 +92,7 @@
 		6E3FD357288598420015DBAF /* SpinLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinLoaderView.swift; sourceTree = "<group>"; };
 		6E594DC628964E9B004E4C2B /* AllProductsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsModels.swift; sourceTree = "<group>"; };
 		6E5F35EE288E669600177C04 /* SliderMultiplierListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderMultiplierListItem.swift; sourceTree = "<group>"; };
+		6E6AC1CF28B2166800A45641 /* DraggableBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableBottomSheet.swift; sourceTree = "<group>"; };
 		6E7B8556286B02BE005C158E /* ChipGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipGroup.swift; sourceTree = "<group>"; };
 		6E7B8558286B033F005C158E /* ChipDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDataModel.swift; sourceTree = "<group>"; };
 		6E7B855A286B071E005C158E /* HeaderStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStart.swift; sourceTree = "<group>"; };
@@ -156,6 +158,14 @@
 				6E3FD34B28851D660015DBAF /* BaseViewModel.swift */,
 			);
 			path = base;
+			sourceTree = "<group>";
+		};
+		6E6AC1CE28B2164B00A45641 /* DraggableBottomSheet */ = {
+			isa = PBXGroup;
+			children = (
+				6E6AC1CF28B2166800A45641 /* DraggableBottomSheet.swift */,
+			);
+			path = DraggableBottomSheet;
 			sourceTree = "<group>";
 		};
 		6E7B8553286AFFED005C158E /* CustomViews */ = {
@@ -323,6 +333,7 @@
 		E64FA8C0284DD886009EA9E2 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6E6AC1CE28B2164B00A45641 /* DraggableBottomSheet */,
 				E64FA8DE284DD96D009EA9E2 /* BottomSheet */,
 				E64FA8C1284DD886009EA9E2 /* AppleDemo.swift */,
 				E64FA8D0284DD886009EA9E2 /* SwiftUISideMenu.swift */,
@@ -465,6 +476,7 @@
 				6E2B8470286EB90A00A84D89 /* HeaderEAM.swift in Sources */,
 				6EAA05722852FEF900902DE2 /* SubModuleListItem.swift in Sources */,
 				6EAA05702852FEA100902DE2 /* ModuleListItemView.swift in Sources */,
+				6E6AC1D028B2166800A45641 /* DraggableBottomSheet.swift in Sources */,
 				E64FA8F0284DD96D009EA9E2 /* DragGestureExtension.swift in Sources */,
 				E603EACB284638A30066BD07 /* ButtonStyle.swift in Sources */,
 				E64FA8F5284DD96D009EA9E2 /* RoundedCorner.swift in Sources */,

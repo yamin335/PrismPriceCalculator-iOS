@@ -10,8 +10,7 @@ import SwiftUI
 struct SummaryView: View {
 //    var moduleGroup: ModuleGroup
 //    @Binding var isExpanded: Bool
-    @State var summaryList: [SummaryItem] = []
-    
+    @Binding var summaryList: [SummaryItem]
     @Binding var costSoftwareLicense: Int
     @Binding var costAdditionalUsers: Int
     @Binding var additionalUsers: Int
@@ -36,6 +35,8 @@ struct SummaryView: View {
     @ObservedObject var  viewModel: PriceCalculatorVM
     
     @State private var selectedTag: Int? = -1
+    @State var shouldUpdate: Bool = true
+    
     
     
     var body: some View {
@@ -50,7 +51,7 @@ struct SummaryView: View {
                     Spacer()
                     Text(costSoftwareLicense > 0 ? "৳\(costSoftwareLicense)" : "-")
                         .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
-                }.padding(.top)
+                }.padding(.top, 5)
                 
                 Divider()
                 
@@ -225,7 +226,8 @@ struct SummaryView: View {
                 .background(RoundedRectangle(cornerRadius: 10, style: .circular).fill(submitButtonDisabled ? Color("gray5") : Color("blue2"))).padding(.top, 10)
             }.disabled(submitButtonDisabled)
             Spacer()
-        }.padding([.horizontal])
+        }
+        .padding([.horizontal])
     }
     
     private func submitSummary() {
