@@ -44,14 +44,13 @@ struct DraggableBottomSheet<Header: View, Content: View>: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                HStack {
-                    Spacer()
+                VStack(spacing: 0) {
                     self.indicator.onTapGesture {
                         withAnimation {
                             isOpen.toggle()
                         }
                     }.padding()
-                    Spacer()
+                    self.header
                 }
                 .background(.white)
                 .onTapGesture(count: 2, perform: {
@@ -59,11 +58,7 @@ struct DraggableBottomSheet<Header: View, Content: View>: View {
                         isOpen.toggle()
                     }
                 })
-                self.header.onTapGesture(count: 2, perform: {
-                    withAnimation {
-                        isOpen.toggle()
-                    }
-                })
+                
                 self.content
             }
             .edgesIgnoringSafeArea(.bottom)

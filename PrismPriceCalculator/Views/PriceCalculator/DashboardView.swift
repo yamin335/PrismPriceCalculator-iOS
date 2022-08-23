@@ -42,6 +42,7 @@ struct DashboardView: View {
                 }
                 .onAppear {
                     self.viewModel.loadAllProducts()
+                    AppGlobalValues.isQuotationSubmitted = false
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {

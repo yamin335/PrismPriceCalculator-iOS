@@ -239,13 +239,12 @@ struct ModuleGroupListItemView: View {
 }
 
 struct PriceCalculatorView: View {
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var appGlobalState: AppState
     var productId: String
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
     let bookmarkColors: [Color] = [Color(red: 0.28, green: 0.28, blue: 0.53), Color(red: 0.44, green: 0.44, blue: 0.83)]
-    
-    @State var bottomSheetPosition: BottomSheetPosition = .bottom
     
     @State private var showSideMenu = false
     
@@ -312,7 +311,7 @@ struct PriceCalculatorView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 20) {
                         if selectedBaseModuleIndex >= 0 {
                             if hasHeaderView {
@@ -355,8 +354,8 @@ struct PriceCalculatorView: View {
                                          RoundedRectangle(cornerRadius: 5, style: .circular).stroke(Color("gray4"), lineWidth: 0.8)
                                     )
                             }
-                            .onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
-                                calculateModuleAndFeaturePrice(with: pair)
+                            .onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { triple in
+                                calculateModuleAndFeaturePrice(with: triple)
                             }
                         }
                     }
@@ -402,7 +401,7 @@ struct PriceCalculatorView: View {
                         bottomSheetHeaderView
                     }) {
                     VStack(spacing: 0) {
-                        SummaryView(summaryList: $summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, bottomSheetPosition: $bottomSheetPosition, viewModel: viewModel).background(.white)
+                        SummaryView(summaryList: $summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, viewModel: viewModel).background(.white)
                     }
                 }
                 
@@ -438,7 +437,11 @@ struct PriceCalculatorView: View {
             }.onReceive(self.viewModel.quotationStatusPublisher.receive(on: RunLoop.main)) { isSubmitted in
                if isSubmitted {
                    withAnimation {
+                       AppGlobalValues.isQuotationSubmitted = true
                        bottomSheetShown = false
+                       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                           self.presentationMode.wrappedValue.dismiss()
+                       }
                    }
                }
            }.onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { isShowing in
@@ -532,15 +535,15 @@ struct PriceCalculatorView: View {
         }
     }
     
-    private func calculateModuleAndFeaturePrice(with pair: (String, Int)) {
+    private func calculateModuleAndFeaturePrice(with triple: (String, Int, String)) {
         for moduleGroupIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups.count {
             for moduleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules.count {
                 guard let moduleMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].multiplier else {
                     return
                 }
                 
-                if pair.0 == moduleMultiplierCode {
-                    calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
+                if triple.0 == moduleMultiplierCode {
+                    calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: triple.1, customValue: triple.2)
                 }
                 
 //                switch moduleMultiplierCode {
@@ -558,8 +561,8 @@ struct PriceCalculatorView: View {
                         return
                     }
                     
-                    if pair.0 == featureMultiplierCode {
-                        calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
+                    if triple.0 == featureMultiplierCode {
+                        calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: triple.1, customValue: triple.2)
                     }
                     
 //                    switch featureMultiplierCode {
@@ -593,7 +596,13 @@ struct PriceCalculatorView: View {
         }
     }
     
-    private func calculateModulePrice(module: inout ServiceModule, with index: Int) {
+    private func calculateModulePrice(module: inout ServiceModule, with index: Int, customValue: String) {
+        
+        if index == -1 {
+            module.defaultprice = Double(customValue) ?? 0.0
+            return
+        }
+        
         if module.price.count <= index {
             return
         }
@@ -606,7 +615,12 @@ struct PriceCalculatorView: View {
         module.defaultprice = Double(price) ?? 0.0
     }
     
-    private func calculateFeaturePrice(feature: inout Feature, with index: Int) {
+    private func calculateFeaturePrice(feature: inout Feature, with index: Int, customValue: String) {
+        if index == -1 {
+            feature.defaultprice = Double(customValue) ?? 0.0
+            return
+        }
+        
         if feature.price.count <= index {
             return
         }
@@ -745,6 +759,12 @@ struct PriceCalculatorView: View {
             let hideInApp = multiplier.slabConfig?.hideInApp ?? false
             let label = (multiplier.label ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
             if !hideInApp && !label.isEmpty {
+                
+                if let customValue = multiplier.customValue, !customValue.isEmpty {
+                    licensingParameters.append(LicensingParameter(name: multiplier.code, value: customValue, slabid: 0))
+                    continue
+                }
+                
                 if multiplier.slabConfig?.inputType == "slider" {
                     continue
                 }

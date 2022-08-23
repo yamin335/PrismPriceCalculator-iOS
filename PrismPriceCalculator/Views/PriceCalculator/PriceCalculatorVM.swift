@@ -18,7 +18,7 @@ class PriceCalculatorVM: BaseViewModel {
     var quotationStatusPublisher = PassthroughSubject<Bool, Never>()
     
     var submitEnableDisablePublisher = PassthroughSubject<Bool, Never>()
-    var selectedMultiplierPublisher = PassthroughSubject<(String, Int), Never>()
+    var selectedMultiplierPublisher = PassthroughSubject<(String, Int, String), Never>()
     var sliderValuePublisher = PassthroughSubject<(String, Int), Never>()
     
     var softwareLicenseModuleList: [SoftwareLicenseModule] = []

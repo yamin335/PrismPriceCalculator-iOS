@@ -17,6 +17,8 @@ struct MultiplierListItem: View {
     @State var sliderRange = 0.0
     @State var sliderStepSize = 0.0
     @State var sliderValue: Double = 0
+    @State var customValue: String = ""
+    @State var isCustomSelected: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -26,7 +28,7 @@ struct MultiplierListItem: View {
                 .padding(.horizontal, 10)
             
             if showChipGroup {
-                ChipGroup(chips: self.chips, selectedItemIndex: $selectedItemIndex)
+                ChipGroup(chips: self.chips, selectedItemIndex: $selectedItemIndex, isCustomSelected: $isCustomSelected)
                     .padding(.leading, 10)
             }
             
@@ -34,16 +36,41 @@ struct MultiplierListItem: View {
                 SliderItem(sliderRange: sliderRange, increment: sliderStepSize, sliderValue: $sliderValue)
             }
             
+            if isCustomSelected {
+                TextField("Custom Value", text: $customValue)
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 8)
+                    .overlay(RoundedRectangle(cornerRadius: 5) .stroke(Color("blue1")) )
+                    .padding(.horizontal, 10)
+                    .padding(.top, 5)
+            }
+            
             Spacer()
         }.onAppear {
-            selectedItemIndex = multiplier.slabIndex ?? 0
+            if let customValue = multiplier.customValue, !customValue.isEmpty {
+                self.customValue = multiplier.customValue ?? ""
+                self.isCustomSelected = true
+                selectedItemIndex = -1
+            } else {
+                selectedItemIndex = multiplier.slabIndex ?? 0
+                self.isCustomSelected = false
+            }
+            
             prepareChipList()
         }.onChange(of: selectedItemIndex) { newValue in
-            multiplier.slabIndex = newValue
-            viewModel.selectedMultiplierPublisher.send((multiplier.code ?? "", newValue))
-            self.viewModel.shouldCalculateData.send(true)
+            if newValue != -1 {
+                self.customValue = ""
+                multiplier.customValue = self.customValue
+                multiplier.slabIndex = newValue
+                viewModel.selectedMultiplierPublisher.send((multiplier.code ?? "", newValue, ""))
+                self.viewModel.shouldCalculateData.send(true)
+            }
         }.onChange(of: sliderValue) { newValue in
             viewModel.sliderValuePublisher.send((multiplier.code ?? "", Int(newValue)))
+        }.onChange(of: customValue) { newValue in
+            multiplier.customValue = newValue
+            viewModel.selectedMultiplierPublisher.send((multiplier.code ?? "", -1, newValue))
+            self.viewModel.shouldCalculateData.send(true)
         }
     }
     
@@ -103,7 +130,13 @@ struct MultiplierListItem: View {
                     chips.append(chipItem)
                 }
             }
+            
+            if multiplier.slabConfig?.customUser == true {
+                chips.append(ChipsDataModel(label:  AppConstants.labelCustom))
+            }
+            
             self.chips = chips
+            
             if !self.chips.isEmpty {
                 showChipGroup = true
             } else {

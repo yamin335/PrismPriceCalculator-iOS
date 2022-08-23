@@ -103,6 +103,7 @@ struct MultiplierClass: Codable, Identifiable {
     let slabs: [String]
     let slabTexts: [String]
     var slabIndex: Int? = 0
+    var customValue: String? = ""
     
     enum CodingKeys: String, CodingKey {
         case name, code, label, slabConfig, slabs, slabTexts

@@ -118,14 +118,18 @@ struct ModuleListItemView: View {
             } else {
                 price = Int(module.defaultprice ?? 0.0)
             }
-        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { triple in
             guard let multiplierCode = module.multiplier else {
                 return
             }
             
-            if pair.0 == multiplierCode && module.price.count > pair.1 {
-                let priceValue = module.price[pair.1]
-                setPrice(with: Int(Double(priceValue) ?? 0.0))
+            if triple.0 == multiplierCode {
+                if triple.1 == -1 {
+                    module.defaultprice = Double(triple.2) ?? 0.0
+                } else if triple.0 == multiplierCode && module.price.count > triple.1 {
+                    let priceValue = module.price[triple.1]
+                    setPrice(with: Int(Double(priceValue) ?? 0.0))
+                }
             }
         }
     }

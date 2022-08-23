@@ -98,14 +98,18 @@ struct FeatureListItemView: View {
             } else {
                 price = Int(feature.defaultprice ?? 0.0)
             }
-        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { pair in
+        }.onReceive(self.viewModel.selectedMultiplierPublisher.receive(on: RunLoop.main)) { triple in
             guard let multiplierCode = feature.multiplier else {
                 return
             }
             
-            if pair.0 == multiplierCode && feature.price.count > pair.1 {
-                let priceValue = feature.price[pair.1]
-                setPrice(with: Int(Double(priceValue) ?? 0.0))
+            if triple.0 == multiplierCode {
+                if triple.1 == -1 {
+                    feature.defaultprice = Double(triple.2) ?? 0.0
+                } else if triple.0 == multiplierCode && feature.price.count > triple.1 {
+                    let priceValue = feature.price[triple.1]
+                    setPrice(with: Int(Double(priceValue) ?? 0.0))
+                }
             }
         }
     }

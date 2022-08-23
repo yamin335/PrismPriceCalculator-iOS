@@ -24,10 +24,9 @@ struct SpinLoaderView: View {
                 .onAppear {
                     self.spinCircle = true
                 }
-            Text("Please wait...").foregroundColor(.white)
+            Text("Please wait...").foregroundColor(Color("gray3"))
         }
-        .background(AnyView(EffectView(effect: UIBlurEffect(style: .systemMaterialDark))).frame(width:150, height: 125).cornerRadius(8).shadow(color: Color("textColor3"), radius: 16))
-        //.background(Rectangle().frame(width:150, height: 125).background(AnyView(EffectView(effect: UIBlurEffect(style: .prominent)))).cornerRadius(8).shadow(color: .black, radius: 16))
+        .background(RoundedRectangle(cornerRadius: 8).fill(Color("gray1")).frame(width:150, height: 125).cornerRadius(8).shadow(color: Color("shadowColor"), radius: 6, x: 1, y: 2))
     }
 }
 

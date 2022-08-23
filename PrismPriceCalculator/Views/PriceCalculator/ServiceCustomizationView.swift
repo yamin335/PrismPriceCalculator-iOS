@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ServiceCustomizationView: View {
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var appGlobalState: AppState
     @State private var isShowingDetailView = false
     @State private var selectedTag: Int? = -1
@@ -62,8 +63,13 @@ struct ServiceCustomizationView: View {
             .shadow(color: Color("shadowColor"), radius: 5)
             .padding(.horizontal, 16)
             Spacer()
-        }
-        .navigationTitle("Customization")
+        }.onAppear {
+            if AppGlobalValues.isQuotationSubmitted {
+                withAnimation {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }.navigationTitle("Customization")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {

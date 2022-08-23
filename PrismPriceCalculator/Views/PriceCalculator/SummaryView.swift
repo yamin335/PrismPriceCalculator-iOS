@@ -30,7 +30,6 @@ struct SummaryView: View {
     @Binding var costAnnualMaintenanceTotal: Int
     @Binding var costAnnualMaintenance: Int
     @Binding var submitButtonDisabled: Bool
-    @Binding var bottomSheetPosition: BottomSheetPosition
     
     @ObservedObject var  viewModel: PriceCalculatorVM
     
@@ -285,8 +284,8 @@ struct SummaryView: View {
             ]
         )
         
-        var totatAmount = (maintenance.totalamount ?? 0) + (consultancy.totalamount ?? 0) +
-        (customization.totalamount ?? 0) + (implementation.totalamount ?? 0)
+        var totatAmount = (consultancy.totalamount ?? 0) +
+        (customization.totalamount ?? 0) + (implementation.totalamount ?? 0) // + (maintenance.totalamount ?? 0)
         
         var softwareLicenseModuleList: [SoftwareLicenseModule] = []
         

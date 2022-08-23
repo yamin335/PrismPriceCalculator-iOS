@@ -10,6 +10,7 @@ import SwiftUI
 struct ChipGroup: View {
     @State var chips: [ChipsDataModel]
     @Binding var selectedItemIndex: Int
+    @Binding var isCustomSelected: Bool
     @State private var totalHeight = CGFloat.zero       // << variant for ScrollView/List //    = CGFloat.infinity   // << variant for VStack
     
     var body: some View {
@@ -31,7 +32,13 @@ struct ChipGroup: View {
             ForEach(Array(chips.enumerated()), id: \.offset) { index, chipData in
                 Button(action: {
                   withAnimation {
-                      self.selectedItemIndex = index
+                      if chipData.label == AppConstants.labelCustom {
+                          isCustomSelected = true
+                          self.selectedItemIndex = -1
+                      } else {
+                          isCustomSelected = false
+                          self.selectedItemIndex = index
+                      }
                   }
                 }) {
                     Text(chipData.label)
@@ -40,7 +47,7 @@ struct ChipGroup: View {
                         .padding(.horizontal, 16)
                         .padding(.vertical, 5)
                         .foregroundColor(.white)
-                        .background(selectedItemIndex == index ? Color("blue1") : Color("gray3"))
+                        .background(selectedItemIndex == -1 && chipData.label == AppConstants.labelCustom ? Color("blue1") : selectedItemIndex == index ? Color("blue1") : Color("gray3"))
                         .cornerRadius(40)
                 }
                 .padding(.vertical, 5)

@@ -27,10 +27,12 @@ struct AppConstants {
     static let perUserCost = 50000
     static let additionalUsers = 5
     
+    static let labelCustom = "Custom"
+    
     // MARK: - BottomSheetConstants
     static let radius: CGFloat = 16
     static let indicatorHeight: CGFloat = 5
     static let indicatorWidth: CGFloat = 50
-    static let snapRatio: CGFloat = 0.25
+    static let snapRatio: CGFloat = 0.03
     static let minHeightRatio: CGFloat = 0.2
 }
