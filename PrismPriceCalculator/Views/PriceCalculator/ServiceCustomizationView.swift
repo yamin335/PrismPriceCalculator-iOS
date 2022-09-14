@@ -16,13 +16,17 @@ struct ServiceCustomizationView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: LoginView(), tag: 3, selection: self.$selectedTag) {
+            NavigationLink(destination: MyQuotationView(), tag: 1, selection: self.$selectedTag) {
                 EmptyView()
             }.isDetailLink(false)
             
-            NavigationLink(destination: PriceCalculatorView(productId: productId), tag: 4, selection: self.$selectedTag) {
+            NavigationLink(destination: LoginView(), tag: 2, selection: self.$selectedTag) {
                 EmptyView()
-            }
+            }.isDetailLink(false)
+            
+            NavigationLink(destination: PriceCalculatorView(productId: productId), tag: 3, selection: self.$selectedTag) {
+                EmptyView()
+            }.isDetailLink(false)
             VStack(alignment: .leading, spacing: 16) {
                 Text("CUSTOM")
                     .foregroundColor(Color("textColor3"))
@@ -41,7 +45,7 @@ struct ServiceCustomizationView: View {
                     .padding(.top, 12)
                 
                 Button(action: {
-                    self.selectedTag = 4
+                    self.selectedTag = 3
                 }) {
                     HStack {
                         Spacer()
@@ -72,24 +76,55 @@ struct ServiceCustomizationView: View {
         }.navigationTitle("Customization")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    if UserSessionManager.isLoggedIn {
-                        UserSessionManager.logout()
-                        appGlobalState.isLoggedIn = false
-                        selectedTag = -1
-                    } else {
-                        selectedTag = 3
+                if appGlobalState.isLoggedIn {
+                    Menu(content: {
+                        Button(action: {
+                            selectedTag = 1
+                        }) {
+                            Text("My Quotations")
+                                .font(.system(size: 14, weight: .regular))
+                                .foregroundColor(Color("blue1"))
+                        }
+                        
+                        Button(action: {
+                            if UserSessionManager.isLoggedIn {
+                                UserSessionManager.logout()
+                                appGlobalState.isLoggedIn = false
+                                selectedTag = -1
+                            } else {
+                                selectedTag = 2
+                            }
+                        }) {
+                            Text(appGlobalState.isLoggedIn ? "LOGOUT" : "LOGIN")
+                                .font(.system(size: 14, weight: .regular))
+                                .foregroundColor(Color("blue1"))
+                        }
+                    }, label: {
+                        Image(systemName: "line.3.horizontal")
+                            .resizable()
+                            .imageScale(.large)
+                            .foregroundColor(Color("blue1"))
+                    }).menuStyle(WhiteMenu())
+                } else {
+                    Button(action: {
+                        if UserSessionManager.isLoggedIn {
+                            UserSessionManager.logout()
+                            appGlobalState.isLoggedIn = false
+                            selectedTag = -1
+                        } else {
+                            selectedTag = 2
+                        }
+                    }) {
+                        Text(appGlobalState.isLoggedIn ? "LOGOUT" : "LOGIN")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(Color("blue1"))
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 5, style: .circular)
+                                    .stroke(Color("blue1"), lineWidth: 1)
+                            )
                     }
-                }) {
-                    Text(appGlobalState.isLoggedIn ? "LOGOUT" : "LOGIN")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundColor(Color("blue1"))
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 6)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5, style: .circular)
-                                .stroke(Color("blue1"), lineWidth: 1)
-                        )
                 }
             }
         }

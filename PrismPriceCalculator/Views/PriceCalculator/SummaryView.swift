@@ -230,64 +230,149 @@ struct SummaryView: View {
     }
     
     private func submitSummary() {
-        let maintenance = SummaryService(
-            header: "Annual Maintenance Cost", totalamount: costAnnualMaintenanceTotal,
+        let maintenance = SummaryResponseAdditionalService(
+            summeryid: nil,
+            header: "Annual Maintenance Cost",
+            total: costAnnualMaintenanceTotal,
+            discount: 0,
             modules: [
-                SummaryServiceModule(name: "Annual Maintenance Cost", details: nil,
-                                     details_value: nil, details_multiplier: nil,
-                                     totalamount: costAnnualMaintenance)
-            ]
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costAnnualMaintenance,
+                    discount: 0,
+                    details: "",
+                    name: "Annual Maintenance Cost",
+                    details_value: 0,
+                    details_multiplier: 0,
+                    Table: ""
+                )
+            ],
+            Table: ""
         )
         
-        let consultancy = SummaryService(
-            header: "Consultancy Services", totalamount: costConsultancyServices,
+        let consultancy = SummaryResponseAdditionalService(
+            summeryid: nil,
+            header: "Consultancy Services",
+            total: costConsultancyServices,
+            discount: 0,
             modules: [
-                SummaryServiceModule(name: "Consultancy", details: " man-days x ৳",
-                                     details_value: 0, details_multiplier: 20000,
-                                     totalamount: costConsultancy)
-            ]
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costConsultancy,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Consultancy",
+                    details_value: 0,
+                    details_multiplier: 20000,
+                    Table: ""
+                )
+            ],
+            Table: ""
         )
         
-        let customization = SummaryService(
-            header: "Software Customization", totalamount: costSoftwareCustomizationTotal,
+        let customization = SummaryResponseAdditionalService(
+            summeryid: nil,
+            header: "Software Customization",
+            total: costSoftwareCustomizationTotal,
+            discount: 0,
             modules: [
-                SummaryServiceModule(name: "Software Customization", details: "man-days x ৳",
-                                     details_value: costSoftwareCustomization / AppConstants.unitPriceSoftwareCustomization, details_multiplier: AppConstants.unitPriceSoftwareCustomization,
-                                     totalamount: costSoftwareCustomization),
-                SummaryServiceModule(name: "Customized Report", details: "man-days x ৳",
-                                     details_value: costCustomizedReport / AppConstants.unitPriceCustomizedReports, details_multiplier: AppConstants.unitPriceCustomizedReports,
-                                     totalamount: costCustomizedReport)
-            ]
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costSoftwareCustomization,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Software Customization",
+                    details_value: costSoftwareCustomization / AppConstants.unitPriceSoftwareCustomization,
+                    details_multiplier: AppConstants.unitPriceSoftwareCustomization,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costCustomizedReport,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Customized Report",
+                    details_value: costCustomizedReport / AppConstants.unitPriceCustomizedReports,
+                    details_multiplier: AppConstants.unitPriceCustomizedReports,
+                    Table: ""
+                )
+            ],
+            Table: ""
         )
         
-        let implementation = SummaryService(
-            header: "Implementation", totalamount: costImplementation,
+        let implementation = SummaryResponseAdditionalService(
+            summeryid: nil,
+            header: "Implementation",
+            total: costImplementation,
+            discount: 0,
             modules: [
-                SummaryServiceModule(name: "Requirement Analysis", details: "man-days x ৳",
-                                     details_value: 0, details_multiplier: 10000,
-                                     totalamount: costRequirementAnalysis),
-                SummaryServiceModule(name: "Deployment", details: "(onetime) x ৳",
-                                     details_value: 1, details_multiplier: 10000,
-                                     totalamount: costDeployment),
-                SummaryServiceModule(name: "Configuration", details: "man-days x ৳",
-                                     details_value: 0, details_multiplier: 10000,
-                                     totalamount: costConfiguration),
-                SummaryServiceModule(name: "Onsite Adoption Support", details: "man-days x ৳",
-                                     details_value: 0, details_multiplier: 6000,
-                                     totalamount: costOnsiteAdoptionSupport),
-                SummaryServiceModule(name: "Training", details: "sessions x ৳",
-                                     details_value: 0, details_multiplier: 6000,
-                                     totalamount: costTraining),
-                SummaryServiceModule(name: "Project Management", details: "man-days x ৳",
-                                     details_value: 0, details_multiplier: 12000,
-                                     totalamount: costProjectManagement)
-            ]
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costRequirementAnalysis,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Requirement Analysis",
+                    details_value: 0,
+                    details_multiplier: 10000,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costImplementation,
+                    discount: 0,
+                    details: "(onetime) x ৳",
+                    name: "Deployment",
+                    details_value: 1,
+                    details_multiplier: 10000,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costConfiguration,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Configuration",
+                    details_value: 0,
+                    details_multiplier: 10000,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costOnsiteAdoptionSupport,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Onsite Adoption Support",
+                    details_value: 0,
+                    details_multiplier: 6000,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costTraining,
+                    discount: 0,
+                    details: "sessions x ৳",
+                    name: "Training",
+                    details_value: 0,
+                    details_multiplier: 6000,
+                    Table: ""
+                ),
+                SummaryResponseAdditionalServiceModule(
+                    summeryid: nil,
+                    totalamount: costProjectManagement,
+                    discount: 0,
+                    details: "man-days x ৳",
+                    name: "Project Management",
+                    details_value: 0,
+                    details_multiplier: 1200,
+                    Table: ""
+                )
+            ],
+            Table: ""
         )
         
-        var totatAmount = (consultancy.totalamount ?? 0) +
-        (customization.totalamount ?? 0) + (implementation.totalamount ?? 0) // + (maintenance.totalamount ?? 0)
+        var totatAmount = (consultancy.total ?? 0) + (customization.total ?? 0) + (implementation.total ?? 0) // + (maintenance.totalamount ?? 0)
         
-        var softwareLicenseModuleList: [SoftwareLicenseModule] = []
+        var softwareLicenseModuleList: [SummaryResponseSoftwareLicenseModule] = []
         
         for key in viewModel.softwareLicenseModuleMap.keys {
             if let softwareLicenseModule = viewModel.softwareLicenseModuleMap[key] {
@@ -296,9 +381,11 @@ struct SummaryView: View {
             }
         }
         
-        let summarySoftwareLicense = SummarySoftwareLicense(additionalusers: additionalUsers, users: usersIncluded,
-                                                            header: "Software License", totalamount: totatAmount,
-                                                            modules: softwareLicenseModuleList)
+        let summarySoftwareLicense = SummaryResponseSoftwareLicense(summeryid: nil, header: "Software License",
+                                                                    totalamount: totatAmount, discount: 0,
+                                                                    users: usersIncluded, additionalusers: additionalUsers,
+                                                                    modules: softwareLicenseModuleList,
+                                                                    Table: "")
         
         let summaryStoreBody = SummaryStoreModel(salesmanid: UserSessionManager.userAccount?.salesmanid,
                                                  customerid: UserSessionManager.userAccount?.id, details: false,

@@ -69,7 +69,6 @@ struct DashboardListItem: View {
             .padding(.horizontal, 12)
             .padding(.bottom, 12)
         }
-        
         .background(.white)
         .clipped()
         .cornerRadius(5)

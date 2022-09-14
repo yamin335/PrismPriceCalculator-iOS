@@ -671,7 +671,7 @@ struct PriceCalculatorView: View {
         var isAdded = false
         var price = 0
         
-        var summaryModuleFeatureList: [SummaryModuleFeature] = []
+        var summaryModuleFeatureList: [SummaryResponseFeature] = []
         var summaryModuleTotalPrice = 0
         
         for moduleGroup in baseModule.moduleGroups {
@@ -693,7 +693,7 @@ struct PriceCalculatorView: View {
                     price += slabPrice
                     
                     summaryModuleTotalPrice += slabPrice
-                    summaryModuleFeatureList.append(SummaryModuleFeature(name: module.name, code: module.code, multiplier: module.multiplier, multipliercode: "", price: module.price, type: "module", defaultprice: Int(module.defaultprice ?? 0.0), totalamount: Int(module.defaultprice ?? 0.0)))
+                    summaryModuleFeatureList.append(SummaryResponseFeature(name: module.name, code: module.code, parentcode: "", description: module.description, multipliercode: "", type: "module", excludeInAll: module.excludeInAll, discount: 0, totalamount: Int(module.defaultprice ?? 0.0), multiplier: module.multiplier, price: module.price, defaultprice: module.defaultprice ?? 0.0))
                     
                     isAdded = true
                 }
@@ -716,7 +716,7 @@ struct PriceCalculatorView: View {
                         price += slabPrice
                         
                         summaryModuleTotalPrice += slabPrice
-                        summaryModuleFeatureList.append(SummaryModuleFeature(name: feature.name, code: feature.code, multiplier: feature.multiplier, multipliercode: "", price: feature.price, type: "feature", defaultprice: Int(feature.defaultprice ?? 0.0), totalamount: Int(feature.defaultprice ?? 0.0)))
+                        summaryModuleFeatureList.append(SummaryResponseFeature(name: feature.name, code: feature.code, parentcode: "", description: feature.description, multipliercode: "", type: "feature", excludeInAll: feature.excludeInAll, discount: 0, totalamount: Int(feature.defaultprice ?? 0.0), multiplier: feature.multiplier, price: feature.price, defaultprice: feature.defaultprice ?? 0.0))
                         
                         isAdded = true
                     }
@@ -809,12 +809,12 @@ struct PriceCalculatorView: View {
         }
         
         if selectedBaseModuleIndex == 0 {
-            self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
+            self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SummaryResponseSoftwareLicenseModule(licensingparameters: licensingParameters, name: baseModule.name, code: baseModule.code, description: "", selfcode: "", defaultprice: 0, totalamount: summaryModuleTotalPrice, discount: 0, features: summaryModuleFeatureList, multiplier: "", price: nil, excludeInAll: false)
         } else {
             if isAdded {
                 summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
                 
-                self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SoftwareLicenseModule(name: baseModule.name, totalamount: summaryModuleTotalPrice, code: baseModule.code, licensingparameters: licensingParameters, features: summaryModuleFeatureList)
+                self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SummaryResponseSoftwareLicenseModule(licensingparameters: licensingParameters, name: baseModule.name, code: baseModule.code, description: "", selfcode: "", defaultprice: 0, totalamount: summaryModuleTotalPrice, discount: 0, features: summaryModuleFeatureList, multiplier: "", price: nil, excludeInAll: false)
             } else {
                 summaryMap.removeValue(forKey: baseModule.code ?? "")
                 self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
@@ -880,6 +880,8 @@ struct PriceCalculatorView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PriceCalculatorView(productId: "prismperp").environmentObject(AppState())
+        Group {
+            PriceCalculatorView(productId: "prismperp").environmentObject(AppState())
+        }
     }
 }

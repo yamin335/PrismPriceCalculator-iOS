@@ -21,8 +21,8 @@ class PriceCalculatorVM: BaseViewModel {
     var selectedMultiplierPublisher = PassthroughSubject<(String, Int, String), Never>()
     var sliderValuePublisher = PassthroughSubject<(String, Int), Never>()
     
-    var softwareLicenseModuleList: [SoftwareLicenseModule] = []
-    var softwareLicenseModuleMap: [String : SoftwareLicenseModule] = [:]
+    var softwareLicenseModuleList: [SummaryResponseSoftwareLicenseModule] = []
+    var softwareLicenseModuleMap: [String : SummaryResponseSoftwareLicenseModule] = [:]
     
     deinit {
         submitQuotationSubscriber?.cancel()

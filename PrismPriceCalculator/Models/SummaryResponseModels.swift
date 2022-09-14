@@ -7,6 +7,30 @@
 
 import Foundation
 
+// MARK: - QuotationUpdateResponse
+struct QuotationUpdateResponse: Codable {
+    let code: Int?
+    let data: QuotationUpdateResponseData?
+    let msg: String?
+}
+
+
+struct QuotationUpdateResponseData: Codable {
+    let Quotation: SummaryResponseQuotation?
+}
+
+// MARK: - QuotationDetailsResponse
+struct QuotationDetailsResponse: Codable {
+    let code: Int?
+    let data: QuotationDetailsResponseData?
+    let msg: String?
+}
+
+
+struct QuotationDetailsResponseData: Codable {
+    let QuotationSummary: SummaryResponseQuotation?
+}
+
 // MARK: - SummaryResponse
 struct SummaryResponse: Codable {
     let code: Int?
@@ -14,61 +38,88 @@ struct SummaryResponse: Codable {
     let msg: String?
 }
 
-// MARK: - SummaryResponseData
 struct SummaryResponseData: Codable {
     let quotation: SummaryResponseQuotation?
 }
 
-// MARK: - SummaryResponseQuotation
 struct SummaryResponseQuotation: Codable {
     let id: Int?
     let status: String?
     let ishistory: Bool?
-    let quotationhid, header: String?
-    let customerid, salesmanid: Int?
-    let quotationid, productid: String?
-    let totalamount, discount: Int?
-    let softwareLicense: SummaryResponseSoftwareLicense?
-    let implementation, customization, consultancy, maintainance: SummaryResponseConsultancy?
-    let table: String?
+    let quotationhid: String?
+    let header: String?
+    let customerid: Int?
+    let salesmanid: Int?
+    let quotationid: String?
+    let productid: String?
+    let company: String?
+    var totalamount: Int?
+    let discount: Int?
+    var Software_License: SummaryResponseSoftwareLicense?
+    var Implementation: SummaryResponseAdditionalService?
+    var Customization: SummaryResponseAdditionalService?
+    var Consultancy: SummaryResponseAdditionalService?
+    var Maintainance: SummaryResponseAdditionalService?
+    let Table: String?
 }
 
-// MARK: - SummaryResponseConsultancy
-struct SummaryResponseConsultancy: Codable {
-    let summeryid, header: String?
-    let total, discount: Int?
-    let modules: [SummaryResponseConsultancyModule]
-    let table: String?
-}
-
-// MARK: - SummaryResponseConsultancyModule
-struct SummaryResponseConsultancyModule: Codable {
+struct SummaryResponseAdditionalService: Codable {
     let summeryid: String?
-    let totalamount, discount: Int?
-    let name, details: String?
-    let detailsValue, detailsMultiplier: Int?
-    let table: String?
+    let header: String?
+    let total: Int?
+    let discount: Int?
+    let modules: [SummaryResponseAdditionalServiceModule]
+    let Table: String?
 }
 
-// MARK: - SummaryResponseSoftwareLicense
+struct SummaryResponseAdditionalServiceModule: Codable {
+    let summeryid: String?
+    let totalamount: Int?
+    let discount: Int?
+    let details: String?
+    let name: String?
+    let details_value: Int?
+    let details_multiplier: Int?
+    let Table: String?
+}
+
 struct SummaryResponseSoftwareLicense: Codable {
-    let summeryid, header: String?
-    let totalamount, discount, users, additionalusers: Int?
+    let summeryid: String?
+    let header: String?
+    let totalamount: Int?
+    let discount: Int?
+    let users: Int?
+    let additionalusers: Int?
     let modules: [SummaryResponseSoftwareLicenseModule]
-    let table: String?
+    let Table: String?
 }
 
-// MARK: - SummaryResponseSoftwareLicenseModule
 struct SummaryResponseSoftwareLicenseModule: Codable {
-    let name, code, selfcode: String?
-    let price, totalamount, discount: Int?
+    let licensingparameters: [LicensingParameter]?
+    let name: String?
+    let code: String?
+    let description: String?
+    let selfcode: String?
+    let defaultprice: Int?
+    let totalamount: Int?
+    let discount: Int?
     let features: [SummaryResponseFeature]
+    let multiplier: String?
+    let price: Int?
+    let excludeInAll: Bool?
 }
 
-// MARK: - SummaryResponseFeature
 struct SummaryResponseFeature: Codable {
-    let name, code, parentcode, featureDescription: String?
+    let name: String?
+    let code: String?
+    let parentcode: String?
+    let description: String?
     let multipliercode: String?
     let type: String?
-    let discount, price: Int?
+    let excludeInAll: Bool?
+    let discount: Int?
+    let totalamount: Int?
+    let multiplier: String?
+    let price: [String]?
+    let defaultprice: Double?
 }

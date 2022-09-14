@@ -12,12 +12,14 @@ class NetworkUtils {
     private static let apiVersion = "v1"
     private static let authRepo = "auth"
     private static let productRepo = "product"
+    private static let quotationRepo = "quotation"
     
     static let login = "\(baseUrl)/\(apiVersion)/\(authRepo)/login"
     static let signUp = "\(baseUrl)/\(apiVersion)/\(authRepo)/registercustomer"
     static let submitQuotation = "\(baseUrl)/\(apiVersion)/quotation/submit"
     static let allProducts = "\(baseUrl)/\(apiVersion)/\(productRepo)/allactive"
     static let productDetails = "\(baseUrl)/\(apiVersion)/\(productRepo)/json"
+    static let myQuotations = "\(baseUrl)/\(apiVersion)/\(quotationRepo)/all"
     
     static func getCommonUrlRequest(url: URL) -> URLRequest {
         //Request type

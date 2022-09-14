@@ -185,6 +185,46 @@ class ApiService {
         return getDataTask(request: request, viewModel: viewModel)
     }
     
+    static func myQuotations(email: String, page: String, viewModel: BaseViewModel) -> AnyPublisher<QuotationListResponse, Error>? {
+        let jsonObject = ["email": email]
+        
+        if !JSONSerialization.isValidJSONObject(jsonObject) {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        let tempJson = try? JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        
+        guard let jsonData = tempJson else {
+            print("Problem in parameter creation...")
+            return nil
+        }
+        
+        var queryItems = [URLQueryItem]()
+        
+        queryItems.append(URLQueryItem(name: "page", value: page))
+        
+        guard var urlComponents = URLComponents(string: NetworkUtils.myQuotations) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        urlComponents.queryItems = queryItems
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //Setting body for POST request
+        request.httpBody = jsonData
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
     static func getDataTask<T: Codable>(request: URLRequest, viewModel: BaseViewModel) -> AnyPublisher<T, Error>? {
         return viewModel.session.dataTaskPublisher(for: request)
             .handleEvents(receiveSubscription: { _ in
