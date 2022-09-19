@@ -77,7 +77,7 @@ struct ServiceModule: Codable, Identifiable {
 struct Feature: Codable, Identifiable {
     let id = UUID()
     let name: String
-    let code: String
+    let code: String?
     let parentcode: String?
     let description: String?
     let multipliercode: String?
@@ -104,6 +104,7 @@ struct MultiplierClass: Codable, Identifiable {
     let slabTexts: [String]
     var slabIndex: Int? = 0
     var customValue: String? = ""
+    var slabLabels: [String] = []
     
     enum CodingKeys: String, CodingKey {
         case name, code, label, slabConfig, slabs, slabTexts

@@ -63,10 +63,19 @@ struct MultiplierListItem: View {
                 multiplier.customValue = self.customValue
                 multiplier.slabIndex = newValue
                 viewModel.selectedMultiplierPublisher.send((multiplier.code ?? "", newValue, ""))
-                self.viewModel.shouldCalculateData.send(true)
+                viewModel.shouldCalculateData.send(true)
             }
         }.onChange(of: sliderValue) { newValue in
-            viewModel.sliderValuePublisher.send((multiplier.code ?? "", Int(newValue)))
+            switch multiplier.code {
+            case "custom":
+                viewModel.costSoftwareCustomization = Int(sliderValue) * AppConstants.unitPriceSoftwareCustomization
+                self.viewModel.shouldCalculateData.send(true)
+            case "report":
+                viewModel.costCustomizedReport = Int(sliderValue) * AppConstants.unitPriceCustomizedReports
+                self.viewModel.shouldCalculateData.send(true)
+            default:
+                print("No multiplier code mached!")
+            }
         }.onChange(of: customValue) { newValue in
             multiplier.customValue = newValue
             viewModel.selectedMultiplierPublisher.send((multiplier.code ?? "", -1, newValue))
@@ -76,59 +85,23 @@ struct MultiplierListItem: View {
     
     private func prepareChipList() {
         if multiplier.slabConfig?.inputType == "slider" {
-//            if multiplier.slabs.isEmpty {
-//                return
-//            }
-            
             sliderRange = 50
             sliderStepSize = 1
-            showSlider = true
             
-//            switch multiplier.slabs[0] {
-//            case .integer(let range):
-//
-//                switch multiplier.slabConfig.increment {
-//                case .integer(let increment):
-//
-//                case .string(let val):
-//                    print(val)
-//                }
-//            case .string(let t):
-//                print(t)
-//            }
+            switch multiplier.code {
+            case "custom":
+                sliderValue = Double(viewModel.costSoftwareCustomization / AppConstants.unitPriceSoftwareCustomization)
+            case "report":
+                sliderValue = Double(viewModel.costCustomizedReport / AppConstants.unitPriceCustomizedReports)
+            default:
+                print("Slider value did not matched!")
+            }
+            showSlider = true
         } else {
             showSlider = false
             var chips: [ChipsDataModel] = []
-            for (index, item) in multiplier.slabs.enumerated() {
-                let regex = NSRegularExpression(#"^[0-9]+(?:[.,][0-9]+)*$"#)
-                let isNumber = regex.matches(in: item)
-                
-                if isNumber {
-                    if multiplier.slabConfig?.showRange == true {
-                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
-                        let increment = 1
-                        
-                        let itemValue = Int(Double(item) ?? 0.0)
-                        
-                        var startItem = increment
-                        if index > 0 {
-                            startItem = Int(Double(multiplier.slabs[index-1]) ?? 0.0) + increment
-                        }
-                        
-                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(startItem)-\(itemValue)" : "\(slabText)(\(startItem)-\(itemValue))")
-                        chips.append(chipItem)
-                    } else {
-                        let slabText = multiplier.slabTexts.count > index ? multiplier.slabTexts[index] : ""
-                        
-                        let itemValue = Int(Double(item) ?? 0.0)
-                        
-                        let chipItem: ChipsDataModel = ChipsDataModel(label: slabText.isEmpty ? "\(itemValue)" : "\(slabText)(\(itemValue))")
-                        chips.append(chipItem)
-                    }
-                } else {
-                    let chipItem: ChipsDataModel = ChipsDataModel(label: item)
-                    chips.append(chipItem)
-                }
+            for (_, slabLabel) in multiplier.slabLabels.enumerated() {
+                chips.append(ChipsDataModel(label: slabLabel))
             }
             
             if multiplier.slabConfig?.customUser == true {

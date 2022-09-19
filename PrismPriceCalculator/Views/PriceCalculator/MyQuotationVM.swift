@@ -14,6 +14,9 @@ class MyQuotationVM: BaseViewModel {
     var myQuotationListPublisher = PassthroughSubject<[MyQuotation], Never>()
     private var loadMyQuotationSubscriber: AnyCancellable? = nil
     
+    var productId = ""
+    var quotationId = ""
+    
     deinit {
         loadMyQuotationSubscriber?.cancel()
     }

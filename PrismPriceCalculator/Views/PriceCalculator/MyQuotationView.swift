@@ -20,8 +20,6 @@ struct MyQuotationView: View {
     
     @State private var showLoader = false
     
-    @State private var productId = ""
-    
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
@@ -33,12 +31,13 @@ struct MyQuotationView: View {
                         .cornerRadius(5)
                         .padding(.horizontal, 16)
                         .onTapGesture {
-                            productId = myQuotation.productid ?? ""
+                            viewModel.productId = myQuotation.productid ?? ""
+                            viewModel.quotationId = myQuotation.quotationid ?? ""
                             selectedTag = 1
                         }
                     }
                     
-                    NavigationLink(destination: PriceCalculatorView( productId: productId), tag: 1, selection: self.$selectedTag) {
+                    NavigationLink(destination: PriceCalculatorView( productId: viewModel.productId, quotationId: viewModel.quotationId), tag: 1, selection: self.$selectedTag) {
                         EmptyView()
                     }.isDetailLink(false)
                     

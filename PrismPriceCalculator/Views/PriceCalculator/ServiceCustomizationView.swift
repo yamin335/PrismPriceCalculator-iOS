@@ -24,7 +24,7 @@ struct ServiceCustomizationView: View {
                 EmptyView()
             }.isDetailLink(false)
             
-            NavigationLink(destination: PriceCalculatorView(productId: productId), tag: 3, selection: self.$selectedTag) {
+            NavigationLink(destination: PriceCalculatorView(productId: productId, quotationId: ""), tag: 3, selection: self.$selectedTag) {
                 EmptyView()
             }.isDetailLink(false)
             VStack(alignment: .leading, spacing: 16) {

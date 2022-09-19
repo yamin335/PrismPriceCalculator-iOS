@@ -20,6 +20,7 @@ class NetworkUtils {
     static let allProducts = "\(baseUrl)/\(apiVersion)/\(productRepo)/allactive"
     static let productDetails = "\(baseUrl)/\(apiVersion)/\(productRepo)/json"
     static let myQuotations = "\(baseUrl)/\(apiVersion)/\(quotationRepo)/all"
+    static let myQuotationDetails = "\(baseUrl)/\(apiVersion)/\(quotationRepo)/summary"
     
     static func getCommonUrlRequest(url: URL) -> URLRequest {
         //Request type

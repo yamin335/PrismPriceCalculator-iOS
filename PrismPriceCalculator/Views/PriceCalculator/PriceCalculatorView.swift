@@ -109,14 +109,6 @@ struct ModuleGroupHeaderView: View {
                     moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = true
                 }
             }
-
-//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-//                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded != true {
-//                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = true
-//                    }
-//                }
-//            }
         }
         self.viewModel.shouldCalculateData.send(true)
     }
@@ -126,12 +118,6 @@ struct ModuleGroupHeaderView: View {
             for featureIndex in 0..<moduleGroup.modules[moduleIndex].features.count {
                 moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].features[featureIndex].isAdded ?? false)
             }
-
-//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-//                    moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = !(moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded ?? false)
-//                }
-//            }
             
             moduleGroup.modules[moduleIndex].isAdded = !(moduleGroup.modules[moduleIndex].isAdded ?? false)
             
@@ -161,14 +147,6 @@ struct ModuleGroupHeaderView: View {
                     moduleGroup.modules[moduleIndex].features[featureIndex].isAdded = false
                 }
             }
-
-//            for subModuleIndex in 0..<moduleGroup.modules[moduleIndex].submodules.count {
-//                for featureIndex in 0..<moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features.count {
-//                    if moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded == true {
-//                        moduleGroup.modules[moduleIndex].submodules[subModuleIndex].features[featureIndex].isAdded = false
-//                    }
-//                }
-//            }
         }
         self.viewModel.shouldCalculateData.send(true)
     }
@@ -186,34 +164,9 @@ struct ModuleGroupDetailView: View {
                 ForEach(Array($moduleGroup.modules.enumerated()), id: \.offset) { index, $module in
                     ModuleListItemView(viewModel: viewModel, moduleGroup: $moduleGroup, module: $module, baseModuleCode: baseModuleCode, index: index)
                 }
-                
-//                let validMultiplierList: [MultiplierClass] = getValidMultiplierList(moduleGroup: moduleGroup)
-//
-//                if !validMultiplierList.isEmpty {
-//                    ForEach(Array(validMultiplierList.enumerated()), id: \.offset) { index, multiplier in
-//                        SliderMultiplierListItem(viewModel: viewModel, label: multiplier.label ?? "")
-//                    }
-//                }
             }
         }
     }
-    
-//    private func getValidMultiplierList(baseModule: BaseServiceModule) -> [MultiplierClass] {
-//        var validMultiplierList: [MultiplierClass] = []
-//        let shownMultipliers = moduleGroup.showMultiplier ?? ""
-//        let validMultiplierClasses = shownMultipliers.components(separatedBy: ",")
-//
-//        if !validMultiplierClasses.isEmpty {
-//            for multiplier in moduleGroup.multipliers {
-//                if validMultiplierClasses.contains(multiplier.code) {
-//                    validMultiplierList.append(multiplier)
-//                }
-//            }
-//            return validMultiplierList
-//        } else {
-//            return []
-//        }
-//    }
 }
 
 struct ModuleGroupListItemView: View {
@@ -242,6 +195,7 @@ struct PriceCalculatorView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var appGlobalState: AppState
     var productId: String
+    var quotationId: String
     let backgroundColors: [Color] = [Color(red: 0.2, green: 0.85, blue: 0.7), Color(red: 0.13, green: 0.55, blue: 0.45)]
     let readMoreColors: [Color] = [Color(red: 0.70, green: 0.22, blue: 0.22), Color(red: 1, green: 0.32, blue: 0.32)]
     let bookmarkColors: [Color] = [Color(red: 0.28, green: 0.28, blue: 0.53), Color(red: 0.44, green: 0.44, blue: 0.83)]
@@ -251,30 +205,29 @@ struct PriceCalculatorView: View {
     @State var baseModuleList: [BaseServiceModule] = []
     @State var selectedBaseModuleIndex: Int = -1
     
-    @State var summaryList: [SummaryItem] = []
-    @State var summaryMap: [String : SummaryItem] = [:]
+//    @State var summaryList: [SummaryItem] = []
+//    @State var summaryMap: [String : SummaryItem] = [:]
     
-    @State var costSoftwareLicense = 0
-    @State var costAdditionalUsers = 0
-    @State var additionalUsers = 5
-    @State var usersIncluded = AppConstants.additionalUsers
-    @State var costImplementation = 0
-    @State var costRequirementAnalysis = 0
-    @State var costDeployment = 0
-    @State var costConfiguration = 0
-    @State var costOnsiteAdoptionSupport = 0
-    @State var costTraining = 0
-    @State var costProjectManagement = 0
-    @State var costSoftwareCustomizationTotal = 0
-    @State var costSoftwareCustomization = 0
-    @State var costCustomizedReport = 0
-    @State var costConsultancyServices = 0
-    @State var costConsultancy = 0
-    @State var costAnnualMaintenanceTotal = 0
-    @State var costAnnualMaintenance = 30000
-    @State var costTotal = 0
+//    @State var costSoftwareLicense = 0
+//    @State var costAdditionalUsers = 0
+//    @State var additionalUsers = 5
+//    @State var usersIncluded = AppConstants.additionalUsers
+//    @State var costImplementation = 0
+//    @State var costRequirementAnalysis = 0
+//    @State var costDeployment = 0
+//    @State var costConfiguration = 0
+//    @State var costOnsiteAdoptionSupport = 0
+//    @State var costTraining = 0
+//    @State var costProjectManagement = 0
+//    @State var costSoftwareCustomizationTotal = 0
+//    @State var costSoftwareCustomization = 0
+//    @State var costCustomizedReport = 0
+//    @State var costConsultancyServices = 0
+//    @State var costConsultancy = 0
+//    @State var costAnnualMaintenanceTotal = 0
+//    @State var costAnnualMaintenance = 30000
+//    @State var costTotal = 0
     @State var submitButtonDisabled = true
-    @State var summaryListUpdated = true
     
     
     @StateObject var viewModel = PriceCalculatorVM()
@@ -300,7 +253,7 @@ struct PriceCalculatorView: View {
                 Text("Total")
                     .font(.system(size: 15, weight: .medium)).foregroundColor(Color("textColor2"))
                 Spacer()
-                Text("৳\(costTotal)")
+                Text("৳\(viewModel.costTotal)")
                     .font(.system(size: 15, weight: .medium)).foregroundColor(Color("green1"))
             }.padding(.top, 1)
         }
@@ -320,17 +273,6 @@ struct PriceCalculatorView: View {
                                         Text("Licensing Parameters")
                                             .foregroundColor(Color("textColor1"))
                                             .frame(maxWidth: .infinity, alignment: .leading)
-//                                        Button(action: {
-//                                            withAnimation {
-//                                            }
-//                                        }) {
-//                                            Text("Save Changes")
-//                                                .font(.system(size: 14, weight: .regular))
-//                                                .foregroundColor(.white)
-//                                                .padding(.horizontal, 15)
-//                                                .padding(.vertical, 6)
-//                                                .background(RoundedRectangle(cornerRadius: 5, style: .circular).fill(Color("blue1")))
-//                                        }
                                     }
                                     .padding(.horizontal, 10)
                                     .padding(.top, 10)
@@ -376,22 +318,28 @@ struct PriceCalculatorView: View {
                     }
                 )).onReceive(self.viewModel.shouldCalculateData.receive(on: RunLoop.main)) { shouldCalculateData in
                     if shouldCalculateData {
-                        summaryList = getSummary(baseModuleList: baseModuleList)
-                        summaryListUpdated.toggle()
+                        viewModel.summaryList = getSummary(baseModuleList: baseModuleList)
                     }
                 }.onReceive(self.viewModel.baseModuleListPublisher.receive(on: RunLoop.main)) { baseModuleList in
                     self.baseModuleList = baseModuleList
                     if self.baseModuleList.count > 0 {
                         self.selectedBaseModuleIndex = 0
                         prepareHeaderView()
-                        summaryList = getSummary(baseModuleList: self.baseModuleList)
-                        summaryListUpdated.toggle()
+                        viewModel.summaryList = getSummary(baseModuleList: self.baseModuleList)
                     }
+                }.onReceive(self.viewModel.baseModuleListAndQuotationDetailsPublisher.receive(on: RunLoop.main)) { (baseModuleList, quotation)  in
+                    self.baseModuleList = baseModuleList
+                    self.selectedBaseModuleIndex = 0
+                    prepareHeaderView()
+                    viewModel.summaryList = getSummary(baseModuleList: self.baseModuleList)
                 }.onAppear {
-                    viewModel.productDetails(productId: productId)
-                    calculateSummaryCost(moduleCost: 0)
-                    summaryList = getSummary(baseModuleList: baseModuleList)
-                    summaryListUpdated.toggle()
+                    if !quotationId.isEmpty {
+                        viewModel.quotationDetailsWithProductDetails(productId: productId, quotationId: quotationId)
+                    } else {
+                        viewModel.productDetails(productId: productId)
+                    }
+                    viewModel.calculateSummaryCost(moduleCost: 0)
+                    viewModel.summaryList = getSummary(baseModuleList: baseModuleList)
                 }
                 
                 DraggableBottomSheet(
@@ -401,7 +349,7 @@ struct PriceCalculatorView: View {
                         bottomSheetHeaderView
                     }) {
                     VStack(spacing: 0) {
-                        SummaryView(summaryList: $summaryList, costSoftwareLicense: $costSoftwareLicense, costAdditionalUsers: $costAdditionalUsers, additionalUsers: $additionalUsers, usersIncluded: $usersIncluded, costImplementation: $costImplementation, costRequirementAnalysis: $costRequirementAnalysis, costDeployment: $costDeployment, costConfiguration: $costConfiguration, costOnsiteAdoptionSupport: $costOnsiteAdoptionSupport, costTraining: $costTraining, costProjectManagement: $costProjectManagement, costSoftwareCustomizationTotal: $costSoftwareCustomizationTotal, costSoftwareCustomization: $costSoftwareCustomization, costCustomizedReport: $costCustomizedReport, costConsultancyServices: $costConsultancyServices, costConsultancy: $costConsultancy, costAnnualMaintenanceTotal: $costAnnualMaintenanceTotal, costAnnualMaintenance: $costAnnualMaintenance, submitButtonDisabled: $submitButtonDisabled, viewModel: viewModel).background(.white)
+                        SummaryView(submitButtonDisabled: $submitButtonDisabled, viewModel: viewModel).background(.white)
                     }
                 }
                 
@@ -460,17 +408,6 @@ struct PriceCalculatorView: View {
                }
            }.onReceive(self.viewModel.submitEnableDisablePublisher.receive(on: RunLoop.main)) { isValid in
                self.submitButtonDisabled = !isValid
-           }.onReceive(self.viewModel.sliderValuePublisher.receive(on: RunLoop.main)) { (multiplierCode, sliderValue) in
-               switch multiplierCode {
-               case "custom":
-                   costSoftwareCustomization = sliderValue * AppConstants.unitPriceSoftwareCustomization
-                   self.viewModel.shouldCalculateData.send(true)
-               case "report":
-                   costCustomizedReport = sliderValue * AppConstants.unitPriceCustomizedReports
-                   self.viewModel.shouldCalculateData.send(true)
-               default:
-                   print("No multiplier code mached!")
-               }
            }
        }
         .edgesIgnoringSafeArea(.bottom)
@@ -536,6 +473,9 @@ struct PriceCalculatorView: View {
     }
     
     private func calculateModuleAndFeaturePrice(with triple: (String, Int, String)) {
+        guard let baseModuleCode = baseModuleList[selectedBaseModuleIndex].code, let multiplierMap = viewModel.responsibleMultipliersOfBaseModules[baseModuleCode], multiplierMap[triple.0] == true else {
+            return
+        }
         for moduleGroupIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups.count {
             for moduleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules.count {
                 guard let moduleMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].multiplier else {
@@ -543,17 +483,8 @@ struct PriceCalculatorView: View {
                 }
                 
                 if triple.0 == moduleMultiplierCode {
-                    calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: triple.1, customValue: triple.2)
+                    viewModel.calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: triple.1, customValue: triple.2)
                 }
-                
-//                switch moduleMultiplierCode {
-//                case .integer(let intValue):
-//                    print(intValue)
-//                case .string(let stringValue):
-//                    if pair.0 == stringValue {
-//                        calculateModulePrice(module: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex], with: pair.1)
-//                    }
-//                }
                 
                 for featureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features.count {
                     
@@ -562,75 +493,11 @@ struct PriceCalculatorView: View {
                     }
                     
                     if triple.0 == featureMultiplierCode {
-                        calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: triple.1, customValue: triple.2)
+                        viewModel.calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: triple.1, customValue: triple.2)
                     }
-                    
-//                    switch featureMultiplierCode {
-//                    case .integer(let intValue):
-//                        print(intValue)
-//                    case .string(let stringValue):
-//                        if pair.0 == stringValue {
-//                            calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[featureIndex], with: pair.1)
-//                        }
-//                    }
                 }
-                
-//                for subModuleIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules.count {
-//                    for subFeatureIndex in 0..<$baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features.count {
-//
-//                        guard let subFeatureMultiplierCode = baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].submodules[subModuleIndex].features[subFeatureIndex].price?.multiplier else {
-//                            return
-//                        }
-//
-//                        switch subFeatureMultiplierCode {
-//                        case .integer(let intValue):
-//                            print(intValue)
-//                        case .string(let stringValue):
-//                            if pair.0 == stringValue {
-//                                calculateFeaturePrice(feature: &baseModuleList[selectedBaseModuleIndex].moduleGroups[moduleGroupIndex].modules[moduleIndex].features[subFeatureIndex], with: pair.1)
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
-    }
-    
-    private func calculateModulePrice(module: inout ServiceModule, with index: Int, customValue: String) {
-        
-        if index == -1 {
-            module.defaultprice = Double(customValue) ?? 0.0
-            return
-        }
-        
-        if module.price.count <= index {
-            return
-        }
-        
-        let price = module.price[index]
-        if price.isEmpty {
-            return
-        }
-        
-        module.defaultprice = Double(price) ?? 0.0
-    }
-    
-    private func calculateFeaturePrice(feature: inout Feature, with index: Int, customValue: String) {
-        if index == -1 {
-            feature.defaultprice = Double(customValue) ?? 0.0
-            return
-        }
-        
-        if feature.price.count <= index {
-            return
-        }
-        
-        let price = feature.price[index]
-        if price.isEmpty {
-            return
-        }
-        
-        feature.defaultprice = Double(price) ?? 0.0
     }
     
     private func prepareHeaderView() {
@@ -721,33 +588,6 @@ struct PriceCalculatorView: View {
                         isAdded = true
                     }
                 }
-                
-//                for submodule in module.submodules {
-//                    for feature in submodule.features {
-//                        if feature.isAdded == true {
-//                            var slabPrice = 0
-//                            if feature.slabPrice == nil || feature.slabPrice == 0 {
-//                                if let slab1 = feature.price?.slab1 {
-//                                    switch slab1 {
-//                                    case .integer(let i):
-//                                        slabPrice = i
-//                                    case .string(let j):
-//                                        print(j)
-//                                    }
-//                                }
-//                            } else {
-//                                slabPrice = feature.slabPrice ?? 0
-//                            }
-//
-//                            price += slabPrice
-//
-//                            summaryModuleTotalPrice += slabPrice
-//                            summaryModuleFeatureList.append(SummaryModuleFeature(code: feature.code, multipliercode: "", price: slabPrice, prices: feature.price, type: "feature"))
-//
-//                            isAdded = true
-//                        }
-//                    }
-//                }
             }
         }
         
@@ -812,11 +652,11 @@ struct PriceCalculatorView: View {
             self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SummaryResponseSoftwareLicenseModule(licensingparameters: licensingParameters, name: baseModule.name, code: baseModule.code, description: "", selfcode: "", defaultprice: 0, totalamount: summaryModuleTotalPrice, discount: 0, features: summaryModuleFeatureList, multiplier: "", price: nil, excludeInAll: false)
         } else {
             if isAdded {
-                summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
+                viewModel.summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
                 
                 self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SummaryResponseSoftwareLicenseModule(licensingparameters: licensingParameters, name: baseModule.name, code: baseModule.code, description: "", selfcode: "", defaultprice: 0, totalamount: summaryModuleTotalPrice, discount: 0, features: summaryModuleFeatureList, multiplier: "", price: nil, excludeInAll: false)
             } else {
-                summaryMap.removeValue(forKey: baseModule.code ?? "")
+                viewModel.summaryMap.removeValue(forKey: baseModule.code ?? "")
                 self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
             }
         }
@@ -826,62 +666,23 @@ struct PriceCalculatorView: View {
         var moduleCost = 0
         var list: [SummaryItem] = []
         
-        for key in summaryMap.keys {
-            if let item = summaryMap[key] {
+        for key in viewModel.summaryMap.keys {
+            if let item = viewModel.summaryMap[key] {
                 list.append(item)
                 moduleCost += item.price
             }
         }
         
-        calculateSummaryCost(moduleCost: moduleCost)
+        viewModel.calculateSummaryCost(moduleCost: moduleCost)
         
         return list
-    }
-    
-    private func calculateSummaryCost(moduleCost: Int) {
-        let users = ceil((Double(moduleCost) / Double(AppConstants.perUserCost)))
-        let totalUsers = Int(users)
-        
-        if totalUsers <= AppConstants.additionalUsers {
-            additionalUsers = AppConstants.additionalUsers - totalUsers
-        } else {
-            additionalUsers = 0
-        }
-        usersIncluded = totalUsers
-        costAdditionalUsers = (AppConstants.costAdditionalUsers / AppConstants.additionalUsers) * additionalUsers
-        
-        costSoftwareLicense = moduleCost + costAdditionalUsers
-
-        costRequirementAnalysis = (costSoftwareLicense * AppConstants.percentRequirementAnalysis) / 100
-        costDeployment = (costSoftwareLicense * AppConstants.percentDeployment) / 100
-        costOnsiteAdoptionSupport = (costSoftwareLicense * AppConstants.percentOnSiteAdoption) / 100
-        costConfiguration = (costSoftwareLicense * AppConstants.percentConfiguration) / 100
-        costTraining = (costSoftwareLicense * AppConstants.percentTraining) / 100
-        costProjectManagement = (costSoftwareLicense * AppConstants.percentProjectManagement) / 100
-        
-        costImplementation = costRequirementAnalysis +
-                costDeployment + costConfiguration +
-                costOnsiteAdoptionSupport +
-                costTraining + costProjectManagement
-
-        costSoftwareCustomizationTotal = costSoftwareCustomization + costCustomizedReport
-
-        costConsultancy = (costSoftwareLicense * AppConstants.percentConsultancy) / 100
-
-        costConsultancyServices = costConsultancy
-
-        costAnnualMaintenance = (costSoftwareLicense * AppConstants.percentMaintenance) / 100
-
-        costAnnualMaintenanceTotal = costAnnualMaintenance
-
-        costTotal = costSoftwareLicense + costImplementation + costSoftwareCustomizationTotal + costConsultancyServices + costAnnualMaintenanceTotal
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PriceCalculatorView(productId: "prismperp").environmentObject(AppState())
+            PriceCalculatorView(productId: "prismperp", quotationId: "").environmentObject(AppState())
         }
     }
 }
