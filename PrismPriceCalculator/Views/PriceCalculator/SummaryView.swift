@@ -17,8 +17,6 @@ struct SummaryView: View {
     @State private var selectedTag: Int? = -1
     @State var shouldUpdate: Bool = true
     
-    
-    
     var body: some View {
         VStack(spacing: 5) {
             NavigationLink(destination: LoginView(), tag: 5, selection: self.$selectedTag) {
@@ -192,7 +190,24 @@ struct SummaryView: View {
             
             Button(action: {
                 if UserSessionManager.isLoggedIn {
-                    viewModel.submitSummary()
+                    if !viewModel.moduleChangeMapOld.isEmpty
+                        && !viewModel.moduleChangeMapNew.isEmpty
+                        && viewModel.moduleChangeMapOld.count != viewModel.moduleChangeMapNew.count {
+                        viewModel.submitOrUpdateSummary()
+                    } else {
+                        var hasChanged = false
+                        for key in viewModel.moduleChangeMapOld.keys {
+                            if viewModel.moduleChangeMapOld[key] != viewModel.moduleChangeMapNew[key] {
+                                hasChanged = true
+                                break
+                            }
+                        }
+                        if hasChanged {
+                            viewModel.submitOrUpdateSummary()
+                        } else {
+                            viewModel.errorToastPublisher.send((true, "No changes found!"))
+                        }
+                    }
                 } else {
                     selectedTag = 5
                 }

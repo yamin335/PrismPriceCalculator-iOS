@@ -205,28 +205,6 @@ struct PriceCalculatorView: View {
     @State var baseModuleList: [BaseServiceModule] = []
     @State var selectedBaseModuleIndex: Int = -1
     
-//    @State var summaryList: [SummaryItem] = []
-//    @State var summaryMap: [String : SummaryItem] = [:]
-    
-//    @State var costSoftwareLicense = 0
-//    @State var costAdditionalUsers = 0
-//    @State var additionalUsers = 5
-//    @State var usersIncluded = AppConstants.additionalUsers
-//    @State var costImplementation = 0
-//    @State var costRequirementAnalysis = 0
-//    @State var costDeployment = 0
-//    @State var costConfiguration = 0
-//    @State var costOnsiteAdoptionSupport = 0
-//    @State var costTraining = 0
-//    @State var costProjectManagement = 0
-//    @State var costSoftwareCustomizationTotal = 0
-//    @State var costSoftwareCustomization = 0
-//    @State var costCustomizedReport = 0
-//    @State var costConsultancyServices = 0
-//    @State var costConsultancy = 0
-//    @State var costAnnualMaintenanceTotal = 0
-//    @State var costAnnualMaintenance = 30000
-//    @State var costTotal = 0
     @State var submitButtonDisabled = true
     
     
@@ -655,9 +633,11 @@ struct PriceCalculatorView: View {
                 viewModel.summaryMap[baseModule.code ?? ""] = SummaryItem(title: baseModule.name ?? "", price: price)
                 
                 self.viewModel.softwareLicenseModuleMap[baseModule.code ?? ""] = SummaryResponseSoftwareLicenseModule(licensingparameters: licensingParameters, name: baseModule.name, code: baseModule.code, description: "", selfcode: "", defaultprice: 0, totalamount: summaryModuleTotalPrice, discount: 0, features: summaryModuleFeatureList, multiplier: "", price: nil, excludeInAll: false)
+                viewModel.moduleChangeMapNew[baseModule.code ?? ""] = price
             } else {
                 viewModel.summaryMap.removeValue(forKey: baseModule.code ?? "")
                 self.viewModel.softwareLicenseModuleMap.removeValue(forKey: baseModule.code ?? "")
+                viewModel.moduleChangeMapNew.removeValue(forKey: baseModule.code ?? "")
             }
         }
         

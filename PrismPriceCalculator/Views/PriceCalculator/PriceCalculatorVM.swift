@@ -38,6 +38,7 @@ class PriceCalculatorVM: BaseViewModel {
     var calculateSelectedModuleFor = PassthroughSubject<String, Never>()
     
     private var submitQuotationSubscriber: AnyCancellable? = nil
+    private var updateQuotationSubscriber: AnyCancellable? = nil
     private var productDetailsSubscriber: AnyCancellable? = nil
     private var quotationDetailsAndProductDetailsSubscriber: AnyCancellable? = nil
     var quotationStatusPublisher = PassthroughSubject<Bool, Never>()
@@ -56,7 +57,10 @@ class PriceCalculatorVM: BaseViewModel {
     var moduleChangeMapOld: [String : Int?] = [:]
     var moduleChangeMapNew: [String : Int?] = [:]
     
+    var quotationDetails: SummaryResponseQuotation? = nil
+    
     deinit {
+        updateQuotationSubscriber?.cancel()
         quotationDetailsAndProductDetailsSubscriber?.cancel()
         submitQuotationSubscriber?.cancel()
         productDetailsSubscriber?.cancel()
@@ -129,6 +133,25 @@ class PriceCalculatorVM: BaseViewModel {
             })
     }
     
+    func updateQuotation(quotationUpdateBody: SummaryResponseQuotation) {
+        self.updateQuotationSubscriber = ApiService.updateQuotation(quotationUpdateBody: quotationUpdateBody, viewModel: self)?
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        self.errorToastPublisher.send((true, error.localizedDescription))
+                }
+            }, receiveValue: { response in
+                if response.code == 2000001 {
+                    self.successToastPublisher.send((true, response.msg ?? "Quotation successfully updated!"))
+                    self.quotationStatusPublisher.send(true)
+                } else {
+                    self.errorToastPublisher.send((true, response.msg ?? "Submission failed! please try again later"))
+                }
+            })
+    }
+    
     func quotationDetailsWithProductDetails(productId: String, quotationId: String) {
         guard let productDetailsPublisher = ApiService.productDetails(productId: productId, viewModel: self),
         let quotationDetailsPublisher = ApiService.quotationDetails(quotationId: quotationId, viewModel: self) else {
@@ -158,6 +181,8 @@ class PriceCalculatorVM: BaseViewModel {
                         self.errorToastPublisher.send((true, productDetailsresponse.msg ?? "Failed to load product data! please try again later"))
                         return
                     }
+                    
+                    self.quotationDetails = quotation
                     
                     self.baseModuleList = baseModuleList
                     self.prepareResponsibleMultipliersList()
@@ -207,7 +232,10 @@ class PriceCalculatorVM: BaseViewModel {
                 }
                 quotationModuleMap[featureCode] = feature
             }
-            summaryMap[moduleCode] = SummaryItem(title: moduleName, price: moduleTotalAmount)
+            if moduleCode != "START" {
+                summaryMap[moduleCode] = SummaryItem(title: moduleName, price: moduleTotalAmount)
+            }
+            
             softwareLicenseModuleMap[moduleCode] = module
         }
         
@@ -393,7 +421,7 @@ class PriceCalculatorVM: BaseViewModel {
         costTotal = costSoftwareLicense + costImplementation + costSoftwareCustomizationTotal + costConsultancyServices + costAnnualMaintenanceTotal
     }
     
-    func submitSummary() {
+    func submitOrUpdateSummary() {
         let maintenance = SummaryResponseAdditionalService(
             summeryid: nil,
             header: "Annual Maintenance Cost",
@@ -534,30 +562,40 @@ class PriceCalculatorVM: BaseViewModel {
             Table: ""
         )
         
-        var totatAmount = (consultancy.total ?? 0) + (customization.total ?? 0) + (implementation.total ?? 0) // + (maintenance.totalamount ?? 0)
+        var totalAmount = (consultancy.total ?? 0) + (customization.total ?? 0) + (implementation.total ?? 0) // + (maintenance.totalamount ?? 0)
         
         var softwareLicenseModuleList: [SummaryResponseSoftwareLicenseModule] = []
         
         for key in softwareLicenseModuleMap.keys {
             if let softwareLicenseModule = softwareLicenseModuleMap[key] {
                 softwareLicenseModuleList.append(softwareLicenseModule)
-                totatAmount += softwareLicenseModule.totalamount ?? 0
+                totalAmount += softwareLicenseModule.totalamount ?? 0
             }
         }
         
         let summarySoftwareLicense = SummaryResponseSoftwareLicense(summeryid: nil, header: "Software License",
-                                                                    totalamount: totatAmount, discount: 0,
+                                                                    totalamount: totalAmount, discount: 0,
                                                                     users: usersIncluded, additionalusers: additionalUsers,
                                                                     modules: softwareLicenseModuleList,
                                                                     Table: "")
         
-        let summaryStoreBody = SummaryStoreModel(salesmanid: UserSessionManager.userAccount?.salesmanid,
-                                                 customerid: UserSessionManager.userAccount?.id, details: false,
-                                                 header: "Summery", productid: "prismerp",
-                                                 totalamount: totatAmount, Software_License: summarySoftwareLicense,
-                                                 Implementation: implementation, Customization: customization,
-                                                 Consultancy: consultancy, Maintainance: maintenance, company: "RTC Hubs")
-        submitQuotation(quotationStoreBody: summaryStoreBody)
+        if var quotation = self.quotationDetails {
+            quotation.totalamount = totalAmount
+            quotation.Software_License = summarySoftwareLicense
+            quotation.Implementation = implementation
+            quotation.Customization = customization
+            quotation.Consultancy = consultancy
+            quotation.Maintainance = maintenance
+            updateQuotation(quotationUpdateBody: quotation)
+        } else {
+            let summaryStoreBody = SummaryStoreModel(salesmanid: UserSessionManager.userAccount?.salesmanid,
+                                                     customerid: UserSessionManager.userAccount?.id, details: false,
+                                                     header: "Summery", productid: "prismerp",
+                                                     totalamount: totalAmount, Software_License: summarySoftwareLicense,
+                                                     Implementation: implementation, Customization: customization,
+                                                     Consultancy: consultancy, Maintainance: maintenance, company: "RTC Hubs")
+            submitQuotation(quotationStoreBody: summaryStoreBody)
+        }
     }
     
     func calculateModulePrice(module: inout ServiceModule, with index: Int, customValue: String) {

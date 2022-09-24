@@ -133,6 +133,32 @@ class ApiService {
         return getDataTask(request: request, viewModel: viewModel)
     }
     
+    static func updateQuotation(quotationUpdateBody: SummaryResponseQuotation, viewModel: BaseViewModel) -> AnyPublisher<QuotationUpdateResponse, Error>? {
+        
+        guard let data = try? JSONEncoder().encode(quotationUpdateBody) else {
+            print("Problem in JSONData creation...")
+            return nil
+        }
+        
+        guard let urlComponents = URLComponents(string: NetworkUtils.updateQuotation) else {
+            print("Problem in UrlComponent creation...")
+            return nil
+        }
+        
+        guard let url = urlComponents.url else {
+            return nil
+        }
+        
+        //Request type
+        var request = NetworkUtils.getCommonUrlRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //Setting body for POST request
+        request.httpBody = data
+        
+        return getDataTask(request: request, viewModel: viewModel)
+    }
+    
     static func allProducts(viewModel: BaseViewModel) -> AnyPublisher<AllProductsResponse, Error>? {
         
         guard let urlComponents = URLComponents(string: NetworkUtils.allProducts) else {
